@@ -1,0 +1,1149 @@
+[
+  {
+    "name": "Aegean Airlines",
+    "iata": "A3",
+    "icao": "AEE",
+    "country": "GR",
+    "flag_carrier": true,
+    "website": "https://en.aegeanair.com",
+    "alliance": "Star Alliance",
+    "branding": {
+      "primary_color": "#002677"
+    },
+    "slug": "aegean-airlines"
+  },
+  {
+    "name": "Aer Lingus",
+    "iata": "EI",
+    "icao": "EIN",
+    "country": "IE",
+    "flag_carrier": true,
+    "website": "https://www.aerlingus.com",
+    "branding": {
+      "primary_color": "#006472"
+    },
+    "slug": "aer-lingus"
+  },
+  {
+    "name": "Aerolíneas Argentinas",
+    "iata": "AR",
+    "icao": "ARG",
+    "country": "AR",
+    "flag_carrier": true,
+    "website": "https://www.aerolineas.com.ar",
+    "alliance": "SkyTeam",
+    "branding": {
+      "primary_color": "#0080be"
+    },
+    "slug": "aerolineas-argentinas"
+  },
+  {
+    "name": "Aeroméxico",
+    "iata": "AM",
+    "icao": "AMX",
+    "country": "MX",
+    "flag_carrier": true,
+    "website": "https://www.aeromexico.com",
+    "alliance": "SkyTeam",
+    "branding": {
+      "primary_color": "#020c41"
+    },
+    "slug": "aeromexico"
+  },
+  {
+    "name": "Air Albania",
+    "iata": "ZB",
+    "icao": "ABN",
+    "country": "AL",
+    "flag_carrier": true,
+    "website": "https://www.airalbania.com.al",
+    "branding": {
+      "primary_color": "#ce1f2e"
+    },
+    "slug": "air-albania"
+  },
+  {
+    "name": "Air Algérie",
+    "iata": "AH",
+    "icao": "DAH",
+    "country": "DZ",
+    "flag_carrier": true,
+    "website": "https://airalgerie.dz",
+    "branding": {
+      "primary_color": "#e2231a"
+    },
+    "slug": "air-algerie"
+  },
+  {
+    "name": "Air Astana",
+    "iata": "KC",
+    "icao": "KZR",
+    "country": "KZ",
+    "flag_carrier": true,
+    "website": "https://airastana.com",
+    "branding": {
+      "primary_color": "#a48c5d"
+    },
+    "slug": "air-astana"
+  },
+  {
+    "name": "Air Canada",
+    "iata": "AC",
+    "icao": "ACA",
+    "country": "CA",
+    "flag_carrier": true,
+    "website": "https://www.aircanada.com",
+    "alliance": "Star Alliance",
+    "branding": {
+      "primary_color": "#f01428"
+    },
+    "slug": "air-canada"
+  },
+  {
+    "name": "Air Dolomiti",
+    "iata": "EN",
+    "icao": "DLA",
+    "country": "IT",
+    "website": "https://www.airdolomiti.eu",
+    "branding": {
+      "primary_color": "#009eb3"
+    },
+    "slug": "air-dolomiti"
+  },
+  {
+    "name": "Air Europa",
+    "iata": "UX",
+    "icao": "AEA",
+    "country": "ES",
+    "website": "https://www.aireuropa.com",
+    "alliance": "SkyTeam",
+    "branding": {
+      "primary_color": "#006fde"
+    },
+    "slug": "air-europa"
+  },
+  {
+    "name": "Air France",
+    "iata": "AF",
+    "icao": "AFR",
+    "country": "FR",
+    "flag_carrier": true,
+    "website": "https://airfrance.com",
+    "alliance": "SkyTeam",
+    "branding": {
+      "primary_color": "#051039"
+    },
+    "slug": "air-france"
+  },
+  {
+    "name": "Air India",
+    "iata": "AI",
+    "icao": "AIC",
+    "country": "IN",
+    "flag_carrier": true,
+    "website": "https://www.airindia.com",
+    "alliance": "Star Alliance",
+    "branding": {
+      "primary_color": "#da0e29"
+    },
+    "slug": "air-india"
+  },
+  {
+    "name": "Air Mauritius",
+    "iata": "MK",
+    "icao": "MAU",
+    "country": "MU",
+    "flag_carrier": true,
+    "website": "https://www.airmauritius.com",
+    "alliance": "Vanilla Alliance",
+    "branding": {
+      "primary_color": "#be2239"
+    },
+    "slug": "air-mauritius"
+  },
+  {
+    "name": "Air New Zealand",
+    "iata": "NZ",
+    "icao": "ANZ",
+    "country": "NZ",
+    "flag_carrier": true,
+    "website": "https://www.airnewzealand.co.nz",
+    "alliance": "Star Alliance",
+    "branding": {
+      "primary_color": "#000000"
+    },
+    "slug": "air-new-zealand"
+  },
+  {
+    "name": "Air Serbia",
+    "iata": "JU",
+    "icao": "ASL",
+    "country": "RS",
+    "flag_carrier": true,
+    "website": "https://www.airserbia.com",
+    "branding": {
+      "primary_color": "#0e203f"
+    },
+    "slug": "air-serbia"
+  },
+  {
+    "name": "Air Transat",
+    "iata": "TS",
+    "icao": "TSC",
+    "country": "CA",
+    "website": "https://airtransat.com",
+    "branding": {
+      "primary_color": "#172b54"
+    },
+    "slug": "air-transat"
+  },
+  {
+    "name": "AirAsia",
+    "iata": "AK",
+    "icao": "AXM",
+    "country": "MY",
+    "website": "https://www.airasia.com",
+    "branding": {
+      "primary_color": "#ff0000"
+    },
+    "subsidiaries": [
+      {
+        "name": "AirAsia Cambodia",
+        "iata": "KT",
+        "icao": "KTC",
+        "country": "KH"
+      },
+      {
+        "name": "Thai AirAsia",
+        "iata": "FD",
+        "icao": "AIQ",
+        "country": "TH"
+      },
+      {
+        "name": "Indonesia AirAsia",
+        "iata": "QZ",
+        "icao": "AWQ",
+        "country": "ID"
+      },
+      {
+        "name": "Philippines AirAsia",
+        "iata": "Z2",
+        "icao": "APG",
+        "country": "PH"
+      }
+    ],
+    "slug": "airasia"
+  },
+  {
+    "name": "airBaltic",
+    "iata": "BT",
+    "icao": "BTI",
+    "country": "LV",
+    "flag_carrier": true,
+    "website": "https://www.airbaltic.com",
+    "branding": {
+      "primary_color": "#152649"
+    },
+    "slug": "airbaltic"
+  },
+  {
+    "name": "Akasa Air",
+    "iata": "QP",
+    "icao": "AKJ",
+    "country": "IN",
+    "website": "https://www.akasaair.com",
+    "branding": {
+      "primary_color": "#ff6300"
+    },
+    "slug": "akasa-air"
+  },
+  {
+    "name": "Alaska Airlines",
+    "iata": "AS",
+    "icao": "ASA",
+    "country": "US",
+    "website": "https://www.alaskaair.com",
+    "alliance": "oneworld",
+    "branding": {
+      "primary_color": "#01426a"
+    },
+    "slug": "alaska-airlines"
+  },
+  {
+    "name": "Asiana Airlines",
+    "iata": "OZ",
+    "icao": "AAR",
+    "country": "KR",
+    "website": "https://flyasiana.com",
+    "alliance": "Star Alliance",
+    "branding": {
+      "primary_color": "#4a4f54",
+      "guidelines": "https://flyasiana.com/C/VN/EN/contents/ci"
+    },
+    "slug": "asiana-airlines"
+  },
+  {
+    "name": "Atlantic Airways",
+    "iata": "RC",
+    "icao": "FLI",
+    "country": "FO",
+    "flag_carrier": true,
+    "website": "https://www.atlanticairways.com",
+    "branding": {
+      "primary_color": "#004c93"
+    },
+    "slug": "atlantic-airways"
+  },
+  {
+    "name": "avianca",
+    "iata": "AV",
+    "icao": "AVA",
+    "country": "CO",
+    "flag_carrier": true,
+    "website": "https://www.avianca.com",
+    "alliance": "Star Alliance",
+    "branding": {
+      "primary_color": "#ff0000"
+    },
+    "subsidiaries": [
+      {
+        "name": "Avianca Costa Rica",
+        "iata": "LR",
+        "icao": "LRC",
+        "country": "CR",
+        "flag_carrier": true
+      },
+      {
+        "name": "Avianca Ecuador",
+        "iata": "2K",
+        "icao": "GLG",
+        "country": "EC"
+      },
+      {
+        "name": "Avianca El Salvador",
+        "iata": "TA",
+        "icao": "TAI",
+        "country": "SV",
+        "flag_carrier": true
+      }
+    ],
+    "slug": "avianca"
+  },
+  {
+    "name": "Azerbaijan Airlines",
+    "iata": "J2",
+    "icao": "AHY",
+    "country": "AZ",
+    "flag_carrier": true,
+    "website": "https://azal.az",
+    "branding": {
+      "primary_color": "#082e6a"
+    },
+    "slug": "azerbaijan-airlines"
+  },
+  {
+    "name": "Bamboo Airways",
+    "iata": "QH",
+    "icao": "BAV",
+    "country": "VN",
+    "website": "https://www.bambooairways.com",
+    "branding": {
+      "primary_color": "#64ae53",
+      "guidelines": "https://www.bambooairways.com/documents/d/global/bamboo-airway-guideline-new"
+    },
+    "slug": "bamboo-airways"
+  },
+  {
+    "name": "Bangkok Airways",
+    "iata": "PG",
+    "icao": "BKP",
+    "country": "TH",
+    "website": "https://www.bangkokair.com",
+    "branding": {
+      "primary_color": "#000f8f"
+    },
+    "slug": "bangkok-airways"
+  },
+  {
+    "name": "British Airways",
+    "iata": "BA",
+    "icao": "BAW",
+    "country": "GB",
+    "flag_carrier": true,
+    "website": "https://www.britishairways.com",
+    "alliance": "oneworld",
+    "branding": {
+      "primary_color": "#2e5c99"
+    },
+    "slug": "british-airways"
+  },
+  {
+    "name": "Brussels Airlines",
+    "iata": "SN",
+    "icao": "BEL",
+    "country": "BE",
+    "flag_carrier": true,
+    "website": "https://www.brusselsairlines.com",
+    "alliance": "Star Alliance",
+    "branding": {
+      "primary_color": "#051446"
+    },
+    "slug": "brussels-airlines"
+  },
+  {
+    "name": "Cathay Pacific",
+    "iata": "CX",
+    "icao": "CPA",
+    "country": "HK",
+    "flag_carrier": true,
+    "website": "https://www.cathaypacific.com",
+    "alliance": "oneworld",
+    "branding": {
+      "primary_color": "#005d63"
+    },
+    "slug": "cathay-pacific"
+  },
+  {
+    "name": "Copa Airlines",
+    "iata": "CM",
+    "icao": "CMP",
+    "country": "PA",
+    "flag_carrier": true,
+    "website": "https://www.copaair.com",
+    "alliance": "Star Alliance",
+    "branding": {
+      "primary_color": "#0032a0"
+    },
+    "slug": "copa-airlines"
+  },
+  {
+    "name": "Emirates",
+    "iata": "EK",
+    "icao": "UAE",
+    "country": "AE",
+    "flag_carrier": true,
+    "website": "https://www.emirates.com",
+    "branding": {
+      "primary_color": "#d71921"
+    },
+    "slug": "emirates"
+  },
+  {
+    "name": "Ethiopian Airlines",
+    "iata": "ET",
+    "icao": "ETH",
+    "country": "ET",
+    "flag_carrier": true,
+    "alliance": "Star Alliance",
+    "website": "https://www.ethiopianairlines.com",
+    "branding": {
+      "primary_color": "#b71d20"
+    },
+    "slug": "ethiopian-airlines"
+  },
+  {
+    "name": "Etihad Airways",
+    "iata": "EY",
+    "icao": "ETD",
+    "country": "AE",
+    "flag_carrier": true,
+    "website": "https://www.etihad.com",
+    "branding": {
+      "primary_color": "#bd8b13"
+    },
+    "slug": "etihad-airways"
+  },
+  {
+    "name": "Eurowings",
+    "iata": "EW",
+    "icao": "EWG",
+    "country": "DE",
+    "website": "https://www.eurowings.com",
+    "branding": {
+      "primary_color": "#7c2045"
+    },
+    "slug": "eurowings"
+  },
+  {
+    "name": "Fiji Airways",
+    "iata": "FJ",
+    "icao": "FJI",
+    "country": "FJ",
+    "flag_carrier": true,
+    "website": "https://www.fijiairways.com",
+    "alliance": "oneworld",
+    "branding": {
+      "primary_color": "#473729"
+    },
+    "slug": "fiji-airways"
+  },
+  {
+    "name": "Firefly",
+    "iata": "FY",
+    "icao": "FFM",
+    "country": "MY",
+    "website": "https://www.fireflyz.com.my",
+    "branding": {
+      "primary_color": "#ef5713"
+    },
+    "slug": "firefly"
+  },
+  {
+    "name": "flynas",
+    "iata": "XY",
+    "icao": "KNE",
+    "country": "SA",
+    "website": "https://www.flynas.com",
+    "branding": {
+      "primary_color": "#00b7ac"
+    },
+    "slug": "flynas"
+  },
+  {
+    "name": "Garuda Indonesia",
+    "iata": "GA",
+    "icao": "GIA",
+    "country": "ID",
+    "flag_carrier": true,
+    "website": "https://www.garuda-indonesia.com",
+    "alliance": "SkyTeam",
+    "branding": {
+      "primary_color": "#002560"
+    },
+    "slug": "garuda-indonesia"
+  },
+  {
+    "name": "HK Express",
+    "iata": "UO",
+    "icao": "HKE",
+    "country": "HK",
+    "website": "https://www.hkexpress.com",
+    "branding": {
+      "primary_color": "#702b91"
+    },
+    "slug": "hk-express"
+  },
+  {
+    "name": "Iberia",
+    "iata": "IB",
+    "icao": "IBE",
+    "country": "ES",
+    "flag_carrier": true,
+    "website": "https://www.iberia.com",
+    "alliance": "oneworld",
+    "branding": {
+      "primary_color": ""
+    },
+    "slug": "iberia"
+  },
+  {
+    "name": "Icelandair",
+    "iata": "FI",
+    "icao": "ICE",
+    "country": "IS",
+    "flag_carrier": true,
+    "website": "https://www.icelandair.com",
+    "branding": {
+      "primary_color": "#0c0243"
+    },
+    "slug": "icelandair"
+  },
+  {
+    "name": "IndiGo",
+    "iata": "6E",
+    "icao": "IGO",
+    "country": "IN",
+    "website": "https://www.goindigo.in",
+    "branding": {
+      "primary_color": "#001b94"
+    },
+    "slug": "indigo"
+  },
+  {
+    "name": "Japan Airlines",
+    "iata": "JL",
+    "icao": "JAL",
+    "country": "JP",
+    "flag_carrier": true,
+    "website": "https://www.jal.co.jp",
+    "alliance": "oneworld",
+    "branding": {
+      "primary_color": "#e50012"
+    },
+    "slug": "japan-airlines"
+  },
+  {
+    "name": "Jetstar",
+    "iata": "JQ",
+    "icao": "JST",
+    "country": "AU",
+    "website": "https://www.jetstar.com",
+    "branding": {
+      "primary_color": "#ff5111"
+    },
+    "subsidiaries": [
+      {
+        "name": "Jetstar Japan",
+        "iata": "GK",
+        "icao": "JJP",
+        "country": "JP"
+      }
+    ],
+    "slug": "jetstar"
+  },
+  {
+    "name": "Kenya Airways",
+    "iata": "KQ",
+    "icao": "KQA",
+    "country": "KE",
+    "flag_carrier": true,
+    "website": "https://www.kenya-airways.com",
+    "alliance": "SkyTeam",
+    "branding": {
+      "primary_color": "#ed1c24"
+    },
+    "slug": "kenya-airways"
+  },
+  {
+    "name": "KLM",
+    "iata": "KL",
+    "icao": "KLM",
+    "country": "NL",
+    "flag_carrier": true,
+    "website": "https://www.klm.com",
+    "alliance": "SkyTeam",
+    "branding": {
+      "primary_color": "#009fd9"
+    },
+    "slug": "klm"
+  },
+  {
+    "name": "Korean Air",
+    "iata": "KE",
+    "icao": "KAL",
+    "country": "KR",
+    "flag_carrier": true,
+    "website": "https://www.koreanair.com",
+    "branding": {
+      "primary_color": "#051766"
+    },
+    "slug": "korean-air"
+  },
+  {
+    "name": "Kuwait Airways",
+    "iata": "KU",
+    "icao": "KAC",
+    "country": "KW",
+    "flag_carrier": true,
+    "website": "https://www.kuwaitairways.com",
+    "branding": {
+      "primary_color": "#1c285b"
+    },
+    "slug": "kuwait-airways"
+  },
+  {
+    "name": "LATAM Airlines",
+    "iata": "LA",
+    "icao": "LAN",
+    "country": "CL",
+    "website": "https://www.latamairlines.com",
+    "branding": {
+      "primary_color": "#1b0088"
+    },
+    "subsidiaries": [
+      {
+        "name": "LATAM Airlines Brasil",
+        "iata": "JJ",
+        "icao": "TAM",
+        "country": "BR"
+      },
+      {
+        "name": "LATAM Airlines Colombia",
+        "iata": "4C",
+        "icao": "ARE",
+        "country": "CO"
+      },
+      {
+        "name": "LATAM Airlines Ecuador",
+        "iata": "XL",
+        "icao": "LNE",
+        "country": "EC"
+      },
+      {
+        "name": "LATAM Airlines Perú",
+        "iata": "LP",
+        "icao": "LPE",
+        "country": "PE"
+      },
+      {
+        "name": "LATAM Airlines Paraguay",
+        "iata": "PZ",
+        "icao": "LAP",
+        "country": "PY"
+      }
+    ],
+    "slug": "latam-airlines"
+  },
+  {
+    "name": "LOT Polish Airlines",
+    "iata": "LO",
+    "icao": "LOT",
+    "country": "PL",
+    "flag_carrier": true,
+    "website": "https://www.lot.com",
+    "alliance": "Star Alliance",
+    "branding": {
+      "primary_color": "#252668"
+    },
+    "slug": "lot-polish-airlines"
+  },
+  {
+    "name": "Lufthansa",
+    "iata": "LH",
+    "icao": "DLH",
+    "country": "DE",
+    "flag_carrier": true,
+    "website": "https://www.lufthansa.com",
+    "alliance": "Star Alliance",
+    "branding": {
+      "primary_color": "#05164d"
+    },
+    "slug": "lufthansa"
+  },
+  {
+    "name": "Malaysia Airlines",
+    "iata": "MH",
+    "icao": "MAS",
+    "country": "MY",
+    "flag_carrier": true,
+    "website": "https://www.malaysiaairlines.com",
+    "alliance": "oneworld",
+    "branding": {
+      "primary_color": "#174887"
+    },
+    "slug": "malaysia-airlines"
+  },
+  {
+    "name": "Myanmar National Airlines",
+    "iata": "UB",
+    "icao": "UBA",
+    "country": "MM",
+    "flag_carrier": true,
+    "website": "https://www.flymna.com",
+    "branding": {
+      "primary_color": "#fdb515"
+    },
+    "slug": "myanmar-national-airlines"
+  },
+  {
+    "name": "Oman Air",
+    "iata": "WY",
+    "icao": "OMA",
+    "country": "OM",
+    "flag_carrier": true,
+    "website": "https://www.omanair.com",
+    "alliance": "oneworld",
+    "branding": {
+      "primary_color": "#b39759"
+    },
+    "slug": "oman-air"
+  },
+  {
+    "name": "Paranair",
+    "iata": "ZP",
+    "icao": "AZP",
+    "country": "PY",
+    "website": "https://www.paranair.com",
+    "branding": {
+      "primary_color": "#0037a2"
+    },
+    "slug": "paranair"
+  },
+  {
+    "name": "Peach Aviation",
+    "iata": "MM",
+    "icao": "APJ",
+    "country": "JP",
+    "website": "https://www.flypeach.com",
+    "branding": {
+      "primary_color": "#9b308c"
+    },
+    "slug": "peach-aviation"
+  },
+  {
+    "name": "Philippine Airlines",
+    "iata": "PR",
+    "icao": "PAL",
+    "country": "PH",
+    "flag_carrier": true,
+    "website": "https://www.philippineairlines.com",
+    "branding": {
+      "primary_color": "#001f60"
+    },
+    "slug": "philippine-airlines"
+  },
+  {
+    "name": "Qantas",
+    "iata": "QF",
+    "icao": "QFA",
+    "country": "AU",
+    "flag_carrier": true,
+    "website": "https://www.qantas.com",
+    "alliance": "oneworld",
+    "branding": {
+      "primary_color": ""
+    },
+    "slug": "qantas"
+  },
+  {
+    "name": "Qatar Airways",
+    "iata": "QR",
+    "icao": "QTR",
+    "country": "QA",
+    "flag_carrier": true,
+    "website": "https://www.qatarairways.com",
+    "alliance": "oneworld",
+    "branding": {
+      "primary_color": "#662046",
+      "guidelines": "https://www.qatarairways.com/content/dam/tradepartners/pdf-files/Brand-Elements_Section-1.pdf"
+    },
+    "slug": "qatar-airways"
+  },
+  {
+    "name": "Riyadh Air",
+    "iata": "RX",
+    "icao": "RXI",
+    "country": "SA",
+    "flag_carrier": true,
+    "website": "https://www.riyadhair.com",
+    "branding": {
+      "primary_color": "#240852"
+    },
+    "slug": "riyadh-air"
+  },
+  {
+    "name": "Royal Air Maroc",
+    "iata": "AT",
+    "icao": "RAM",
+    "country": "MA",
+    "flag_carrier": true,
+    "website": "https://www.royalairmaroc.com",
+    "alliance": "SkyTeam",
+    "branding": {
+      "primary_color": "#c20831"
+    },
+    "slug": "royal-air-maroc"
+  },
+  {
+    "name": "Royal Brunei Airlines",
+    "iata": "BI",
+    "icao": "RBA",
+    "country": "BN",
+    "website": "https://www.flyroyalbrunei.com",
+    "branding": {
+      "primary_color": "#ffe600"
+    },
+    "slug": "royal-brunei-airlines"
+  },
+  {
+    "name": "Ryanair",
+    "iata": "FR",
+    "icao": "RYR",
+    "country": "IE",
+    "website": "https://www.ryanair.com",
+    "branding": {
+      "primary_color": "#073590"
+    },
+    "slug": "ryanair"
+  },
+  {
+    "name": "Saudia",
+    "iata": "SV",
+    "icao": "SVA",
+    "country": "SA",
+    "flag_carrier": true,
+    "website": "https://www.saudia.com",
+    "alliance": "SkyTeam",
+    "branding": {
+      "primary_color": "#0a6937"
+    },
+    "slug": "saudia"
+  },
+  {
+    "name": "Scandinavian Airlines",
+    "iata": "SK",
+    "icao": "SAS",
+    "country": "DK,NO,SE",
+    "flag_carrier": true,
+    "website": "https://www.flysas.com",
+    "alliance": "Star Alliance",
+    "branding": {
+      "primary_color": "#000099"
+    },
+    "subsidiaries": [
+      {
+        "name": "SAS Connect",
+        "iata": "SL",
+        "icao": "SZS",
+        "country": "IE"
+      }
+    ],
+    "slug": "scandinavian-airlines"
+  },
+  {
+    "name": "Scoot",
+    "iata": "TR",
+    "icao": "TGW",
+    "country": "SG",
+    "website": "https://www.flyscoot.com",
+    "alliance": "Value Alliance",
+    "branding": {
+      "primary_color": "#ffe900"
+    },
+    "slug": "scoot"
+  },
+  {
+    "name": "Singapore Airlines",
+    "iata": "SQ",
+    "icao": "SIA",
+    "country": "SG",
+    "flag_carrier": true,
+    "website": "https://www.singaporeair.com",
+    "alliance": "Star Alliance",
+    "branding": {
+      "primary_color": "#232f67"
+    },
+    "slug": "singapore-airlines"
+  },
+  {
+    "name": "Southwest Airlines",
+    "iata": "WN",
+    "icao": "SWA",
+    "country": "US",
+    "website": "https://www.southwest.com",
+    "branding": {
+      "primary_color": "#304cb2"
+    },
+    "slug": "southwest-airlines"
+  },
+  {
+    "name": "Starlux Airlines",
+    "iata": "JX",
+    "icao": "SJX",
+    "country": "TW",
+    "website": "https://www.starlux-airlines.com",
+    "branding": {
+      "primary_color": "#996a4e"
+    },
+    "slug": "starlux-airlines"
+  },
+  {
+    "name": "Sun PhuQuoc Airways",
+    "iata": "9G",
+    "icao": "SPQ",
+    "country": "VN",
+    "website": "https://www.sunphuquocairways.com",
+    "branding": {
+      "primary_color": "#ca1c2a"
+    },
+    "slug": "sun-phuquoc-airways"
+  },
+  {
+    "name": "SWISS",
+    "iata": "LX",
+    "icao": "SWR",
+    "country": "CH",
+    "flag_carrier": true,
+    "website": "https://www.swiss.com",
+    "alliance": "Star Alliance",
+    "branding": {
+      "primary_color": "#cf0a2c"
+    },
+    "slug": "swiss"
+  },
+  {
+    "name": "T'way Air",
+    "iata": "TW",
+    "icao": "TWB",
+    "country": "KR",
+    "website": "https://www.twayair.com",
+    "branding": {
+      "primary_color": "#d22c25"
+    },
+    "slug": "tway-air"
+  },
+  {
+    "name": "TAP Air Portugal",
+    "iata": "TP",
+    "icao": "TAP",
+    "country": "PT",
+    "flag_carrier": true,
+    "website": "https://www.tapairportugal.com",
+    "alliance": "Star Alliance",
+    "branding": {
+      "primary_color": "#bfd730"
+    },
+    "slug": "tap-air-portugal"
+  },
+  {
+    "name": "TAROM",
+    "iata": "RO",
+    "icao": "ROT",
+    "country": "RO",
+    "flag_carrier": true,
+    "website": "https://www.tarom.ro",
+    "alliance": "SkyTeam",
+    "branding": {
+      "primary_color": "#003366"
+    },
+    "slug": "tarom"
+  },
+  {
+    "name": "Thai Airways",
+    "iata": "TG",
+    "icao": "THA",
+    "country": "TH",
+    "flag_carrier": true,
+    "website": "https://www.thaiairways.com",
+    "alliance": "Star Alliance",
+    "branding": {
+      "primary_color": "#306"
+    },
+    "slug": "thai-airways"
+  },
+  {
+    "name": "Transavia",
+    "iata": "HV",
+    "icao": "TRA",
+    "country": "NL",
+    "website": "https://www.transavia.com",
+    "branding": {
+      "primary_color": "#00d66c"
+    },
+    "slug": "transavia"
+  },
+  {
+    "name": "Turkish Airlines",
+    "iata": "TK",
+    "icao": "THY",
+    "country": "TR",
+    "flag_carrier": true,
+    "website": "https://www.turkishairlines.com",
+    "alliance": "Star Alliance",
+    "branding": {
+      "primary_color": "#c90019",
+      "guidelines": "https://www.turkishairlines.com/en-int/press-room/logo-archive"
+    },
+    "slug": "turkish-airlines"
+  },
+  {
+    "name": "United Airlines",
+    "iata": "UA",
+    "icao": "UAL",
+    "country": "US",
+    "website": "https://www.united.com",
+    "alliance": "Star Alliance",
+    "branding": {
+      "primary_color": "#1414d2"
+    },
+    "slug": "united-airlines"
+  },
+  {
+    "name": "VietJet Air",
+    "iata": "VJ",
+    "icao": "VJC",
+    "country": "VN",
+    "website": "https://www.vietjetair.com",
+    "branding": {
+      "primary_color": "#e12127",
+      "tagline": "Enjoy Flying!"
+    },
+    "slug": "vietjet-air"
+  },
+  {
+    "name": "Vietnam Airlines",
+    "iata": "VN",
+    "icao": "HVN",
+    "country": "VN",
+    "flag_carrier": true,
+    "website": "https://www.vietnamairlines.com",
+    "alliance": "SkyTeam",
+    "branding": {
+      "primary_color": "#d99e09",
+      "tagline": "Reach Further",
+      "guidelines": "https://www.vietnamairlines.com/~/media/FilesDownload/AboutUs/Corporate-Identity/GSM-2017-Web1.pdf"
+    },
+    "slug": "vietnam-airlines"
+  },
+  {
+    "name": "Virgin Atlantic",
+    "iata": "VS",
+    "icao": "VIR",
+    "country": "GB",
+    "website": "https://www.virginatlantic.com",
+    "alliance": "SkyTeam",
+    "branding": {
+      "primary_color": "#da0530"
+    },
+    "slug": "virgin-atlantic"
+  },
+  {
+    "name": "Virgin Australia",
+    "iata": "VA",
+    "icao": "VOZ",
+    "country": "AU",
+    "website": "https://www.virginaustralia.com",
+    "branding": {
+      "primary_color": "#e31e23"
+    },
+    "slug": "virgin-australia"
+  },
+  {
+    "name": "WestJet",
+    "iata": "WS",
+    "icao": "WJA",
+    "country": "CA",
+    "website": "https://www.westjet.com",
+    "branding": {
+      "primary_color": "#00aaa6"
+    },
+    "slug": "westjet"
+  },
+  {
+    "name": "Wizz Air",
+    "iata": "W6",
+    "icao": "WZZ",
+    "country": "HU",
+    "website": "https://www.wizzair.com",
+    "branding": {
+      "primary_color": "#c6007e"
+    },
+    "subsidiaries": [
+      {
+        "name": "Wizz Air Abu Dhabi",
+        "iata": "5W",
+        "icao": "WAZ",
+        "country": "AE"
+      },
+      {
+        "name": "Wizz Air UK",
+        "iata": "W9",
+        "icao": "WUK",
+        "country": "GB"
+      }
+    ],
+    "slug": "wizz-air"
+  },
+  {
+    "name": "XiamenAir",
+    "iata": "MF",
+    "icao": "CXA",
+    "country": "CN",
+    "website": "https://www.xiamenair.com",
+    "alliance": "SkyTeam",
+    "branding": {
+      "primary_color": "#008cd5"
+    },
+    "slug": "xiamenair"
+  }
+]

@@ -16,10 +16,17 @@
   "license": "MIT",
   "commands": [
     {
-      "name": "search-airlines",
-      "title": "Search Airlines",
+      "name": "browse-airlines",
+      "title": "Browse Airlines",
       "subtitle": "Soaring Symbols",
-      "description": "Browse and search a curated collection of airline branding assets — logos, icons, and tails in SVG",
+      "description": "Browse and search a curated collection of airline branding assets — logos, icons, and tails in SVG.",
+      "mode": "view"
+    },
+    {
+      "name": "airline-info",
+      "title": "Airline Information",
+      "subtitle": "Soaring Symbols",
+      "description": "View detailed airline information including name, IATA, ICAO, country, website, and related assets.",
       "mode": "view"
     }
   ],
