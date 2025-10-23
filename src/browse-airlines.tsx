@@ -1,35 +1,29 @@
 import { ActionPanel, Action, Grid, Icon } from "@raycast/api";
-import { useEffect, useState } from "react";
-
-import airlines from "./airlines.json";
+import { usePromise } from "@raycast/utils";
+import { useMemo, useState } from "react";
 import AirlineAssets from "./components/assets";
-import { AirlineMeta } from "./types";
+import { getFlagEmoji } from "./utils";
+import { fetchAirlines } from "./utils/fetch";
 
 export default function BrowseAirlines() {
-  const [filteredAirlines, setFilteredAirlines] = useState<AirlineMeta[]>(airlines as AirlineMeta[]);
+  const { isLoading, data = [] } = usePromise(fetchAirlines);
   const [alliance, setAlliance] = useState("All");
 
-  useEffect(() => {
-    const results = alliance === "All" ? airlines : airlines.filter((a) => a.alliance === alliance);
-    setFilteredAirlines(results as AirlineMeta[]);
-  }, [alliance]);
+  const filteredAirlines = useMemo(() => {
+    if (alliance === "All") return data;
+    return data.filter((a) => a.alliance === alliance);
+  }, [alliance, data]);
 
   return (
     <Grid
+      isLoading={isLoading}
       columns={4}
       inset={Grid.Inset.Small}
-      navigationTitle="Search Airlines"
       searchBarPlaceholder="Search airlines by name, IATA, or ICAO..."
       searchBarAccessory={
-        <Grid.Dropdown
-          tooltip="Select Alliance"
-          storeValue
-          onChange={(value) => {
-            setAlliance(value);
-          }}
-        >
+        <Grid.Dropdown tooltip="Filter by Alliance" storeValue value={alliance} onChange={setAlliance}>
           <Grid.Dropdown.Item title="All Airlines" value="All" />
-          <Grid.Dropdown.Section title="Alliance">
+          <Grid.Dropdown.Section title="Alliances">
             <Grid.Dropdown.Item title="Star Alliance" value="Star Alliance" />
             <Grid.Dropdown.Item title="SkyTeam" value="SkyTeam" />
             <Grid.Dropdown.Item title="oneworld" value="oneworld" />
@@ -37,7 +31,7 @@ export default function BrowseAirlines() {
         </Grid.Dropdown>
       }
     >
-      <Grid.Section>
+      <Grid.Section title={alliance === "All" ? "All Airlines" : alliance}>
         {filteredAirlines.map((airline) => (
           <Grid.Item
             key={airline.iata}
@@ -46,12 +40,24 @@ export default function BrowseAirlines() {
             }}
             title={airline.name}
             subtitle={airline.iata}
-            keywords={[airline.name, airline.iata, airline.icao, airline.slug]}
+            keywords={[airline.name, airline.iata, airline.icao, airline.slug].filter(Boolean)}
+            accessory={
+              airline.flag_carrier
+                ? {
+                    icon: getFlagEmoji(airline.country.split(",")[0]),
+                    tooltip: "Flag Carrier",
+                  }
+                : undefined
+            }
             actions={
               <ActionPanel>
-                <ActionPanel.Section title="Information">
-                  <Action.Push title="Airline Assets" icon={Icon.Sidebar} target={<AirlineAssets {...airline} />} />
-                  <Action.OpenInBrowser title="Website" url={airline.website} />
+                <ActionPanel.Section title="Airline Information">
+                  <Action.Push
+                    title="View Airline Assets"
+                    icon={Icon.Sidebar}
+                    target={<AirlineAssets {...airline} />}
+                  />
+                  {airline.website && <Action.OpenInBrowser title="Open Website" url={airline.website} />}
                 </ActionPanel.Section>
               </ActionPanel>
             }
