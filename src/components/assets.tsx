@@ -31,7 +31,7 @@ export default function AirlineAssets(airline: AirlineMeta) {
   const assets = Object.entries(assetTypes)
     .map(([category, variants]) => {
       const colors = airline.branding.colors[category as keyof typeof assetTypes];
-      if (!Array.isArray(colors)) return []
+      if (!Array.isArray(colors)) return [];
       const single = Array.isArray(colors) && colors.length === 1;
 
       return variants.map(async (variant) => {

@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { AirlineMeta } from "soaring-symbols";
 import { getFlagEmoji } from "./utils";
 import { fetchAirlines } from "./utils/fetch";
+import SearchBar from "./components/searchbar";
 
 export default function ViewAirlineInfo() {
   const { isLoading, data = [] } = usePromise(fetchAirlines);
@@ -20,16 +21,7 @@ export default function ViewAirlineInfo() {
       throttle
       isShowingDetail
       searchBarPlaceholder="Search airlines by name, IATA, or ICAO..."
-      searchBarAccessory={
-        <List.Dropdown tooltip="Filter by Alliance" storeValue value={alliance} onChange={setAlliance}>
-          <List.Dropdown.Item title="All Airlines" value="All" />
-          <List.Dropdown.Section title="Alliances">
-            <List.Dropdown.Item title="Star Alliance" value="Star Alliance" />
-            <List.Dropdown.Item title="SkyTeam" value="SkyTeam" />
-            <List.Dropdown.Item title="oneworld" value="oneworld" />
-          </List.Dropdown.Section>
-        </List.Dropdown>
-      }
+      searchBarAccessory={<SearchBar type="list" selected={alliance} onSelect={setAlliance} />}
     >
       {filteredAirlines.map((airline: AirlineMeta) => {
         const flags = airline.country
@@ -59,6 +51,9 @@ export default function ViewAirlineInfo() {
                     <List.Item.Detail.Metadata.Label title="IATA" text={airline.iata} />
                     <List.Item.Detail.Metadata.Label title="ICAO" text={airline.icao} />
                     <List.Item.Detail.Metadata.Label title="Country" text={airline.country} />
+                    {airline.branding.tagline && (
+                      <List.Item.Detail.Metadata.Label title="Tagline" text={airline.branding.tagline} />
+                    )}
                     <List.Item.Detail.Metadata.Label title="Alliance" text={airline.alliance} />
                     {airline.website && (
                       <List.Item.Detail.Metadata.Link

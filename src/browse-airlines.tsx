@@ -1,9 +1,10 @@
 import { ActionPanel, Action, Grid, Icon } from "@raycast/api";
 import { usePromise } from "@raycast/utils";
 import { useMemo, useState } from "react";
-import AirlineAssets from "./components/assets";
 import { getFlagEmoji } from "./utils";
 import { fetchAirlines } from "./utils/fetch";
+import AirlineAssets from "./components/assets";
+import SearchBar from "./components/searchbar";
 
 export default function BrowseAirlines() {
   const { isLoading, data = [] } = usePromise(fetchAirlines);
@@ -20,16 +21,7 @@ export default function BrowseAirlines() {
       columns={4}
       inset={Grid.Inset.Small}
       searchBarPlaceholder="Search airlines by name, IATA, or ICAO..."
-      searchBarAccessory={
-        <Grid.Dropdown tooltip="Filter by Alliance" storeValue value={alliance} onChange={setAlliance}>
-          <Grid.Dropdown.Item title="All Airlines" value="All" />
-          <Grid.Dropdown.Section title="Alliances">
-            <Grid.Dropdown.Item title="Star Alliance" value="Star Alliance" />
-            <Grid.Dropdown.Item title="SkyTeam" value="SkyTeam" />
-            <Grid.Dropdown.Item title="oneworld" value="oneworld" />
-          </Grid.Dropdown.Section>
-        </Grid.Dropdown>
-      }
+      searchBarAccessory={<SearchBar type="grid" selected={alliance} onSelect={setAlliance} />}
     >
       <Grid.Section title={alliance === "All" ? "All Airlines" : alliance}>
         {filteredAirlines.map((airline) => (
