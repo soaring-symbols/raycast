@@ -1,13 +1,13 @@
-import { Action, ActionPanel, Clipboard, Grid, Icon, showToast, Toast } from "@raycast/api";
+import { Action, ActionPanel, Clipboard, Grid, Icon, Color, showToast, Toast } from "@raycast/api";
 import fs from "fs";
 import path from "path";
 import { AirlineMeta } from "soaring-symbols";
 import { getSVGContent } from "../utils/fetch";
 
 const assetTypes = {
-  Logo: ["logo", "logo-mono"],
-  Icon: ["icon", "icon-mono"],
-  Tail: ["tail", "tail-mono"],
+  logo: ["logo", "logo-mono"],
+  icon: ["icon", "icon-mono"],
+  tail: ["tail", "tail-mono"],
 };
 
 const slugToName = (slug: string): string => {
@@ -24,23 +24,25 @@ const isProbablySvg = (text: string): boolean => {
 
 const getDownloadsDir = (): string => {
   const home = process.env.HOME || process.env.USERPROFILE || "";
-  // macOS/Linux convention
-  const dl = path.join(home, "Downloads");
-  return dl;
+  return path.join(home, "Downloads");
 };
 
 export default function AirlineAssets(airline: AirlineMeta) {
-  const assets = Object.values(assetTypes)
-    .map((variants) => {
+  const assets = Object.entries(assetTypes)
+    .map(([category, variants]) => {
+      const colors = airline.branding.colors[category as keyof typeof assetTypes];
+      if (!Array.isArray(colors)) return []
+      const single = Array.isArray(colors) && colors.length === 1;
+
       return variants.map(async (variant) => {
-        const source = `https://raw.githubusercontent.com/anhthang/soaring-symbols/refs/heads/main/assets/${airline.slug}/${variant}.svg`;
+        const monochrome = single && variant.endsWith("-mono");
+        const tintColor = monochrome ? Color.PrimaryText : undefined;
+        const source = `https://raw.githubusercontent.com/anhthang/soaring-symbols/refs/heads/main/assets/${airline.slug}/${single ? category : variant}.svg`;
 
         return (
           <Grid.Item
             key={variant}
-            content={{
-              source,
-            }}
+            content={{ source, tintColor }}
             title={slugToName(variant)}
             actions={
               <ActionPanel>
@@ -49,7 +51,7 @@ export default function AirlineAssets(airline: AirlineMeta) {
                     title="Copy SVG"
                     icon={Icon.CopyClipboard}
                     onAction={async () => {
-                      const svg = await getSVGContent(source);
+                      const svg = await getSVGContent(source, monochrome);
                       await Clipboard.copy(svg);
                       await showToast({ style: Toast.Style.Success, title: "SVG copied to clipboard" });
                     }}
@@ -59,7 +61,7 @@ export default function AirlineAssets(airline: AirlineMeta) {
                     icon={Icon.Download}
                     onAction={async () => {
                       try {
-                        const svg = await getSVGContent(source);
+                        const svg = await getSVGContent(source, monochrome);
                         const defaultFilename = `${airline.slug}-${variant}.svg`;
 
                         const downloadsDir = getDownloadsDir();

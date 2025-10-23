@@ -1,5 +1,6 @@
 import { showToast, Toast } from "@raycast/api";
 import { AirlineMeta } from "soaring-symbols";
+import { normalizeFill } from ".";
 
 export const fetchAirlines = async (): Promise<AirlineMeta[]> => {
   try {
@@ -18,10 +19,10 @@ export const fetchAirlines = async (): Promise<AirlineMeta[]> => {
   }
 };
 
-export const getSVGContent = async (url: string) => {
+export const getSVGContent = async (url: string, monochrome: boolean = false) => {
   const res = await fetch(url);
   if (!res.ok) throw new Error("Failed to fetch SVG");
   const svg = await res.text();
 
-  return svg;
+  return monochrome ? normalizeFill(svg) : svg;
 };
