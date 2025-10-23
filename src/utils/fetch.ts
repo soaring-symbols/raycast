@@ -6,7 +6,7 @@ export const fetchAirlines = async (): Promise<AirlineMeta[]> => {
     const res = await fetch("https://raw.githubusercontent.com/anhthang/soaring-symbols/refs/heads/main/airlines.json");
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
-    return await res.json();
+    return (await res.json()) as AirlineMeta[];
   } catch (error) {
     await showToast({
       style: Toast.Style.Failure,
@@ -16,4 +16,12 @@ export const fetchAirlines = async (): Promise<AirlineMeta[]> => {
 
     return [];
   }
+};
+
+export const getSVGContent = async (url: string) => {
+  const res = await fetch(url);
+  if (!res.ok) throw new Error("Failed to fetch SVG");
+  const svg = await res.text();
+
+  return svg;
 };

@@ -54,7 +54,7 @@ export default function BrowseAirlines() {
                 <ActionPanel.Section title="Airline Information">
                   <Action.Push
                     title="View Airline Assets"
-                    icon={Icon.Sidebar}
+                    icon={Icon.AppWindowGrid2x2}
                     target={<AirlineAssets {...airline} />}
                   />
                   {airline.website && <Action.OpenInBrowser title="Open Website" url={airline.website} />}

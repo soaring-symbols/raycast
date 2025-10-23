@@ -1,4 +1,4 @@
-import { Action, ActionPanel, List } from "@raycast/api";
+import { Action, ActionPanel, Icon, List } from "@raycast/api";
 import { usePromise } from "@raycast/utils";
 import { useMemo, useState } from "react";
 import { AirlineMeta } from "soaring-symbols";
@@ -45,7 +45,10 @@ export default function ViewAirlineInfo() {
           <List.Item
             key={airline.iata || airline.slug}
             title={airline.name}
-            icon={`https://raw.githubusercontent.com/anhthang/soaring-symbols/refs/heads/main/assets/${airline.slug}/icon.svg`}
+            icon={{
+              source: `https://raw.githubusercontent.com/anhthang/soaring-symbols/refs/heads/main/assets/${airline.slug}/icon.svg`,
+              fallback: Icon.CircleProgress,
+            }}
             keywords={[airline.name, airline.icao, airline.iata, airline.slug].filter(Boolean)}
             accessories={airline.flag_carrier ? [{ text: flags, tooltip: "Flag Carrier" }] : undefined}
             detail={
