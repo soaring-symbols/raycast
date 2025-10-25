@@ -1,5 +1,5 @@
 # Soaring Symbols Changelog
 
-## [Departure] - 2024-05-24
+## [Departure] - 2025-11-01
 
 - Initial release of Soaring Symbols!
