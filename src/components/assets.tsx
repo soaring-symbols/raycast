@@ -34,7 +34,7 @@ export default function AirlineAssets(airline: AirlineMeta) {
       if (!Array.isArray(colors)) return [];
       const single = Array.isArray(colors) && colors.length === 1;
 
-      return variants.map(async (variant) => {
+      return variants.map((variant) => {
         const monochrome = single && variant.endsWith("-mono");
         const tintColor = monochrome ? Color.PrimaryText : undefined;
         const source = `https://raw.githubusercontent.com/anhthang/soaring-symbols/refs/heads/main/assets/${airline.slug}/${single ? category : variant}.svg`;
@@ -51,9 +51,17 @@ export default function AirlineAssets(airline: AirlineMeta) {
                     title="Copy SVG"
                     icon={Icon.CopyClipboard}
                     onAction={async () => {
-                      const svg = await getSVGContent(source, monochrome);
-                      await Clipboard.copy(svg);
-                      await showToast({ style: Toast.Style.Success, title: "SVG copied to clipboard" });
+                      try {
+                        const svg = await getSVGContent(source, monochrome);
+                        await Clipboard.copy(svg);
+                        await showToast({ style: Toast.Style.Success, title: "SVG copied to clipboard" });
+                      } catch (err) {
+                        await showToast({
+                          style: Toast.Style.Failure,
+                          title: "Failed to copy SVG",
+                          message: (err as Error)?.message ?? "Unknown error",
+                        });
+                      }
                     }}
                   />
                   <Action

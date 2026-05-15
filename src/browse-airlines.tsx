@@ -11,7 +11,7 @@ export default function BrowseAirlines() {
   const [alliance, setAlliance] = useState("All");
 
   const filteredAirlines = useMemo(() => {
-    if (alliance === "All") return data;
+    if (!alliance || alliance === "All") return data;
     return data.filter((a) => a.alliance === alliance);
   }, [alliance, data]);
 
@@ -26,7 +26,7 @@ export default function BrowseAirlines() {
       <Grid.Section title={alliance === "All" ? "All Airlines" : alliance}>
         {filteredAirlines.map((airline) => (
           <Grid.Item
-            key={airline.iata}
+            key={airline.slug}
             content={{
               source: `https://raw.githubusercontent.com/anhthang/soaring-symbols/refs/heads/main/assets/${airline.slug}/logo.svg`,
             }}
@@ -36,7 +36,7 @@ export default function BrowseAirlines() {
             accessory={
               airline.flag_carrier
                 ? {
-                    icon: getFlagEmoji(airline.country.split(",")[0]),
+                    icon: getFlagEmoji(airline.country?.split(",")?.[0]),
                     tooltip: "Flag Carrier",
                   }
                 : undefined
