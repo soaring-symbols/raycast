@@ -7,7 +7,6 @@
       "dependencies": {
         "@raycast/api": "^1.104.19",
         "@raycast/utils": "^2.2.5",
-        "soaring-symbols": "^0.1.0-alpha.10",
       },
       "devDependencies": {
         "@raycast/eslint-config": "^2.1.1",
@@ -347,10 +346,6 @@
     "shebang-regex": ["shebang-regex@3.0.0", "", {}, "sha512-7++dFhtcx3353uBaq8DDR4NuxBetBzC7ZQOhmTQInHEd6bSrXdiEyzCvG07Z44UYdLShWUyXt5M/yhz8ekcb1A=="],
 
     "signal-exit": ["signal-exit@4.1.0", "", {}, "sha512-bzyZ1e88w9O1iNJbKnOlvYTrWPDl46O1bG0D3XInv+9tkPrxrN8jUUTiFlDkkmKWgn1M6CfIA13SuGqOa9Korw=="],
-
-    "slugify": ["slugify@1.6.9", "", {}, "sha512-vZ7rfeehZui7wQs438JXBckYLkIIdfHOXsaVEUMyS5fHo1483l1bMdo0EDSWYclY0yZKFOipDy4KHuKs6ssvdg=="],
-
-    "soaring-symbols": ["soaring-symbols@0.1.0-alpha.10", "", { "dependencies": { "slugify": "^1.6.6" } }, "sha512-6BK+wgVEEgVfT5CnHkqKfAjH1O6JOSCj+5TJ1Vbl7XZ3KESnw22RweEPGL2jTnb9gXNKcq5UnhzhzA30R7ZdEg=="],
 
     "string-width": ["string-width@4.2.3", "", { "dependencies": { "emoji-regex": "^8.0.0", "is-fullwidth-code-point": "^3.0.0", "strip-ansi": "^6.0.1" } }, "sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g=="],
 
