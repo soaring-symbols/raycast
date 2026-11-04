@@ -6,7 +6,7 @@ export type AssetType = "logo" | "icon" | "tail";
 export interface AssetInfo {
   /** `<type>.svg` (full color) exists. */
   color: boolean;
-  /** `<type>-mono.svg` exists. */
+  /** `<type>-mono.svg` exists; always true for single-color assets in current data. */
   mono: boolean;
   /** Hex colors the color file paints with, gradient stops included. */
   colors: string[];

@@ -24,24 +24,22 @@ interface AssetTile {
   /** Tile id and download name, e.g. "logo" or "logo-mono". */
   variant: string;
   url: string;
-  /** Tint the color file to show a monochrome version that isn't shipped. */
-  tint: boolean;
+  /** A monochrome version, drawn in one color that the extension tints. */
+  mono: boolean;
 }
 
 // A color tile when the color file exists, and a mono tile when there is a
-// -mono file, or a single-color file that can be tinted instead.
+// -mono file. The library generates one for every single-color asset; data
+// published before that only had the color file, which is tinted instead.
 export const getAssetTiles = (airline: Airline): AssetTile[] =>
   ASSET_TYPES.flatMap((type) => {
     const info = getAssetInfo(airline, type);
     if (!info) return [];
 
     const tiles: AssetTile[] = [];
-    if (info.color) tiles.push({ variant: type, url: assetUrl(airline, type), tint: false });
-    if (info.mono) {
-      tiles.push({ variant: `${type}-mono`, url: assetUrl(airline, `${type}-mono`), tint: false });
-    } else if (info.color && info.colors.length === 1) {
-      tiles.push({ variant: `${type}-mono`, url: assetUrl(airline, type), tint: true });
-    }
+    if (info.color) tiles.push({ variant: type, url: assetUrl(airline, type), mono: false });
+    const monoFile = info.mono ? `${type}-mono` : info.color && info.colors.length === 1 ? type : undefined;
+    if (monoFile) tiles.push({ variant: `${type}-mono`, url: assetUrl(airline, monoFile), mono: true });
 
     return tiles;
   });

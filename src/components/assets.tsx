@@ -23,7 +23,7 @@ const getDownloadsDir = (): string => {
 };
 
 export default function AirlineAssets(airline: Airline) {
-  const assets = getAssetTiles(airline).map(({ variant, url: source, tint: monochrome }) => {
+  const assets = getAssetTiles(airline).map(({ variant, url: source, mono: monochrome }) => {
     const tintColor = monochrome ? Color.PrimaryText : undefined;
 
     return (
