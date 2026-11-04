@@ -34,14 +34,14 @@ Prepare this before the library release when possible, so installed copies don't
 
 ## Commands
 
-| Command            | What it does                                                           |
-| :----------------- | :--------------------------------------------------------------------- |
-| `npm run dev`      | Run the extension in Raycast in development mode.                      |
-| `npm run build`    | Build it (`ray build`), including the TypeScript check.                |
-| `npm run lint`     | Validate the manifest and icons, then run ESLint and Prettier.         |
-| `npm test`         | Run the unit tests in `test/` (Node's test runner, no build needed).   |
-| `npm run fix-lint` | Same, fixing what can be fixed.                                        |
-| `npm run publish`  | Open a pull request to the Raycast Store. Only the maintainer runs it. |
+| Command            | What it does                                                                |
+| :----------------- | :-------------------------------------------------------------------------- |
+| `npm run dev`      | Run the extension in Raycast in development mode.                           |
+| `npm run build`    | Build it (`ray build`), including the TypeScript check.                     |
+| `npm run lint`     | Validate the manifest and icons, then run ESLint and Prettier.              |
+| `npm run fix-lint` | Same, fixing what can be fixed.                                             |
+| `npm test`         | Run the `*.test.ts` files in `test/` with Node's test runner (Node 22.18+). |
+| `npm run publish`  | Open a pull request to the Raycast Store. Only the maintainer runs it.      |
 
 Dependencies are tracked in both `package-lock.json` and `bun.lock`; update both together.
 
