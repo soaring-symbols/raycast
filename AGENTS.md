@@ -10,6 +10,7 @@ A Raycast extension for browsing the [Soaring Symbols](https://github.com/soarin
 - `src/components/assets.tsx` — the per-airline grid of SVG files, with copy and download actions.
 - `src/utils/airlines.ts` — data and SVG URLs (`DATA_LINE`), and the helpers that decide which asset tiles to show.
 - `src/utils/fetch.ts` — loads the airline list, falling back to the bundled one.
+- `test/` — unit tests for the pure helpers in `src/utils/airlines.ts`, run by Node's test runner.
 - `assets/extension-icon.png` — the store icon, a 512×512 PNG. It is exported from `brand/raycast-icon-signal.png` in the [website repo](https://github.com/soaring-symbols/website); change it there first.
 - `metadata/` — store screenshots (2000×1250), taken in Raycast.
 
@@ -19,7 +20,7 @@ At runtime the extension loads `airlines.json` and the SVGs from the published `
 
 - Every patch release in the line (new airlines, fixed SVGs) reaches installed copies within about 12 hours (jsDelivr's cache), with no store update.
 - A breaking minor release (e.g. `0.3.0`) never reaches the extension until it is updated, so a library change cannot break it.
-- If the list can't be loaded or doesn't look like an airline list, `fetchAirlines` shows a toast and falls back to `listAirlines()` from the bundled `soaring-symbols` dependency. `useCachedPromise` also shows the last loaded list while a new one loads.
+- If the list can't be loaded or isn't a usable airline list (`isAirlineList`: a non-empty array whose entries have a `slug` and `assets`), `fetchAirlines` shows a toast and falls back to `listAirlines()` from the bundled `soaring-symbols` dependency. `useCachedPromise` also shows the last loaded list while a new one loads.
 - Types come from the package (`import type { Airline } from "soaring-symbols"`).
 
 When the library releases a new minor line, update the extension in one change:
@@ -38,6 +39,7 @@ Prepare this before the library release when possible, so installed copies don't
 | `npm run dev`      | Run the extension in Raycast in development mode.                      |
 | `npm run build`    | Build it (`ray build`), including the TypeScript check.                |
 | `npm run lint`     | Validate the manifest and icons, then run ESLint and Prettier.         |
+| `npm test`         | Run the unit tests in `test/` (Node's test runner, no build needed).   |
 | `npm run fix-lint` | Same, fixing what can be fixed.                                        |
 | `npm run publish`  | Open a pull request to the Raycast Store. Only the maintainer runs it. |
 
