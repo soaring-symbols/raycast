@@ -1,5 +1,5 @@
 import { ActionPanel, Action, Grid, Icon } from "@raycast/api";
-import { usePromise } from "@raycast/utils";
+import { useCachedPromise } from "@raycast/utils";
 import { useMemo, useState } from "react";
 import { getFlagEmoji } from "./utils";
 import { previewUrl } from "./utils/airlines";
@@ -8,7 +8,7 @@ import AirlineAssets from "./components/assets";
 import SearchBar from "./components/searchbar";
 
 export default function BrowseAirlines() {
-  const { isLoading, data = [] } = usePromise(fetchAirlines);
+  const { isLoading, data = [] } = useCachedPromise(fetchAirlines);
   const [alliance, setAlliance] = useState("All");
 
   const filteredAirlines = useMemo(() => {

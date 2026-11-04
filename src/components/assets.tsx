@@ -1,7 +1,7 @@
 import { Action, ActionPanel, Clipboard, Grid, Icon, Color, showToast, Toast } from "@raycast/api";
 import fs from "fs";
 import path from "path";
-import { Airline } from "../types";
+import type { Airline } from "soaring-symbols";
 import { getAssetTiles } from "../utils/airlines";
 import { getSVGContent } from "../utils/fetch";
 
@@ -23,8 +23,8 @@ const getDownloadsDir = (): string => {
 };
 
 export default function AirlineAssets(airline: Airline) {
-  const assets = getAssetTiles(airline).map(({ variant, url: source, mono: monochrome }) => {
-    const tintColor = monochrome ? Color.PrimaryText : undefined;
+  const assets = getAssetTiles(airline).map(({ variant, url: source, mono }) => {
+    const tintColor = mono ? Color.PrimaryText : undefined;
 
     return (
       <Grid.Item
@@ -39,7 +39,7 @@ export default function AirlineAssets(airline: Airline) {
                 icon={Icon.CopyClipboard}
                 onAction={async () => {
                   try {
-                    const svg = await getSVGContent(source, monochrome);
+                    const svg = await getSVGContent(source);
                     await Clipboard.copy(svg);
                     await showToast({ style: Toast.Style.Success, title: "SVG copied to clipboard" });
                   } catch (err) {
@@ -56,7 +56,7 @@ export default function AirlineAssets(airline: Airline) {
                 icon={Icon.Download}
                 onAction={async () => {
                   try {
-                    const svg = await getSVGContent(source, monochrome);
+                    const svg = await getSVGContent(source);
                     const defaultFilename = `${airline.slug}-${variant}.svg`;
 
                     const downloadsDir = getDownloadsDir();
