@@ -8,7 +8,7 @@ export interface AssetInfo {
   color: boolean;
   /** `<type>-mono.svg` exists. */
   mono: boolean;
-  /** Hex fill colors in the color file; empty when it only uses gradients. */
+  /** Hex colors the color file paints with, gradient stops included. */
   colors: string[];
 }
 

@@ -4,14 +4,14 @@ const REPO_RAW = "https://raw.githubusercontent.com/soaring-symbols/soaring-symb
 
 export const AIRLINES_URL = `${REPO_RAW}/airlines.json`;
 
-export const ASSET_TYPES: AssetType[] = ["logo", "icon", "tail"];
+const ASSET_TYPES: AssetType[] = ["logo", "icon", "tail"];
 
-export const assetUrl = (airline: Airline, file: string) => `${REPO_RAW}/assets/${airline.slug}/${file}.svg`;
+const assetUrl = (airline: Airline, file: string) => `${REPO_RAW}/assets/${airline.slug}/${file}.svg`;
 
 // Which files an airline ships for one asset type. Data published before the
 // `assets` field only listed colors per color file; there, a multi-color
 // asset was always expected to have a -mono file.
-export const getAssetInfo = (airline: Airline, type: AssetType): AssetInfo | undefined => {
+const getAssetInfo = (airline: Airline, type: AssetType): AssetInfo | undefined => {
   if (airline.assets) return airline.assets[type];
 
   const colors = airline.branding?.colors?.[type];
@@ -20,7 +20,7 @@ export const getAssetInfo = (airline: Airline, type: AssetType): AssetInfo | und
   return { color: true, mono: colors.length !== 1, colors };
 };
 
-export interface AssetTile {
+interface AssetTile {
   /** Tile id and download name, e.g. "logo" or "logo-mono". */
   variant: string;
   url: string;
