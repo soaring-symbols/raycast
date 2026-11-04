@@ -1,0 +1,72 @@
+# AGENTS.md
+
+Instructions for AI coding agents working on the Soaring Symbols Raycast extension.
+
+## Project
+
+A Raycast extension for browsing the [Soaring Symbols](https://github.com/soaring-symbols/soaring-symbols) airline logos, icons and tails.
+
+- `src/browse-airlines.tsx` and `src/airline-info.tsx` — the two commands declared in `package.json`.
+- `src/components/assets.tsx` — the per-airline grid of SVG files, with copy and download actions.
+- `src/utils/airlines.ts` — data and SVG URLs (`DATA_LINE`), and the helpers that decide which asset tiles to show.
+- `src/utils/fetch.ts` — loads the airline list, falling back to the bundled one.
+- `assets/extension-icon.png` — the store icon, a 512×512 PNG. It is exported from `brand/raycast-icon-signal.png` in the [website repo](https://github.com/soaring-symbols/website); change it there first.
+- `metadata/` — store screenshots (2000×1250), taken in Raycast.
+
+### Where the data comes from
+
+At runtime the extension loads `airlines.json` and the SVGs from the published `soaring-symbols` npm package through jsDelivr, pinned to one release line: `https://cdn.jsdelivr.net/npm/soaring-symbols@<DATA_LINE>/dist/…`, with `DATA_LINE` (e.g. `"0.2"`) in `src/utils/airlines.ts`. The library uses plain 0.x versions, with patch releases for compatible changes and minor releases for breaking ones, so:
+
+- Every patch release in the line (new airlines, fixed SVGs) reaches installed copies within about 12 hours (jsDelivr's cache), with no store update.
+- A breaking minor release (e.g. `0.3.0`) never reaches the extension until it is updated, so a library change cannot break it.
+- If the list can't be loaded or doesn't look like an airline list, `fetchAirlines` shows a toast and falls back to `listAirlines()` from the bundled `soaring-symbols` dependency. `useCachedPromise` also shows the last loaded list while a new one loads.
+- Types come from the package (`import type { Airline } from "soaring-symbols"`).
+
+When the library releases a new minor line, update the extension in one change:
+
+1. Set `DATA_LINE` to the new line.
+2. Move the `soaring-symbols` dependency to it (`npm install soaring-symbols@^0.3.0`, plus `bun install`).
+3. Adapt the code to the breaking change.
+4. Add a changelog entry and publish.
+
+Prepare this before the library release when possible, so installed copies don't sit on the old line for long.
+
+## Commands
+
+| Command            | What it does                                                           |
+| :----------------- | :--------------------------------------------------------------------- |
+| `npm run dev`      | Run the extension in Raycast in development mode.                      |
+| `npm run build`    | Build it (`ray build`), including the TypeScript check.                |
+| `npm run lint`     | Validate the manifest and icons, then run ESLint and Prettier.         |
+| `npm run fix-lint` | Same, fixing what can be fixed.                                        |
+| `npm run publish`  | Open a pull request to the Raycast Store. Only the maintainer runs it. |
+
+Dependencies are tracked in both `package-lock.json` and `bun.lock`; update both together.
+
+## Naming
+
+Give names that people see on the store an aviation, airline or travel flavor that fits what the change does. This covers changelog entry titles, new command titles, and section or action labels when a plain label isn't required for clarity. Examples:
+
+- `Departure`: the first release.
+- `New Livery`: a new icon or visual refresh.
+- `Course Correction`: bug fixes.
+- `Extra Legroom`: layout or usability improvements.
+- `New Routes`: new commands or features.
+- `Cleared for Takeoff`: a feature leaving beta.
+
+Keep the name short (one to three words), in Title Case, and don't reuse one already in `CHANGELOG.md`. Clarity comes first: an action like "Copy SVG" stays literal, and code identifiers, file names and commit messages follow normal conventions.
+
+## Changelog
+
+Every user-facing change adds an entry at the top of `CHANGELOG.md`, in the store's format. A new version always gets the literal `{PR_MERGE_DATE}` placeholder as its date, never a real one: the Raycast Store fills it in when it merges the store pull request. Keep adding to that entry until it is published, and leave dates on published entries as they are.
+
+```markdown
+## [New Livery] - {PR_MERGE_DATE}
+
+- What changed, written for users.
+```
+
+## Conventions
+
+- Prettier with `printWidth: 120` and double quotes, ESLint from `@raycast/eslint-config`. Run `npm run lint` before committing.
+- Commits follow Conventional Commits, e.g. `feat: add tail filter`, `fix: skip missing mono files`.
