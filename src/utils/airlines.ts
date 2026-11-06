@@ -15,6 +15,22 @@ const ASSET_TYPES: AssetType[] = ["logo", "icon", "tail"];
 export const searchKeywords = (airline: Airline): string[] =>
   [airline.name, airline.iata, airline.icao, airline.slug, airline.callsign].filter((k): k is string => Boolean(k));
 
+// The airline that owns each one, and the ones each owns, looked up by slug.
+// A parent missing from the list (an older data release) is left out.
+export const groupAirlines = (airlines: Airline[]) => {
+  const bySlug = new Map(airlines.map((a) => [a.slug, a]));
+  const parents = new Map<string, Airline>();
+  const subsidiaries = new Map<string, Airline[]>();
+  for (const airline of airlines) {
+    const parent = airline.parent && bySlug.get(airline.parent);
+    if (!parent) continue;
+    parents.set(airline.slug, parent);
+    subsidiaries.set(parent.slug, [...(subsidiaries.get(parent.slug) ?? []), airline]);
+  }
+
+  return { parents, subsidiaries };
+};
+
 const assetUrl = (airline: Airline, file: string) => `${CDN}/assets/${airline.slug}/${file}.svg`;
 
 // Whether fetched JSON is a usable airline list: a non-empty array of

@@ -3,13 +3,23 @@ import { useCachedPromise } from "@raycast/utils";
 import { useMemo, useState } from "react";
 import { ceasedLabel, getFlagEmoji, operatingYears } from "./utils";
 import type { Airline } from "soaring-symbols";
-import { previewUrl, searchKeywords } from "./utils/airlines";
+import { groupAirlines, previewUrl, searchKeywords } from "./utils/airlines";
 import { fetchAirlines } from "./utils/fetch";
 import SearchBar from "./components/searchbar";
 
 export default function ViewAirlineInfo() {
   const { isLoading, data = [] } = useCachedPromise(fetchAirlines);
   const [alliance, setAlliance] = useState("All");
+  const [searchText, setSearchText] = useState("");
+
+  // Parents and subsidiaries come from the whole list, whatever the filter
+  const groups = useMemo(() => groupAirlines(data), [data]);
+
+  // Jump to a related airline: search for it with the alliance filter cleared
+  const showAirline = (name: string) => {
+    setAlliance("All");
+    setSearchText(name);
+  };
 
   const filteredAirlines = useMemo(() => {
     if (alliance === "All") return data;
@@ -21,6 +31,9 @@ export default function ViewAirlineInfo() {
       isLoading={isLoading}
       throttle
       isShowingDetail
+      filtering
+      searchText={searchText}
+      onSearchTextChange={setSearchText}
       searchBarPlaceholder="Search airlines by name, IATA, or ICAO..."
       searchBarAccessory={<SearchBar type="list" selected={alliance} onSelect={setAlliance} />}
     >
@@ -33,6 +46,8 @@ export default function ViewAirlineInfo() {
         const logo = previewUrl(airline, "logo");
         const ceased = ceasedLabel(airline);
         const years = operatingYears(airline);
+        const parent = groups.parents.get(airline.slug);
+        const subsidiaries = groups.subsidiaries.get(airline.slug) ?? [];
         const accessories: List.Item.Accessory[] = [];
         if (ceased)
           accessories.push({ icon: { source: Icon.AirplaneLanding, tintColor: Color.SecondaryText }, tooltip: ceased });
@@ -42,7 +57,7 @@ export default function ViewAirlineInfo() {
 
         return (
           <List.Item
-            key={airline.iata || airline.slug}
+            key={airline.slug}
             title={airline.name}
             icon={{
               source: previewUrl(airline, "icon") ?? "",
@@ -74,6 +89,25 @@ export default function ViewAirlineInfo() {
                         ))}
                       </List.Item.Detail.Metadata.TagList>
                     ) : null}
+                    {parent && (
+                      <List.Item.Detail.Metadata.TagList title="Part of">
+                        <List.Item.Detail.Metadata.TagList.Item
+                          text={parent.name}
+                          onAction={() => showAirline(parent.name)}
+                        />
+                      </List.Item.Detail.Metadata.TagList>
+                    )}
+                    {subsidiaries.length > 0 && (
+                      <List.Item.Detail.Metadata.TagList title="Subsidiaries">
+                        {subsidiaries.map((sub) => (
+                          <List.Item.Detail.Metadata.TagList.Item
+                            key={sub.slug}
+                            text={sub.name}
+                            onAction={() => showAirline(sub.name)}
+                          />
+                        ))}
+                      </List.Item.Detail.Metadata.TagList>
+                    )}
                     {airline.website && (
                       <>
                         <List.Item.Detail.Metadata.Separator />

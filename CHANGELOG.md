@@ -4,6 +4,7 @@
 
 - Airline Information now shows each airline's radio callsign, hub airports and the year it was founded (or the years it flew, for airlines that no longer operate).
 - Find airlines by their callsign in both commands.
+- Airline Information shows the group an airline belongs to and the airlines it owns, such as Thai AirAsia under AirAsia; select one to jump to it.
 - Airlines that no longer fly are marked: a landed plane in Airline Information, with the year it ceased in its tooltip, and "Ceased" with the year in Browse Airlines.
 
 ## [New Livery] - 2026-11-05
