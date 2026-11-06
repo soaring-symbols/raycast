@@ -1,7 +1,7 @@
 import { Action, ActionPanel, Icon, List } from "@raycast/api";
 import { useCachedPromise } from "@raycast/utils";
 import { useMemo, useState } from "react";
-import { getFlagEmoji } from "./utils";
+import { getFlagEmoji, operatingYears } from "./utils";
 import type { Airline } from "soaring-symbols";
 import { previewUrl } from "./utils/airlines";
 import { fetchAirlines } from "./utils/fetch";
@@ -41,26 +41,44 @@ export default function ViewAirlineInfo() {
               source: previewUrl(airline, "icon") ?? "",
               fallback: Icon.CircleProgress,
             }}
-            keywords={[airline.name, airline.icao, airline.iata, airline.slug].filter(Boolean)}
+            keywords={[airline.name, airline.icao, airline.iata, airline.slug, airline.callsign ?? ""].filter(Boolean)}
             accessories={airline.flag_carrier ? [{ text: flags, tooltip: "Flag Carrier" }] : undefined}
             detail={
               <List.Item.Detail
                 markdown={markdown}
                 metadata={
                   <List.Item.Detail.Metadata>
-                    <List.Item.Detail.Metadata.Label title="IATA" text={airline.iata} />
-                    <List.Item.Detail.Metadata.Label title="ICAO" text={airline.icao} />
-                    <List.Item.Detail.Metadata.Label title="Country" text={airline.country} />
                     {airline.branding?.tagline && (
                       <List.Item.Detail.Metadata.Label title="Tagline" text={airline.branding.tagline} />
                     )}
-                    <List.Item.Detail.Metadata.Label title="Alliance" text={airline.alliance} />
-                    {airline.website && (
-                      <List.Item.Detail.Metadata.Link
-                        title="Website"
-                        text={airline.website.replace(/^https?:\/\//, "")}
-                        target={airline.website}
+                    <List.Item.Detail.Metadata.Label title="IATA" text={airline.iata} />
+                    <List.Item.Detail.Metadata.Label title="ICAO" text={airline.icao} />
+                    {airline.callsign && <List.Item.Detail.Metadata.Label title="Callsign" text={airline.callsign} />}
+                    {(airline.founded || airline.ceased) && (
+                      <List.Item.Detail.Metadata.Label
+                        title={airline.ceased ? "Operated" : "Founded"}
+                        text={operatingYears(airline)}
                       />
+                    )}
+                    <List.Item.Detail.Metadata.Separator />
+                    <List.Item.Detail.Metadata.Label title="Country" text={airline.country} />
+                    <List.Item.Detail.Metadata.Label title="Alliance" text={airline.alliance} />
+                    {airline.hubs?.length ? (
+                      <List.Item.Detail.Metadata.TagList title={airline.hubs.length > 1 ? "Hubs" : "Hub"}>
+                        {airline.hubs.map((hub) => (
+                          <List.Item.Detail.Metadata.TagList.Item key={hub} text={hub} />
+                        ))}
+                      </List.Item.Detail.Metadata.TagList>
+                    ) : null}
+                    {airline.website && (
+                      <>
+                        <List.Item.Detail.Metadata.Separator />
+                        <List.Item.Detail.Metadata.Link
+                          title="Website"
+                          text={airline.website.replace(/^https?:\/\//, "")}
+                          target={airline.website}
+                        />
+                      </>
                     )}
                   </List.Item.Detail.Metadata>
                 }

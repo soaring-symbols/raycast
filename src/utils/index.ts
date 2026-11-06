@@ -1,3 +1,5 @@
+import type { Airline } from "soaring-symbols";
+
 export const getFlagEmoji = (isoCode?: string) => {
   if (!isoCode) return "🏴";
 
@@ -17,3 +19,7 @@ export const getFlagEmoji = (isoCode?: string) => {
 
   return isoCode.toUpperCase().replace(/./g, (char) => String.fromCodePoint(127397 + char.charCodeAt(0)));
 };
+
+// "1956", or "1946–2019" for an airline that has ceased operations
+export const operatingYears = ({ founded, ceased }: Pick<Airline, "founded" | "ceased">) =>
+  ceased ? `${founded ?? "?"}–${ceased}` : String(founded ?? "");

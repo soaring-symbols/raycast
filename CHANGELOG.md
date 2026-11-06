@@ -1,6 +1,10 @@
 # Soaring Symbols Changelog
 
-## [New Livery] - {PR_MERGE_DATE}
+## [Boarding Pass] - {PR_MERGE_DATE}
+
+- Airline Information now shows each airline's radio callsign, hub airports and the year it was founded (or the years it flew, for airlines that no longer operate), and finds airlines by callsign.
+
+## [New Livery] - 2026-11-05
 
 - New extension icon: the Soaring Symbols split-flap mark, matching the website.
 - Fix the empty assets grid after the Soaring Symbols data update: tiles now come from the new `assets` field, and multi-color marks without a monochrome version no longer show a broken `-mono` tile.
