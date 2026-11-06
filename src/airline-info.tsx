@@ -1,7 +1,7 @@
-import { Action, ActionPanel, Icon, List } from "@raycast/api";
+import { Action, ActionPanel, Color, Icon, List } from "@raycast/api";
 import { useCachedPromise } from "@raycast/utils";
 import { useMemo, useState } from "react";
-import { getFlagEmoji, operatingYears } from "./utils";
+import { ceasedLabel, getFlagEmoji, operatingYears } from "./utils";
 import type { Airline } from "soaring-symbols";
 import { previewUrl } from "./utils/airlines";
 import { fetchAirlines } from "./utils/fetch";
@@ -31,6 +31,12 @@ export default function ViewAirlineInfo() {
           .join(" ");
 
         const logo = previewUrl(airline, "logo");
+        const ceased = ceasedLabel(airline);
+        const accessories: List.Item.Accessory[] = [];
+        if (ceased)
+          accessories.push({ icon: { source: Icon.AirplaneLanding, tintColor: Color.SecondaryText }, tooltip: ceased });
+        if (airline.flag_carrier) accessories.push({ text: flags, tooltip: "Flag Carrier" });
+
         const markdown = logo ? `<img src="${logo}" alt="${airline.name}" width="200" height="200" />` : "";
 
         return (
@@ -42,7 +48,7 @@ export default function ViewAirlineInfo() {
               fallback: Icon.CircleProgress,
             }}
             keywords={[airline.name, airline.icao, airline.iata, airline.slug, airline.callsign ?? ""].filter(Boolean)}
-            accessories={airline.flag_carrier ? [{ text: flags, tooltip: "Flag Carrier" }] : undefined}
+            accessories={accessories}
             detail={
               <List.Item.Detail
                 markdown={markdown}

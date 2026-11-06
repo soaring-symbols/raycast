@@ -23,3 +23,8 @@ export const getFlagEmoji = (isoCode?: string) => {
 // "1956", or "1946–2019" for an airline that has ceased operations
 export const operatingYears = ({ founded, ceased }: Pick<Airline, "founded" | "ceased">) =>
   ceased ? `${founded ?? "?"}–${ceased}` : String(founded ?? "");
+
+// "Ceased 2017" for an airline that no longer flies, "Defunct" when the
+// year is unknown, and undefined for one still flying
+export const ceasedLabel = ({ defunct, ceased }: Pick<Airline, "defunct" | "ceased">) =>
+  ceased ? `Ceased ${ceased}` : defunct ? "Defunct" : undefined;

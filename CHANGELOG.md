@@ -3,6 +3,7 @@
 ## [Boarding Pass] - {PR_MERGE_DATE}
 
 - Airline Information now shows each airline's radio callsign, hub airports and the year it was founded (or the years it flew, for airlines that no longer operate), and finds airlines by callsign.
+- Airlines that no longer fly are marked: a landed plane in Airline Information, with the year it ceased in its tooltip, and "Ceased" with the year in Browse Airlines.
 
 ## [New Livery] - 2026-11-05
 

@@ -1,7 +1,7 @@
 import { ActionPanel, Action, Grid, Icon } from "@raycast/api";
 import { useCachedPromise } from "@raycast/utils";
 import { useMemo, useState } from "react";
-import { getFlagEmoji } from "./utils";
+import { ceasedLabel, getFlagEmoji } from "./utils";
 import { previewUrl } from "./utils/airlines";
 import { fetchAirlines } from "./utils/fetch";
 import AirlineAssets from "./components/assets";
@@ -30,7 +30,7 @@ export default function BrowseAirlines() {
             key={airline.slug}
             content={{ source: previewUrl(airline, "logo") ?? "", fallback: Icon.AirplaneFilled }}
             title={airline.name}
-            subtitle={airline.iata}
+            subtitle={[airline.iata, ceasedLabel(airline)].filter(Boolean).join(" · ")}
             keywords={[airline.name, airline.iata, airline.icao, airline.slug].filter(Boolean)}
             accessory={
               airline.flag_carrier
