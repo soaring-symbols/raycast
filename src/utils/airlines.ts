@@ -11,6 +11,10 @@ export const AIRLINES_URL = `${CDN}/airlines.json`;
 
 const ASSET_TYPES: AssetType[] = ["logo", "icon", "tail"];
 
+// What both commands search: name, codes, slug and callsign
+export const searchKeywords = (airline: Airline): string[] =>
+  [airline.name, airline.iata, airline.icao, airline.slug, airline.callsign].filter((k): k is string => Boolean(k));
+
 const assetUrl = (airline: Airline, file: string) => `${CDN}/assets/${airline.slug}/${file}.svg`;
 
 // Whether fetched JSON is a usable airline list: a non-empty array of

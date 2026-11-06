@@ -3,7 +3,7 @@ import { useCachedPromise } from "@raycast/utils";
 import { useMemo, useState } from "react";
 import { ceasedLabel, getFlagEmoji, operatingYears } from "./utils";
 import type { Airline } from "soaring-symbols";
-import { previewUrl } from "./utils/airlines";
+import { previewUrl, searchKeywords } from "./utils/airlines";
 import { fetchAirlines } from "./utils/fetch";
 import SearchBar from "./components/searchbar";
 
@@ -32,6 +32,7 @@ export default function ViewAirlineInfo() {
 
         const logo = previewUrl(airline, "logo");
         const ceased = ceasedLabel(airline);
+        const years = operatingYears(airline);
         const accessories: List.Item.Accessory[] = [];
         if (ceased)
           accessories.push({ icon: { source: Icon.AirplaneLanding, tintColor: Color.SecondaryText }, tooltip: ceased });
@@ -47,7 +48,7 @@ export default function ViewAirlineInfo() {
               source: previewUrl(airline, "icon") ?? "",
               fallback: Icon.CircleProgress,
             }}
-            keywords={[airline.name, airline.icao, airline.iata, airline.slug, airline.callsign ?? ""].filter(Boolean)}
+            keywords={searchKeywords(airline)}
             accessories={accessories}
             detail={
               <List.Item.Detail
@@ -60,11 +61,8 @@ export default function ViewAirlineInfo() {
                     <List.Item.Detail.Metadata.Label title="IATA" text={airline.iata} />
                     <List.Item.Detail.Metadata.Label title="ICAO" text={airline.icao} />
                     {airline.callsign && <List.Item.Detail.Metadata.Label title="Callsign" text={airline.callsign} />}
-                    {(airline.founded || airline.ceased) && (
-                      <List.Item.Detail.Metadata.Label
-                        title={airline.ceased ? "Operated" : "Founded"}
-                        text={operatingYears(airline)}
-                      />
+                    {years && (
+                      <List.Item.Detail.Metadata.Label title={airline.ceased ? "Operated" : "Founded"} text={years} />
                     )}
                     <List.Item.Detail.Metadata.Separator />
                     <List.Item.Detail.Metadata.Label title="Country" text={airline.country} />
