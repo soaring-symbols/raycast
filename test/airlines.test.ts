@@ -1,7 +1,15 @@
 // Run with `npm test` (Node's built-in test runner, which strips the types).
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { earlierMarks, getAssetTiles, groupAirlines, isAirlineList } from "../src/utils/airlines.ts";
+import {
+  airlinesUrl,
+  earlierMarks,
+  getAssetTiles,
+  groupAirlines,
+  isAirlineList,
+  isLineRelease,
+  setDataVersion,
+} from "../src/utils/airlines.ts";
 
 const airline = { name: "Vietnam Airlines", slug: "vietnam-airlines", assets: { logo: { color: true, mono: true } } };
 
@@ -91,5 +99,32 @@ describe("getAssetTiles and earlierMarks", () => {
       [1984, 1969],
     );
     assert.deepEqual(earlierMarks(airline), []);
+  });
+});
+
+describe("exact release URLs", () => {
+  const korean = { ...airline, name: "Korean Air", slug: "korean-air" };
+  const cdn = "https://cdn.jsdelivr.net/npm/soaring-symbols";
+
+  it("accepts only exact releases of the line", () => {
+    assert.equal(isLineRelease("0.2.4"), true);
+    for (const version of ["0.2", "0.3.0", "0.2.4-beta", "10.2.4", undefined, 24]) {
+      assert.equal(isLineRelease(version), false, String(version));
+    }
+  });
+
+  it("loads airlines.json from the release, or the line when it's unknown", () => {
+    assert.equal(airlinesUrl("0.2.4"), `${cdn}@0.2.4/dist/airlines.json`);
+    assert.equal(airlinesUrl(undefined), `${cdn}@0.2/dist/airlines.json`);
+    assert.equal(airlinesUrl("latest"), `${cdn}@0.2/dist/airlines.json`);
+  });
+
+  it("loads files from the release the list came from", () => {
+    setDataVersion("0.2.4");
+    assert.equal(getAssetTiles(korean)[0].url, `${cdn}@0.2.4/dist/assets/korean-air/logo.svg`);
+    setDataVersion("0.3.0");
+    assert.equal(getAssetTiles(korean)[0].url, `${cdn}@0.2/dist/assets/korean-air/logo.svg`);
+    setDataVersion();
+    assert.equal(getAssetTiles(korean)[0].url, `${cdn}@0.2/dist/assets/korean-air/logo.svg`);
   });
 });
