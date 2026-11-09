@@ -1,4 +1,4 @@
-import type { Airline, AssetType } from "soaring-symbols";
+import type { Airline, AssetType, HistoricalMarks } from "soaring-symbols";
 
 // The npm release line the extension reads, served by jsDelivr. Every 0.2.x
 // release (new airlines, fixed SVGs) arrives without a store update; a
@@ -31,7 +31,10 @@ export const groupAirlines = (airlines: Airline[]) => {
   return { parents, subsidiaries };
 };
 
-const assetUrl = (airline: Airline, file: string) => `${CDN}/assets/${airline.slug}/${file}.svg`;
+// The folder of the current marks, or with `mark` of the older ones
+// introduced in mark.since
+const assetUrl = (airline: Airline, file: string, mark?: HistoricalMarks) =>
+  `${CDN}/assets/${airline.slug}${mark ? `/history/${mark.since}` : ""}/${file}.svg`;
 
 // Whether fetched JSON is a usable airline list: a non-empty array of
 // airlines that each have a slug and assets. Anything else, including an
@@ -42,26 +45,40 @@ export const isAirlineList = (data: unknown): data is Airline[] =>
   data.every((a) => typeof a?.slug === "string" && typeof a?.assets === "object" && a.assets !== null);
 
 interface AssetTile {
-  /** Tile id and download name, e.g. "logo" or "logo-mono". */
+  /** File name without .svg, e.g. "logo" or "logo-mono". */
   variant: string;
   url: string;
+  /** Name for a downloaded copy, e.g. "korean-air-logo.svg" or "korean-air-1984-logo.svg". */
+  fileName: string;
   /** A monochrome version, drawn in currentColor, which the extension tints. */
   mono: boolean;
 }
 
 // A tile for each file the airline ships: the color version and, when it
-// exists, the -mono one (always there for single-color marks)
-export const getAssetTiles = (airline: Airline): AssetTile[] =>
+// exists, the -mono one (always there for single-color marks). With `mark`,
+// the files of that older set from the airline's history.
+export const getAssetTiles = (airline: Airline, mark?: HistoricalMarks): AssetTile[] =>
   ASSET_TYPES.flatMap((type) => {
-    const info = airline.assets[type];
+    const info = (mark?.assets ?? airline.assets)[type];
     if (!info) return [];
 
+    const tile = (variant: string, mono: boolean): AssetTile => ({
+      variant,
+      url: assetUrl(airline, variant, mark),
+      fileName: [airline.slug, mark?.since, variant].filter(Boolean).join("-") + ".svg",
+      mono,
+    });
     const tiles: AssetTile[] = [];
-    if (info.color) tiles.push({ variant: type, url: assetUrl(airline, type), mono: false });
-    if (info.mono) tiles.push({ variant: `${type}-mono`, url: assetUrl(airline, `${type}-mono`), mono: true });
+    if (info.color) tiles.push(tile(type, false));
+    if (info.mono) tiles.push(tile(`${type}-mono`, true));
 
     return tiles;
   });
+
+// The marks the airline used before its current ones, newest first. Each
+// was used from its `since` until the next one's, the newest until today's.
+// Data from before 0.2.4 has no history.
+export const earlierMarks = (airline: Airline): HistoricalMarks[] => [...(airline.history ?? [])].reverse();
 
 // The first file to show for a type: its color version, else its mono one
 export const previewUrl = (airline: Airline, type: AssetType): string | undefined => {
