@@ -5,9 +5,30 @@ import type { Airline, AssetType, HistoricalMarks } from "soaring-symbols";
 // breaking 0.3.0 never does. Move this, and the soaring-symbols dependency,
 // to the next line in the same extension update.
 const DATA_LINE = "0.2";
-const CDN = `https://cdn.jsdelivr.net/npm/soaring-symbols@${DATA_LINE}/dist`;
 
-export const AIRLINES_URL = `${CDN}/airlines.json`;
+// Asks jsDelivr which release the line points at now, e.g. "0.2.4"
+export const RESOLVE_URL = `https://data.jsdelivr.com/v1/packages/npm/soaring-symbols/resolved?specifier=${DATA_LINE}`;
+
+// An exact release in the line, e.g. "0.2.4"
+export const isLineRelease = (version: unknown): version is string =>
+  typeof version === "string" && version.startsWith(`${DATA_LINE}.`) && /^\d+\.\d+\.\d+$/.test(version);
+
+// The release the airline list came from. Files load from that exact
+// release, not from the line: a line URL keeps its address when a release
+// changes the file behind it (a new logo), and Raycast's image cache, which
+// jsDelivr lets keep a file for 7 days, would go on showing the old one.
+// The line is the fallback when the release isn't known.
+let dataVersion = DATA_LINE;
+
+export const setDataVersion = (version?: string) => {
+  dataVersion = isLineRelease(version) ? version : DATA_LINE;
+};
+
+const cdnBase = (version: string) => `https://cdn.jsdelivr.net/npm/soaring-symbols@${version}/dist`;
+
+// airlines.json from `release`, or from the line when it's unknown
+export const airlinesUrl = (release?: string) =>
+  `${cdnBase(isLineRelease(release) ? release : DATA_LINE)}/airlines.json`;
 
 const ASSET_TYPES: AssetType[] = ["logo", "icon", "tail"];
 
@@ -34,7 +55,7 @@ export const groupAirlines = (airlines: Airline[]) => {
 // The folder of the current marks, or with `mark` of the older ones
 // introduced in mark.since
 const assetUrl = (airline: Airline, file: string, mark?: HistoricalMarks) =>
-  `${CDN}/assets/${airline.slug}${mark ? `/history/${mark.since}` : ""}/${file}.svg`;
+  `${cdnBase(dataVersion)}/assets/${airline.slug}${mark ? `/history/${mark.since}` : ""}/${file}.svg`;
 
 // Whether fetched JSON is a usable airline list: a non-empty array of
 // airlines that each have a slug and assets. Anything else, including an
