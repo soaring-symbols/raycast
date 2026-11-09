@@ -6,6 +6,7 @@
 - Find airlines by their callsign in both commands.
 - Airline Information shows the group an airline belongs to and the airlines it owns, such as Thai AirAsia under AirAsia; select one to jump to it.
 - Airlines that no longer fly are marked: a landed plane in Airline Information, with the year it ceased in its tooltip, and "Ceased" with the year in Browse Airlines.
+- See an airline's earlier logos below its current ones in the assets grid, one section per logo with the year it was introduced, such as Sun PhuQuoc Airways' 2025 logo. Copy and download work as for current marks.
 
 ## [New Livery] - 2026-11-05
 
