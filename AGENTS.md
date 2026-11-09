@@ -11,7 +11,7 @@ A Raycast extension for browsing the [Soaring Symbols](https://github.com/soarin
 - `src/utils/airlines.ts` — data and SVG URLs (`DATA_LINE`), and the helpers that decide which asset tiles to show.
 - `src/utils/fetch.ts` — loads the airline list, falling back to the bundled one.
 - `test/` — unit tests for the pure helpers in `src/utils/airlines.ts`, run by Node's test runner.
-- `assets/extension-icon.png` — the store icon, a 512×512 PNG. It is exported from `brand/raycast-icon-signal.png` in the [website repo](https://github.com/soaring-symbols/website); change it there first.
+- `assets/extension-icon.png` — the store icon, a 512×512 PNG. It is a copy of `exports/raycast/icon-signal.png` in [soaring-symbols/brand](https://github.com/soaring-symbols/brand), which renders it from the brand mark; change it there first.
 - `metadata/` — store screenshots (2000×1250), taken in Raycast.
 
 ### Where the data comes from
