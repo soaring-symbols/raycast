@@ -2,12 +2,12 @@
 
 ## [Boarding Pass] - {PR_MERGE_DATE}
 
-- Airline Information now shows each airline's radio callsign, hub airports and the year it was founded (or the years it flew, for airlines that no longer operate).
-- Find airlines by their callsign in both commands.
-- Airline Information shows the group an airline belongs to and the airlines it owns, such as Thai AirAsia under AirAsia; select one to jump to it.
-- Airlines that no longer fly are marked: a landed plane in Airline Information, with the year it ceased in its tooltip, and "Ceased" with the year in Browse Airlines.
-- See an airline's earlier logos below its current ones in the assets grid, one section per logo with the year it was introduced, such as Sun PhuQuoc Airways' 2025 logo. Copy and download work as for current marks.
-- Updated logos show up as soon as the airline data updates. Images now load from the exact data release, so Raycast no longer keeps showing a replaced logo, such as Sun PhuQuoc Airways' old one, for up to a week.
+- Airline Information shows each airline's callsign, hubs and founding year, or the years it flew if it no longer operates.
+- Search by callsign in both commands.
+- See the group an airline belongs to and the airlines it owns, such as Thai AirAsia under AirAsia, and jump to any of them.
+- Airlines that no longer fly are marked with the year they ceased.
+- The assets grid shows an airline's earlier logos below its current ones, by the year each was introduced.
+- Replaced logos show up as soon as the airline data updates, instead of after up to a week.
 
 ## [New Livery] - 2026-11-05
 
