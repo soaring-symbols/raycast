@@ -47,7 +47,13 @@ export default function ViewAirlineInfo() {
         const ceased = ceasedLabel(airline);
         const years = operatingYears(airline);
         const parent = groups.parents.get(airline.slug);
-        const subsidiaries = groups.subsidiaries.get(airline.slug) ?? [];
+        const owned = groups.subsidiaries.get(airline.slug) ?? [];
+        // Those that no longer fly under it, e.g. Jetstar Pacific under
+        // Jetstar, get a row of their own
+        const subsidiaryRows = [
+          { title: "Subsidiaries", airlines: owned.filter((sub) => !sub.defunct) },
+          { title: "Former Subsidiaries", airlines: owned.filter((sub) => sub.defunct) },
+        ].filter((row) => row.airlines.length > 0);
         const accessories: List.Item.Accessory[] = [];
         if (ceased)
           accessories.push({ icon: { source: Icon.AirplaneLanding, tintColor: Color.SecondaryText }, tooltip: ceased });
@@ -97,9 +103,9 @@ export default function ViewAirlineInfo() {
                         />
                       </List.Item.Detail.Metadata.TagList>
                     )}
-                    {subsidiaries.length > 0 && (
-                      <List.Item.Detail.Metadata.TagList title="Subsidiaries">
-                        {subsidiaries.map((sub) => (
+                    {subsidiaryRows.map((row) => (
+                      <List.Item.Detail.Metadata.TagList key={row.title} title={row.title}>
+                        {row.airlines.map((sub) => (
                           <List.Item.Detail.Metadata.TagList.Item
                             key={sub.slug}
                             text={sub.name}
@@ -107,7 +113,7 @@ export default function ViewAirlineInfo() {
                           />
                         ))}
                       </List.Item.Detail.Metadata.TagList>
-                    )}
+                    ))}
                     {airline.website && (
                       <>
                         <List.Item.Detail.Metadata.Separator />
