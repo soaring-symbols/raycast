@@ -7,6 +7,7 @@ import {
   getAssetTiles,
   groupAirlines,
   markTitle,
+  searchKeywords,
   isAirlineList,
   isLineRelease,
   setDataVersion,
@@ -69,7 +70,7 @@ describe("getAssetTiles and earlierMarks", () => {
       { since: 1984, assets: { logo: info(true, false), icon: info(true, true) } },
     ],
   };
-  const base = "https://cdn.jsdelivr.net/npm/soaring-symbols@0.2/dist/assets/korean-air";
+  const base = "https://cdn.jsdelivr.net/npm/soaring-symbols@0.3/dist/assets/korean-air";
 
   it("lists the current files without a mark", () => {
     assert.deepEqual(
@@ -108,25 +109,25 @@ describe("exact release URLs", () => {
   const cdn = "https://cdn.jsdelivr.net/npm/soaring-symbols";
 
   it("accepts only exact releases of the line", () => {
-    assert.equal(isLineRelease("0.2.4"), true);
-    for (const version of ["0.2", "0.3.0", "0.2.4-beta", "10.2.4", undefined, 24]) {
+    assert.equal(isLineRelease("0.3.0"), true);
+    for (const version of ["0.3", "0.4.0", "0.3.0-beta", "10.3.0", "0.2.4", undefined, 24]) {
       assert.equal(isLineRelease(version), false, String(version));
     }
   });
 
   it("loads airlines.json from the release, or the line when it's unknown", () => {
-    assert.equal(airlinesUrl("0.2.4"), `${cdn}@0.2.4/dist/airlines.json`);
-    assert.equal(airlinesUrl(undefined), `${cdn}@0.2/dist/airlines.json`);
-    assert.equal(airlinesUrl("latest"), `${cdn}@0.2/dist/airlines.json`);
+    assert.equal(airlinesUrl("0.3.0"), `${cdn}@0.3.0/dist/airlines.json`);
+    assert.equal(airlinesUrl(undefined), `${cdn}@0.3/dist/airlines.json`);
+    assert.equal(airlinesUrl("latest"), `${cdn}@0.3/dist/airlines.json`);
   });
 
   it("loads files from the release the list came from", () => {
-    setDataVersion("0.2.4");
-    assert.equal(getAssetTiles(korean)[0].url, `${cdn}@0.2.4/dist/assets/korean-air/logo.svg`);
-    setDataVersion("0.3.0");
-    assert.equal(getAssetTiles(korean)[0].url, `${cdn}@0.2/dist/assets/korean-air/logo.svg`);
+    setDataVersion("0.3.1");
+    assert.equal(getAssetTiles(korean)[0].url, `${cdn}@0.3.1/dist/assets/korean-air/logo.svg`);
+    setDataVersion("0.4.0");
+    assert.equal(getAssetTiles(korean)[0].url, `${cdn}@0.3/dist/assets/korean-air/logo.svg`);
     setDataVersion();
-    assert.equal(getAssetTiles(korean)[0].url, `${cdn}@0.2/dist/assets/korean-air/logo.svg`);
+    assert.equal(getAssetTiles(korean)[0].url, `${cdn}@0.3/dist/assets/korean-air/logo.svg`);
   });
 });
 
@@ -145,5 +146,12 @@ describe("markTitle", () => {
 
   it("falls back to the year it came in for older releases", () => {
     assert.equal(markTitle(trinity, { since: 2010, assets: {} } as never), "Introduced 2010");
+  });
+});
+
+describe("searchKeywords", () => {
+  it("finds a renamed airline by its former names too", () => {
+    const trinity = { ...airline, name: "Trinity Airways", slug: "trinity-airways", previous_names: ["T'way Air"] };
+    assert.ok(searchKeywords(trinity as never).includes("T'way Air"));
   });
 });

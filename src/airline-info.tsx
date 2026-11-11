@@ -48,11 +48,17 @@ export default function ViewAirlineInfo() {
         const years = operatingYears(airline);
         const parent = groups.parents.get(airline.slug);
         const owned = groups.subsidiaries.get(airline.slug) ?? [];
-        // Those that no longer fly under it, e.g. Jetstar Pacific under
-        // Jetstar, get a row of their own
-        const subsidiaryRows = [
+        // Subsidiaries that no longer fly under it (Jetstar Pacific under
+        // Jetstar) get a row of their own
+        const successor = airline.successor ? groups.bySlug.get(airline.successor) : undefined;
+        const predecessors = (airline.predecessors ?? []).flatMap((slug) => groups.bySlug.get(slug) ?? []);
+        // Links to other airlines, one row per relation it has
+        const relatedRows = [
+          { title: "Part of", airlines: parent ? [parent] : [] },
           { title: "Subsidiaries", airlines: owned.filter((sub) => !sub.defunct) },
           { title: "Former Subsidiaries", airlines: owned.filter((sub) => sub.defunct) },
+          { title: "Succeeded By", airlines: successor ? [successor] : [] },
+          { title: "Preceded By", airlines: predecessors },
         ].filter((row) => row.airlines.length > 0);
         const accessories: List.Item.Accessory[] = [];
         if (ceased)
@@ -95,21 +101,16 @@ export default function ViewAirlineInfo() {
                         ))}
                       </List.Item.Detail.Metadata.TagList>
                     ) : null}
-                    {parent && (
-                      <List.Item.Detail.Metadata.TagList title="Part of">
-                        <List.Item.Detail.Metadata.TagList.Item
-                          text={parent.name}
-                          onAction={() => showAirline(parent.name)}
-                        />
-                      </List.Item.Detail.Metadata.TagList>
-                    )}
-                    {subsidiaryRows.map((row) => (
+                    {airline.previous_names?.length ? (
+                      <List.Item.Detail.Metadata.Label title="Formerly" text={airline.previous_names.join(", ")} />
+                    ) : null}
+                    {relatedRows.map((row) => (
                       <List.Item.Detail.Metadata.TagList key={row.title} title={row.title}>
-                        {row.airlines.map((sub) => (
+                        {row.airlines.map((other) => (
                           <List.Item.Detail.Metadata.TagList.Item
-                            key={sub.slug}
-                            text={sub.name}
-                            onAction={() => showAirline(sub.name)}
+                            key={other.slug}
+                            text={other.name}
+                            onAction={() => showAirline(other.name)}
                           />
                         ))}
                       </List.Item.Detail.Metadata.TagList>

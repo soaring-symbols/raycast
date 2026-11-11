@@ -1,10 +1,10 @@
 import type { Airline, AssetType, HistoricalMarks } from "soaring-symbols";
 
-// The npm release line the extension reads, served by jsDelivr. Every 0.2.x
+// The npm release line the extension reads, served by jsDelivr. Every 0.3.x
 // release (new airlines, fixed SVGs) arrives without a store update; a
-// breaking 0.3.0 never does. Move this, and the soaring-symbols dependency,
+// breaking 0.4.0 never does. Move this, and the soaring-symbols dependency,
 // to the next line in the same extension update.
-const DATA_LINE = "0.2";
+const DATA_LINE = "0.3";
 
 // Asks jsDelivr which release the line points at now, e.g. "0.2.4"
 export const RESOLVE_URL = `https://data.jsdelivr.com/v1/packages/npm/soaring-symbols/resolved?specifier=${DATA_LINE}`;
@@ -32,9 +32,12 @@ export const airlinesUrl = (release?: string) =>
 
 const ASSET_TYPES: AssetType[] = ["logo", "icon", "tail"];
 
-// What both commands search: name, codes, slug and callsign
+// What both commands search: name, codes, slug, callsign and the names a
+// renamed airline flew under before (T'way Air for Trinity Airways)
 export const searchKeywords = (airline: Airline): string[] =>
-  [airline.name, airline.iata, airline.icao, airline.slug, airline.callsign].filter((k): k is string => Boolean(k));
+  [airline.name, airline.iata, airline.icao, airline.slug, airline.callsign, ...(airline.previous_names ?? [])].filter(
+    (k): k is string => Boolean(k),
+  );
 
 // The airline that owns each one, and the ones each owns, looked up by slug.
 // A parent missing from the list (an older data release) is left out.
@@ -49,7 +52,7 @@ export const groupAirlines = (airlines: Airline[]) => {
     subsidiaries.set(parent.slug, [...(subsidiaries.get(parent.slug) ?? []), airline]);
   }
 
-  return { parents, subsidiaries };
+  return { bySlug, parents, subsidiaries };
 };
 
 // The folder of the current marks, or with `mark` of the older ones
@@ -105,10 +108,9 @@ export const earlierMarks = (airline: Airline): HistoricalMarks[] => [...(airlin
 // name on it when that was a former name ("T'way Air · 2010–2026"). Releases
 // without `until` and `name` (0.2.4 and before) give the year it came in.
 export const markTitle = (airline: Airline, mark: HistoricalMarks): string => {
-  const { until, name } = mark as HistoricalMarks & { until?: number; name?: string };
-  const years = until ? `${mark.since}–${until}` : `Introduced ${mark.since}`;
+  const years = mark.until ? `${mark.since}–${mark.until}` : `Introduced ${mark.since}`;
 
-  return name && name !== airline.name ? `${name} · ${years}` : years;
+  return mark.name && mark.name !== airline.name ? `${mark.name} · ${years}` : years;
 };
 
 // The first file to show for a type: its color version, else its mono one
