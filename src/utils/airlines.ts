@@ -101,6 +101,16 @@ export const getAssetTiles = (airline: Airline, mark?: HistoricalMarks): AssetTi
 // Data from before 0.2.4 has no history.
 export const earlierMarks = (airline: Airline): HistoricalMarks[] => [...(airline.history ?? [])].reverse();
 
+// The title of an older mark: the years it was used ("1984–2025"), after the
+// name on it when that was a former name ("T'way Air · 2010–2026"). Releases
+// without `until` and `name` (0.2.4 and before) give the year it came in.
+export const markTitle = (airline: Airline, mark: HistoricalMarks): string => {
+  const { until, name } = mark as HistoricalMarks & { until?: number; name?: string };
+  const years = until ? `${mark.since}–${until}` : `Introduced ${mark.since}`;
+
+  return name && name !== airline.name ? `${name} · ${years}` : years;
+};
+
 // The first file to show for a type: its color version, else its mono one
 export const previewUrl = (airline: Airline, type: AssetType): string | undefined => {
   const info = airline.assets[type];

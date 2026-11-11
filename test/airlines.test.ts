@@ -6,6 +6,7 @@ import {
   earlierMarks,
   getAssetTiles,
   groupAirlines,
+  markTitle,
   isAirlineList,
   isLineRelease,
   setDataVersion,
@@ -126,5 +127,23 @@ describe("exact release URLs", () => {
     assert.equal(getAssetTiles(korean)[0].url, `${cdn}@0.2/dist/assets/korean-air/logo.svg`);
     setDataVersion();
     assert.equal(getAssetTiles(korean)[0].url, `${cdn}@0.2/dist/assets/korean-air/logo.svg`);
+  });
+});
+
+describe("markTitle", () => {
+  const trinity = { name: "Trinity Airways" } as never;
+  it("gives the years an older mark was used, with a former name", () => {
+    assert.equal(
+      markTitle(trinity, { since: 2010, until: 2026, name: "T'way Air", assets: {} } as never),
+      "T'way Air · 2010–2026",
+    );
+    assert.equal(
+      markTitle(trinity, { since: 2010, until: 2026, name: "Trinity Airways", assets: {} } as never),
+      "2010–2026",
+    );
+  });
+
+  it("falls back to the year it came in for older releases", () => {
+    assert.equal(markTitle(trinity, { since: 2010, assets: {} } as never), "Introduced 2010");
   });
 });

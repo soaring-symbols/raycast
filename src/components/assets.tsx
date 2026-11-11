@@ -2,7 +2,7 @@ import { Action, ActionPanel, Clipboard, Grid, Icon, Color, showToast, Toast } f
 import fs from "fs";
 import path from "path";
 import type { Airline } from "soaring-symbols";
-import { earlierMarks, getAssetTiles } from "../utils/airlines";
+import { earlierMarks, getAssetTiles, markTitle } from "../utils/airlines";
 import { getSVGContent } from "../utils/fetch";
 
 const slugToName = (slug: string): string => {
@@ -100,7 +100,7 @@ export default function AirlineAssets(airline: Airline) {
           {current}
         </Grid.Section>,
         ...history.map((mark) => (
-          <Grid.Section key={mark.since} title={`Introduced ${mark.since}`}>
+          <Grid.Section key={mark.since} title={markTitle(airline, mark)}>
             {getAssetTiles(airline, mark).map(renderTile)}
           </Grid.Section>
         )),

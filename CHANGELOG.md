@@ -6,7 +6,7 @@
 - Search by callsign in both commands.
 - See the group an airline belongs to and the airlines it owns or once did, such as Thai AirAsia under AirAsia, and jump to any of them.
 - Airlines that no longer fly are marked with the year they ceased.
-- The assets grid shows an airline's earlier logos below its current ones, by the year each was introduced.
+- The assets grid shows an airline's earlier logos below its current ones, with the years each was in use and the name it carried, such as T'way Air's logo under Trinity Airways.
 - Replaced logos show up as soon as the airline data updates, instead of after up to a week.
 
 ## [New Livery] - 2026-11-05
