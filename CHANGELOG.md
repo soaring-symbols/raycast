@@ -2,13 +2,12 @@
 
 ## [Boarding Pass] - {PR_MERGE_DATE}
 
-- Airline Information shows each airline's callsign, hubs and founding year, or the years it flew if it no longer operates.
-- Search by callsign in both commands, or by a former name, such as T'way Air for Trinity Airways.
-- See the group an airline belongs to and the airlines it owns or once did, such as Thai AirAsia under AirAsia, and jump to any of them.
-- Airlines that no longer fly are marked with the year they ceased.
-- Airline Information lists an airline's former names, and links it to the airline that carried it on or that it carried on, such as Jetstar Pacific and Pacific Airlines.
-- The assets grid shows an airline's earlier logos below its current ones, with the years each was in use and the name it carried, such as T'way Air's logo under Trinity Airways.
-- Replaced logos show up as soon as the airline data updates, instead of after up to a week.
+- Airline Information shows the callsign, hubs, founding year and former names, or the years flown for airlines that have ceased.
+- Search both commands by callsign or former name: T'way Air finds Trinity Airways.
+- Airlines that have ceased are marked with the year they stopped flying.
+- Jump between an airline, its group and the airlines it owns or once owned (AirAsia and Thai AirAsia), and between an airline and the one that carried it on (Jetstar Pacific and Pacific Airlines).
+- The assets grid shows earlier logos below the current ones, with the years and name each was used under.
+- Replaced logos appear as soon as the data updates, not up to a week later.
 
 ## [New Livery] - 2026-11-05
 

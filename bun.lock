@@ -7,14 +7,14 @@
       "dependencies": {
         "@raycast/api": "^2.11.1",
         "@raycast/utils": "^2.3.3",
-        "soaring-symbols": "^0.3.0",
+        "soaring-symbols": "^0.3.1",
       },
       "devDependencies": {
         "@raycast/eslint-config": "^2.2.0",
         "@types/node": "^26.6.6",
         "@types/react": "19.3.0",
         "eslint": "^10.14.0",
-        "prettier": "^3.9.10",
+        "prettier": "^3.10.1",
         "typescript": "^6.0.3",
       },
     },
@@ -402,7 +402,7 @@
 
     "prelude-ls": ["prelude-ls@1.2.1", "", {}, "sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g=="],
 
-    "prettier": ["prettier@3.9.10", "", { "bin": "bin/prettier.cjs" }, "sha512-skGHTH1Yb9QvaTC4hWnRTzEYtCpApF0UMBPz+t/0ZPzP8ihefo/btKd+QA7pUE0fEwA1SbS/NmhyEcstdXOIdA=="],
+    "prettier": ["prettier@3.10.1", "", { "bin": { "prettier": "bin/prettier.cjs" } }, "sha512-70vp3ZUYoPlFbF9uiTdXHUUCGEIp7d4+6p+8DYbkm2jP7x/3i/paXVF6dopSI3zd/CEitrZN1rc4i85xWmmXlg=="],
 
     "pretty-ms": ["pretty-ms@9.3.1", "", { "dependencies": { "parse-ms": "^4.0.0" } }, "sha512-HzMy3Geq23nVALD/M2LliU+F+M+gVNsvkQWWqeBZ8HDiCgzo6YPJ/Omrmtq24EFrIsk0a3EkQGEd7bDOo+IhGA=="],
 
@@ -426,7 +426,7 @@
 
     "signal-exit": ["signal-exit@4.1.0", "", {}, "sha512-bzyZ1e88w9O1iNJbKnOlvYTrWPDl46O1bG0D3XInv+9tkPrxrN8jUUTiFlDkkmKWgn1M6CfIA13SuGqOa9Korw=="],
 
-    "soaring-symbols": ["soaring-symbols@0.3.0", "", {}, "sha512-IXP9HO8bF4qurDAANKDDquRadWAtM8GF8s1iXTi0H8JrkYlhigDPn2c+w+DpAY8XnsUAPzCfNtW4DOUE40qDQQ=="],
+    "soaring-symbols": ["soaring-symbols@0.3.1", "", { "peerDependencies": { "@resvg/resvg-wasm": "2.6.2" }, "optionalPeers": ["@resvg/resvg-wasm"] }, "sha512-pjLO4KgDurIFiaNMZjAHEDCMsrK7jsNuPjIkKtfZ3Rh59HikoSXHaaFmqokbC5vEjc8ggeYFhoTKUwf484kfbw=="],
 
     "string-width": ["string-width@4.2.3", "", { "dependencies": { "emoji-regex": "^8.0.0", "is-fullwidth-code-point": "^3.0.0", "strip-ansi": "^6.0.1" } }, "sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g=="],
 
