@@ -177,3 +177,14 @@ export const allianceMark = (alliance?: Alliance): AssetTile | undefined =>
 export const isMemberOf = (airline: Airline, alliance: Alliance): boolean =>
   airline.alliance === alliance.name ||
   (Boolean(alliance.defunct) && (airline.alliance_history ?? []).some((item) => item.alliance === alliance.name));
+
+// What Browse Alliances counts for an alliance, as the website's alliance
+// cards do: its airlines in the collection still flying in it, or for a
+// disbanded alliance every one that flew in it. Never the alliance's own
+// member count, which the collection doesn't track.
+export const allianceCount = (alliance: Alliance, airlines: Airline[]): string => {
+  const members = airlines.filter((airline) => isMemberOf(airline, alliance));
+  if (alliance.defunct) return `${members.length} flew in it`;
+
+  return `${members.filter((airline) => !airline.defunct).length} in the collection`;
+};

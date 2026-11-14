@@ -16,7 +16,19 @@ export default function AirlineGrid({
   alliance?: string;
   lists?: { airlines: Airline[]; alliances: Alliance[] };
 }) {
-  const { isLoading, alliances, alliance, setAlliance, filtered: filteredAirlines } = useAllianceFilter(initial, lists);
+  const { isLoading, alliances, byName, alliance, setAlliance, filtered } = useAllianceFilter(initial, lists);
+
+  // With an active alliance picked, the airlines that ceased while in it
+  // get a section of their own below those still flying in it, as on the
+  // website's alliance page; otherwise one section lists them all
+  const selected = byName.get(alliance);
+  const sections =
+    selected && !selected.defunct
+      ? [
+          { title: selected.name, airlines: filtered.filter((a) => !a.defunct) },
+          { title: `Ceased while in ${selected.name}`, airlines: filtered.filter((a) => a.defunct) },
+        ]
+      : [{ title: selected ? selected.name : "All Airlines", airlines: filtered }];
 
   return (
     <Grid
@@ -34,37 +46,39 @@ export default function AirlineGrid({
         />
       }
     >
-      <Grid.Section title={alliance === "All" ? "All Airlines" : alliance}>
-        {filteredAirlines.map((airline) => (
-          <Grid.Item
-            key={airline.slug}
-            content={{ source: previewUrl(airline, "logo") ?? "", fallback: Icon.AirplaneFilled }}
-            title={airline.name}
-            subtitle={[airline.iata, ceasedLabel(airline)].filter(Boolean).join(" · ")}
-            keywords={searchKeywords(airline)}
-            accessory={
-              airline.flag_carrier
-                ? {
-                    icon: getFlagEmoji(airline.country?.split(",")?.[0]),
-                    tooltip: "Flag Carrier",
-                  }
-                : undefined
-            }
-            actions={
-              <ActionPanel>
-                <ActionPanel.Section title="Airline Information">
-                  <Action.Push
-                    title="View Airline Assets"
-                    icon={Icon.AppWindowGrid2x2}
-                    target={<AirlineAssets {...airline} />}
-                  />
-                  {airline.website && <Action.OpenInBrowser title="Open Website" url={airline.website} />}
-                </ActionPanel.Section>
-              </ActionPanel>
-            }
-          />
-        ))}
-      </Grid.Section>
+      {sections.map((section) => (
+        <Grid.Section key={section.title} title={section.title}>
+          {section.airlines.map((airline) => (
+            <Grid.Item
+              key={airline.slug}
+              content={{ source: previewUrl(airline, "logo") ?? "", fallback: Icon.AirplaneFilled }}
+              title={airline.name}
+              subtitle={[airline.iata, ceasedLabel(airline)].filter(Boolean).join(" · ")}
+              keywords={searchKeywords(airline)}
+              accessory={
+                airline.flag_carrier
+                  ? {
+                      icon: getFlagEmoji(airline.country?.split(",")?.[0]),
+                      tooltip: "Flag Carrier",
+                    }
+                  : undefined
+              }
+              actions={
+                <ActionPanel>
+                  <ActionPanel.Section title="Airline Information">
+                    <Action.Push
+                      title="View Airline Assets"
+                      icon={Icon.AppWindowGrid2x2}
+                      target={<AirlineAssets {...airline} />}
+                    />
+                    {airline.website && <Action.OpenInBrowser title="Open Website" url={airline.website} />}
+                  </ActionPanel.Section>
+                </ActionPanel>
+              }
+            />
+          ))}
+        </Grid.Section>
+      ))}
     </Grid>
   );
 }

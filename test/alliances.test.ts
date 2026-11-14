@@ -1,6 +1,13 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { allianceMark, allianceTiles, isAllianceList, isMemberOf, setDataVersion } from "../src/utils/airlines.ts";
+import {
+  allianceCount,
+  allianceMark,
+  allianceTiles,
+  isAllianceList,
+  isMemberOf,
+  setDataVersion,
+} from "../src/utils/airlines.ts";
 
 const skyteam = {
   name: "SkyTeam",
@@ -75,5 +82,24 @@ describe("isMemberOf", () => {
   it("counts every airline that flew in a disbanded one", () => {
     assert.equal(isMemberOf(scoot as never, value as never), true);
     assert.equal(isMemberOf(airline as never, value as never), false);
+  });
+});
+
+describe("allianceCount", () => {
+  const flying = { name: "Vietnam Airlines", slug: "vietnam-airlines", alliance: "SkyTeam", assets: {} };
+  const ceased = { ...flying, name: "Air Old", slug: "air-old", defunct: true };
+  const scoot = {
+    name: "Scoot",
+    slug: "scoot",
+    assets: {},
+    alliance_history: [{ alliance: "Value Alliance", since: 2016, until: 2023 }],
+  };
+
+  it("counts the airlines still flying in an active alliance", () => {
+    assert.equal(allianceCount(skyteam as never, [flying, ceased, scoot] as never), "1 in the collection");
+  });
+
+  it("counts every airline that flew in a disbanded one", () => {
+    assert.equal(allianceCount(value as never, [flying, scoot] as never), "1 flew in it");
   });
 });

@@ -3,7 +3,7 @@ import { useCachedPromise } from "@raycast/utils";
 import { useMemo } from "react";
 import type { Alliance } from "soaring-symbols";
 import { operatingYears } from "./utils";
-import { allianceMark, isMemberOf } from "./utils/airlines";
+import { allianceCount, allianceMark } from "./utils/airlines";
 import { fetchAirlines, fetchAlliances } from "./utils/fetch";
 import AirlineGrid from "./components/airline-grid";
 import { AllianceAssets } from "./components/assets";
@@ -13,23 +13,19 @@ export default function BrowseAlliances() {
   const { isLoading, data: alliances = [] } = useCachedPromise(fetchAlliances);
   const { data: airlines = [] } = useCachedPromise(fetchAirlines);
 
-  // How many airlines in the collection fly, or flew, in each
-  const memberCounts = useMemo(
-    () => new Map(alliances.map((alliance) => [alliance.slug, airlines.filter((a) => isMemberOf(a, alliance)).length])),
+  // How many of each one's airlines the collection has, as on the website
+  const counts = useMemo(
+    () => new Map(alliances.map((alliance) => [alliance.slug, allianceCount(alliance, airlines)])),
     [alliances, airlines],
   );
 
   const renderItem = (alliance: Alliance) => {
-    const members = memberCounts.get(alliance.slug) ?? 0;
-
     return (
       <Grid.Item
         key={alliance.slug}
         content={allianceIcon(alliance)}
         title={alliance.name}
-        subtitle={[operatingYears(alliance), `${members} airline${members === 1 ? "" : "s"}`]
-          .filter(Boolean)
-          .join(" · ")}
+        subtitle={[operatingYears(alliance), counts.get(alliance.slug)].filter(Boolean).join(" · ")}
         keywords={[alliance.slug, alliance.branding?.tagline].filter((k): k is string => Boolean(k))}
         actions={
           <ActionPanel>
