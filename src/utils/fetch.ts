@@ -17,8 +17,12 @@ const VERSION_KEY = "data-version";
 // useCachedPromise shows at launch points at the right files
 setDataVersion(cache.get(VERSION_KEY));
 
-// The release the line points at now, or undefined when jsDelivr can't say
-const resolveRelease = async (): Promise<string | undefined> => {
+// The release the line points at now, or undefined when jsDelivr can't say.
+// Asked once per launch: both lists load from the same release.
+let resolving: Promise<string | undefined> | undefined;
+const resolveRelease = () => (resolving ??= askRelease());
+
+const askRelease = async (): Promise<string | undefined> => {
   try {
     const res = await fetch(RESOLVE_URL);
     if (!res.ok) return undefined;

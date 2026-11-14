@@ -1,13 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import {
-  allianceMark,
-  allianceTiles,
-  allianceYears,
-  isAllianceList,
-  isMemberOf,
-  setDataVersion,
-} from "../src/utils/airlines.ts";
+import { allianceMark, allianceTiles, isAllianceList, isMemberOf, setDataVersion } from "../src/utils/airlines.ts";
 
 const skyteam = {
   name: "SkyTeam",
@@ -82,14 +75,5 @@ describe("isMemberOf", () => {
   it("counts every airline that flew in a disbanded one", () => {
     assert.equal(isMemberOf(scoot as never, value as never), true);
     assert.equal(isMemberOf(airline as never, value as never), false);
-  });
-});
-
-describe("allianceYears", () => {
-  it("gives the founding year, or the years of a disbanded alliance", () => {
-    assert.equal(allianceYears(skyteam), "2000");
-    assert.equal(allianceYears(value), "2016–2023");
-    assert.equal(allianceYears({ ceased: 2024 }), "?–2024");
-    assert.equal(allianceYears({}), undefined);
   });
 });

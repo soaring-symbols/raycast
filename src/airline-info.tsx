@@ -1,16 +1,20 @@
 import { Action, ActionPanel, Color, Icon, List } from "@raycast/api";
-import { useCachedPromise } from "@raycast/utils";
 import { useMemo, useState } from "react";
 import { ceasedLabel, getFlagEmoji, operatingYears } from "./utils";
 import type { Airline } from "soaring-symbols";
-import { allianceMark, formerNames, groupAirlines, isMemberOf, previewUrl, searchKeywords } from "./utils/airlines";
-import { fetchAirlines, fetchAlliances } from "./utils/fetch";
-import SearchBar from "./components/searchbar";
+import { allianceMark, formerNames, groupAirlines, previewUrl, searchKeywords } from "./utils/airlines";
+import SearchBar, { allianceIcon, useAllianceFilter } from "./components/searchbar";
 
 export default function ViewAirlineInfo() {
-  const { isLoading, data = [] } = useCachedPromise(fetchAirlines);
-  const { data: alliances = [] } = useCachedPromise(fetchAlliances);
-  const [alliance, setAlliance] = useState("All");
+  const {
+    isLoading,
+    airlines: data,
+    alliances,
+    byName,
+    alliance,
+    setAlliance,
+    filtered: filteredAirlines,
+  } = useAllianceFilter();
   const [searchText, setSearchText] = useState("");
 
   // Parents and subsidiaries come from the whole list, whatever the filter
@@ -21,12 +25,6 @@ export default function ViewAirlineInfo() {
     setAlliance("All");
     setSearchText(name);
   };
-
-  const filteredAirlines = useMemo(() => {
-    const selected = alliances.find((a) => a.name === alliance);
-    if (!selected) return data;
-    return data.filter((a) => isMemberOf(a, selected));
-  }, [data, alliances, alliance]);
 
   return (
     <List
@@ -63,8 +61,9 @@ export default function ViewAirlineInfo() {
           { title: "Preceded By", airlines: predecessors },
         ].filter((row) => row.airlines.length > 0);
 
+        const former = formerNames(airline);
         // The alliance's mark beside its name, once the collection has one
-        const mark = allianceMark(alliances.find((a) => a.name === airline.alliance));
+        const memberOf = airline.alliance ? byName.get(airline.alliance) : undefined;
 
         const markdown = logo ? `<img src="${logo}" alt="${airline.name}" width="200" height="200" />` : "";
 
@@ -106,7 +105,7 @@ export default function ViewAirlineInfo() {
                     <List.Item.Detail.Metadata.Label
                       title="Alliance"
                       text={airline.alliance}
-                      icon={mark && { source: mark.url, tintColor: mark.mono ? Color.PrimaryText : undefined }}
+                      icon={allianceMark(memberOf) ? allianceIcon(memberOf) : undefined}
                     />
                     {airline.alliance_history?.length ? (
                       <List.Item.Detail.Metadata.Label
@@ -123,8 +122,8 @@ export default function ViewAirlineInfo() {
                         ))}
                       </List.Item.Detail.Metadata.TagList>
                     ) : null}
-                    {formerNames(airline).length ? (
-                      <List.Item.Detail.Metadata.Label title="Formerly" text={formerNames(airline).join(", ")} />
+                    {former.length ? (
+                      <List.Item.Detail.Metadata.Label title="Formerly" text={former.join(", ")} />
                     ) : null}
                     {relatedRows.map((row) => (
                       <List.Item.Detail.Metadata.TagList key={row.title} title={row.title}>

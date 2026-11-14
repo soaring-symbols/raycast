@@ -26,13 +26,11 @@ export const setDataVersion = (version?: string) => {
 
 const cdnBase = (version: string) => `https://cdn.jsdelivr.net/npm/soaring-symbols@${version}/dist`;
 
-// airlines.json from `release`, or from the line when it's unknown
-export const airlinesUrl = (release?: string) =>
-  `${cdnBase(isLineRelease(release) ? release : DATA_LINE)}/airlines.json`;
+// A data file from `release`, or from the line when it's unknown
+const listUrl = (file: string, release?: string) => `${cdnBase(isLineRelease(release) ? release : DATA_LINE)}/${file}`;
 
-// alliances.json, likewise
-export const alliancesUrl = (release?: string) =>
-  `${cdnBase(isLineRelease(release) ? release : DATA_LINE)}/alliances.json`;
+export const airlinesUrl = (release?: string) => listUrl("airlines.json", release);
+export const alliancesUrl = (release?: string) => listUrl("alliances.json", release);
 
 // A file of the release the data came from, e.g. "alliances/skyteam/icon.svg"
 export const dataFileUrl = (file: string) => `${cdnBase(dataVersion)}/${file}`;
@@ -69,7 +67,7 @@ export const groupAirlines = (airlines: Airline[]) => {
 // The folder of the current marks, or with `mark` of the older ones
 // introduced in mark.since
 const assetUrl = (airline: Airline, file: string, mark?: HistoricalMarks) =>
-  `${cdnBase(dataVersion)}/assets/${airline.slug}${mark ? `/history/${mark.since}` : ""}/${file}.svg`;
+  dataFileUrl(`assets/${airline.slug}${mark ? `/history/${mark.since}` : ""}/${file}.svg`);
 
 // Whether fetched JSON is a usable airline list: a non-empty array of
 // airlines that each have a slug and assets. Anything else, including an
@@ -89,26 +87,37 @@ export interface AssetTile {
   mono: boolean;
 }
 
-// A tile for each file the airline ships: the color version and, when it
-// exists, the -mono one (always there for single-color marks). With `mark`,
-// the files of that older set from the airline's history.
-export const getAssetTiles = (airline: Airline, mark?: HistoricalMarks): AssetTile[] =>
-  ASSET_TYPES.flatMap((type) => {
-    const info = (mark?.assets ?? airline.assets)[type];
+// A tile for each file of the given types: the color version and, when it
+// exists, the -mono one. `url` and `fileName` take the variant, e.g.
+// "logo-mono".
+const tilesFor = (
+  types: readonly string[],
+  assets: Partial<Record<string, { color?: boolean; mono?: boolean }>>,
+  url: (variant: string) => string,
+  fileName: (variant: string) => string,
+): AssetTile[] =>
+  types.flatMap((type) => {
+    const info = assets[type];
     if (!info) return [];
 
-    const tile = (variant: string, mono: boolean): AssetTile => ({
+    return [...(info.color ? [type] : []), ...(info.mono ? [`${type}-mono`] : [])].map((variant) => ({
       variant,
-      url: assetUrl(airline, variant, mark),
-      fileName: [airline.slug, mark?.since, variant].filter(Boolean).join("-") + ".svg",
-      mono,
-    });
-    const tiles: AssetTile[] = [];
-    if (info.color) tiles.push(tile(type, false));
-    if (info.mono) tiles.push(tile(`${type}-mono`, true));
-
-    return tiles;
+      url: url(variant),
+      fileName: fileName(variant),
+      mono: variant !== type,
+    }));
   });
+
+// A tile for each file the airline ships (a -mono one is always there for
+// single-color marks). With `mark`, the files of that older set from the
+// airline's history.
+export const getAssetTiles = (airline: Airline, mark?: HistoricalMarks): AssetTile[] =>
+  tilesFor(
+    ASSET_TYPES,
+    mark?.assets ?? airline.assets,
+    (variant) => assetUrl(airline, variant, mark),
+    (variant) => [airline.slug, mark?.since, variant].filter(Boolean).join("-") + ".svg",
+  );
 
 // The marks the airline used before its current ones, newest first. Each
 // was used from its `since` until the next one's, the newest until today's.
@@ -148,25 +157,14 @@ export const isAllianceList = (data: unknown): data is Alliance[] =>
       typeof a?.name === "string" && typeof a?.slug === "string" && typeof a?.assets === "object" && a.assets !== null,
   );
 
-// A tile for each file the alliance ships, as for an airline: the color
-// version and, when it exists, the -mono one
+// A tile for each file the alliance ships, as for an airline
 export const allianceTiles = (alliance: Alliance): AssetTile[] =>
-  MARK_TYPES.flatMap((type) => {
-    const info = alliance.assets[type];
-    if (!info) return [];
-
-    const tile = (variant: string, mono: boolean): AssetTile => ({
-      variant,
-      url: dataFileUrl(`alliances/${alliance.slug}/${variant}.svg`),
-      fileName: `${alliance.slug}-${variant}.svg`,
-      mono,
-    });
-    const tiles: AssetTile[] = [];
-    if (info.color) tiles.push(tile(type, false));
-    if (info.mono) tiles.push(tile(`${type}-mono`, true));
-
-    return tiles;
-  });
+  tilesFor(
+    MARK_TYPES,
+    alliance.assets,
+    (variant) => dataFileUrl(`alliances/${alliance.slug}/${variant}.svg`),
+    (variant) => `${alliance.slug}-${variant}.svg`,
+  );
 
 // The mark shown beside an alliance's name: its icon, else its logo, color
 // before mono; undefined while the collection has neither
@@ -179,8 +177,3 @@ export const allianceMark = (alliance?: Alliance): AssetTile | undefined =>
 export const isMemberOf = (airline: Airline, alliance: Alliance): boolean =>
   airline.alliance === alliance.name ||
   (Boolean(alliance.defunct) && (airline.alliance_history ?? []).some((item) => item.alliance === alliance.name));
-
-// "1997", or "2016–2023" for an alliance that was disbanded; undefined when
-// neither year is known
-export const allianceYears = ({ founded, ceased }: Pick<Alliance, "founded" | "ceased">) =>
-  ceased ? `${founded ?? "?"}–${ceased}` : founded ? String(founded) : undefined;

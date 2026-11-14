@@ -1,24 +1,13 @@
 import { ActionPanel, Action, Grid, Icon } from "@raycast/api";
-import { useCachedPromise } from "@raycast/utils";
-import { useMemo, useState } from "react";
 import { ceasedLabel, getFlagEmoji } from "../utils";
-import { isMemberOf, previewUrl, searchKeywords } from "../utils/airlines";
-import { fetchAirlines, fetchAlliances } from "../utils/fetch";
+import { previewUrl, searchKeywords } from "../utils/airlines";
 import AirlineAssets from "./assets";
-import SearchBar from "./searchbar";
+import SearchBar, { useAllianceFilter } from "./searchbar";
 
 // The airline grid of Browse Airlines, also opened from Browse Alliances on
 // one alliance's members (`alliance`, without remembering that filter)
 export default function AirlineGrid({ alliance: initial = "All" }: { alliance?: string }) {
-  const { isLoading, data = [] } = useCachedPromise(fetchAirlines);
-  const { data: alliances = [] } = useCachedPromise(fetchAlliances);
-  const [alliance, setAlliance] = useState(initial);
-
-  const filteredAirlines = useMemo(() => {
-    const selected = alliances.find((a) => a.name === alliance);
-    if (!selected) return data;
-    return data.filter((a) => isMemberOf(a, selected));
-  }, [alliance, alliances, data]);
+  const { isLoading, alliances, alliance, setAlliance, filtered: filteredAirlines } = useAllianceFilter(initial);
 
   return (
     <Grid

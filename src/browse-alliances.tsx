@@ -1,11 +1,13 @@
-import { Action, ActionPanel, Color, Grid, Icon } from "@raycast/api";
+import { Action, ActionPanel, Grid, Icon } from "@raycast/api";
 import { useCachedPromise } from "@raycast/utils";
 import { useMemo } from "react";
 import type { Alliance } from "soaring-symbols";
-import { allianceMark, allianceTiles, allianceYears, isMemberOf } from "./utils/airlines";
+import { operatingYears } from "./utils";
+import { allianceMark, isMemberOf } from "./utils/airlines";
 import { fetchAirlines, fetchAlliances } from "./utils/fetch";
 import AirlineGrid from "./components/airline-grid";
 import { AllianceAssets } from "./components/assets";
+import { allianceIcon } from "./components/searchbar";
 
 export default function BrowseAlliances() {
   const { isLoading, data: alliances = [] } = useCachedPromise(fetchAlliances);
@@ -18,20 +20,14 @@ export default function BrowseAlliances() {
   );
 
   const renderItem = (alliance: Alliance) => {
-    const mark = allianceMark(alliance);
     const members = memberCounts.get(alliance.slug) ?? 0;
-    const hasTiles = allianceTiles(alliance).length > 0;
 
     return (
       <Grid.Item
         key={alliance.slug}
-        content={
-          mark
-            ? { source: mark.url, tintColor: mark.mono ? Color.PrimaryText : undefined }
-            : { source: Icon.TwoPeople, tintColor: Color.SecondaryText }
-        }
+        content={allianceIcon(alliance)}
         title={alliance.name}
-        subtitle={[allianceYears(alliance), `${members} airline${members === 1 ? "" : "s"}`]
+        subtitle={[operatingYears(alliance), `${members} airline${members === 1 ? "" : "s"}`]
           .filter(Boolean)
           .join(" · ")}
         keywords={[alliance.slug, alliance.branding?.tagline].filter((k): k is string => Boolean(k))}
@@ -43,7 +39,7 @@ export default function BrowseAlliances() {
                 icon={Icon.AirplaneFilled}
                 target={<AirlineGrid alliance={alliance.name} />}
               />
-              {hasTiles && (
+              {allianceMark(alliance) && (
                 <Action.Push
                   title="View Alliance Assets"
                   icon={Icon.AppWindowGrid2x2}
