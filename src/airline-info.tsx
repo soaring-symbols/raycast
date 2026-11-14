@@ -3,7 +3,8 @@ import { useMemo, useState } from "react";
 import { ceasedLabel, getFlagEmoji, operatingYears } from "./utils";
 import type { Airline } from "soaring-symbols";
 import { allianceMark, formerNames, groupAirlines, previewUrl, searchKeywords } from "./utils/airlines";
-import SearchBar, { allianceIcon, useAllianceFilter } from "./components/searchbar";
+import { allianceIcon, useAllianceFilter } from "./components/alliances";
+import SearchBar from "./components/searchbar";
 
 export default function ViewAirlineInfo() {
   const {

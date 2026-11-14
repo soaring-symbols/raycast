@@ -7,7 +7,7 @@ import { allianceMark, isMemberOf } from "./utils/airlines";
 import { fetchAirlines, fetchAlliances } from "./utils/fetch";
 import AirlineGrid from "./components/airline-grid";
 import { AllianceAssets } from "./components/assets";
-import { allianceIcon } from "./components/searchbar";
+import { allianceIcon } from "./components/alliances";
 
 export default function BrowseAlliances() {
   const { isLoading, data: alliances = [] } = useCachedPromise(fetchAlliances);
@@ -37,7 +37,7 @@ export default function BrowseAlliances() {
               <Action.Push
                 title="Show Member Airlines"
                 icon={Icon.AirplaneFilled}
-                target={<AirlineGrid alliance={alliance.name} />}
+                target={<AirlineGrid alliance={alliance.name} lists={{ airlines, alliances }} />}
               />
               {allianceMark(alliance) && (
                 <Action.Push

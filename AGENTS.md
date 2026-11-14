@@ -9,6 +9,7 @@ A Raycast extension for browsing the [Soaring Symbols](https://github.com/soarin
 - `src/browse-airlines.tsx`, `src/browse-alliances.tsx` and `src/airline-info.tsx` — the three commands declared in `package.json`.
 - `src/components/airline-grid.tsx` — the airline grid of Browse Airlines, also opened from Browse Alliances on one alliance's members.
 - `src/components/assets.tsx` — the grid of an airline's or an alliance's SVG files, with copy and download actions.
+- `src/components/alliances.tsx` — `useAllianceFilter` (both lists and the airlines the filter lets through, for the commands with the filter; a pushed view can take its parent's lists instead of fetching) and `allianceIcon`.
 - `src/components/searchbar.tsx` — the alliance filter, listing every alliance in the data (disbanded ones match the airlines that flew in them, through `alliance_history`).
 - `src/utils/airlines.ts` — data and SVG URLs (`DATA_LINE`), and the helpers that decide which asset tiles to show, for airlines and alliances. Keep it free of runtime imports of other files: the tests run it through Node's type stripping, which doesn't resolve extensionless paths.
 - `src/utils/fetch.ts` — loads the airline and alliance lists from the same release, falling back to the bundled ones.

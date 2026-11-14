@@ -2,12 +2,21 @@ import { ActionPanel, Action, Grid, Icon } from "@raycast/api";
 import { ceasedLabel, getFlagEmoji } from "../utils";
 import { previewUrl, searchKeywords } from "../utils/airlines";
 import AirlineAssets from "./assets";
-import SearchBar, { useAllianceFilter } from "./searchbar";
+import type { Airline, Alliance } from "soaring-symbols";
+import { useAllianceFilter } from "./alliances";
+import SearchBar from "./searchbar";
 
 // The airline grid of Browse Airlines, also opened from Browse Alliances on
-// one alliance's members (`alliance`, without remembering that filter)
-export default function AirlineGrid({ alliance: initial = "All" }: { alliance?: string }) {
-  const { isLoading, alliances, alliance, setAlliance, filtered: filteredAirlines } = useAllianceFilter(initial);
+// one alliance's members (`alliance`, without remembering that filter, and
+// the `lists` it already loaded)
+export default function AirlineGrid({
+  alliance: initial = "All",
+  lists,
+}: {
+  alliance?: string;
+  lists?: { airlines: Airline[]; alliances: Alliance[] };
+}) {
+  const { isLoading, alliances, alliance, setAlliance, filtered: filteredAirlines } = useAllianceFilter(initial, lists);
 
   return (
     <Grid
