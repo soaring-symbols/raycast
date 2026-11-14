@@ -1,6 +1,13 @@
 # Soaring Symbols Changelog
 
-## [Boarding Pass] - {PR_MERGE_DATE}
+## [Codeshare] - {PR_MERGE_DATE}
+
+- New Browse Alliances command: oneworld, SkyTeam, Star Alliance and the alliances since disbanded, with their marks to copy or download and the airlines that fly, or flew, in each.
+- The alliance filter lists every alliance with its mark, disbanded ones included: Value Alliance finds Scoot.
+- Airline Information shows the alliance's mark and the alliances an airline has left.
+- Read the 0.4 data line, so new airlines and logos keep arriving after the Soaring Symbols 0.4 release.
+
+## [Boarding Pass] - 2026-11-12
 
 - Airline Information shows the callsign, hubs, founding year and former names, or the years flown for airlines that have ceased.
 - Search both commands by callsign or former name: T'way Air finds Trinity Airways.

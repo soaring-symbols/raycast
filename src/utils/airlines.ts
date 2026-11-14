@@ -1,10 +1,10 @@
-import type { Airline, AssetType, HistoricalMarks } from "soaring-symbols";
+import type { Airline, Alliance, AllianceAssetType, AssetType, HistoricalMarks } from "soaring-symbols";
 
-// The npm release line the extension reads, served by jsDelivr. Every 0.3.x
+// The npm release line the extension reads, served by jsDelivr. Every 0.4.x
 // release (new airlines, fixed SVGs) arrives without a store update; a
-// breaking 0.4.0 never does. Move this, and the soaring-symbols dependency,
+// breaking 0.5.0 never does. Move this, and the soaring-symbols dependency,
 // to the next line in the same extension update.
-const DATA_LINE = "0.3";
+const DATA_LINE = "0.4";
 
 // Asks jsDelivr which release the line points at now, e.g. "0.2.4"
 export const RESOLVE_URL = `https://data.jsdelivr.com/v1/packages/npm/soaring-symbols/resolved?specifier=${DATA_LINE}`;
@@ -30,12 +30,23 @@ const cdnBase = (version: string) => `https://cdn.jsdelivr.net/npm/soaring-symbo
 export const airlinesUrl = (release?: string) =>
   `${cdnBase(isLineRelease(release) ? release : DATA_LINE)}/airlines.json`;
 
+// alliances.json, likewise
+export const alliancesUrl = (release?: string) =>
+  `${cdnBase(isLineRelease(release) ? release : DATA_LINE)}/alliances.json`;
+
+// A file of the release the data came from, e.g. "alliances/skyteam/icon.svg"
+export const dataFileUrl = (file: string) => `${cdnBase(dataVersion)}/${file}`;
+
 const ASSET_TYPES: AssetType[] = ["logo", "icon", "tail"];
 
-// What both commands search: name, codes, slug, callsign and the names a
-// renamed airline flew under before (T'way Air for Trinity Airways)
+// The names a renamed airline flew under before, oldest first (T'way Air
+// for Trinity Airways); `former` also lists codes that changed on their own
+export const formerNames = (airline: Airline): string[] =>
+  (airline.former ?? []).flatMap((item) => (item.name ? [item.name] : []));
+
+// What both commands search: name, codes, slug, callsign and former names
 export const searchKeywords = (airline: Airline): string[] =>
-  [airline.name, airline.iata, airline.icao, airline.slug, airline.callsign, ...(airline.previous_names ?? [])].filter(
+  [airline.name, airline.iata, airline.icao, airline.slug, airline.callsign, ...formerNames(airline)].filter(
     (k): k is string => Boolean(k),
   );
 
@@ -68,7 +79,7 @@ export const isAirlineList = (data: unknown): data is Airline[] =>
   data.length > 0 &&
   data.every((a) => typeof a?.slug === "string" && typeof a?.assets === "object" && a.assets !== null);
 
-interface AssetTile {
+export interface AssetTile {
   /** File name without .svg, e.g. "logo" or "logo-mono". */
   variant: string;
   url: string;
@@ -120,3 +131,56 @@ export const previewUrl = (airline: Airline, type: AssetType): string | undefine
 
   return assetUrl(airline, info.color ? type : `${type}-mono`);
 };
+
+// --- Alliances ---
+// An alliance's marks, the icon first: alliances show their symbol far more
+// often than a logo with their name. They have no tail.
+const MARK_TYPES: AllianceAssetType[] = ["icon", "logo"];
+
+// Whether fetched JSON is a usable alliance list: a non-empty array of
+// alliances that each have a name, a slug and assets (empty until the
+// collection has their marks)
+export const isAllianceList = (data: unknown): data is Alliance[] =>
+  Array.isArray(data) &&
+  data.length > 0 &&
+  data.every(
+    (a) =>
+      typeof a?.name === "string" && typeof a?.slug === "string" && typeof a?.assets === "object" && a.assets !== null,
+  );
+
+// A tile for each file the alliance ships, as for an airline: the color
+// version and, when it exists, the -mono one
+export const allianceTiles = (alliance: Alliance): AssetTile[] =>
+  MARK_TYPES.flatMap((type) => {
+    const info = alliance.assets[type];
+    if (!info) return [];
+
+    const tile = (variant: string, mono: boolean): AssetTile => ({
+      variant,
+      url: dataFileUrl(`alliances/${alliance.slug}/${variant}.svg`),
+      fileName: `${alliance.slug}-${variant}.svg`,
+      mono,
+    });
+    const tiles: AssetTile[] = [];
+    if (info.color) tiles.push(tile(type, false));
+    if (info.mono) tiles.push(tile(`${type}-mono`, true));
+
+    return tiles;
+  });
+
+// The mark shown beside an alliance's name: its icon, else its logo, color
+// before mono; undefined while the collection has neither
+export const allianceMark = (alliance?: Alliance): AssetTile | undefined =>
+  alliance ? allianceTiles(alliance)[0] : undefined;
+
+// Whether the airline is in the alliance: a member now, or one that was a
+// member when it ceased. A disbanded alliance has no members left, so it
+// counts every airline that flew in it (Scoot in Value Alliance).
+export const isMemberOf = (airline: Airline, alliance: Alliance): boolean =>
+  airline.alliance === alliance.name ||
+  (Boolean(alliance.defunct) && (airline.alliance_history ?? []).some((item) => item.alliance === alliance.name));
+
+// "1997", or "2016–2023" for an alliance that was disbanded; undefined when
+// neither year is known
+export const allianceYears = ({ founded, ceased }: Pick<Alliance, "founded" | "ceased">) =>
+  ceased ? `${founded ?? "?"}–${ceased}` : founded ? String(founded) : undefined;
