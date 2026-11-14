@@ -1,15 +1,21 @@
 import { Action, ActionPanel, Color, Icon, List } from "@raycast/api";
-import { useCachedPromise } from "@raycast/utils";
 import { useMemo, useState } from "react";
 import { ceasedLabel, getFlagEmoji, operatingYears } from "./utils";
 import type { Airline } from "soaring-symbols";
-import { groupAirlines, previewUrl, searchKeywords } from "./utils/airlines";
-import { fetchAirlines } from "./utils/fetch";
+import { allianceMark, formerNames, groupAirlines, previewUrl, searchKeywords } from "./utils/airlines";
+import { allianceIcon, useAllianceFilter } from "./components/alliances";
 import SearchBar from "./components/searchbar";
 
 export default function ViewAirlineInfo() {
-  const { isLoading, data = [] } = useCachedPromise(fetchAirlines);
-  const [alliance, setAlliance] = useState("All");
+  const {
+    isLoading,
+    airlines: data,
+    alliances,
+    byName,
+    alliance,
+    setAlliance,
+    filtered: filteredAirlines,
+  } = useAllianceFilter();
   const [searchText, setSearchText] = useState("");
 
   // Parents and subsidiaries come from the whole list, whatever the filter
@@ -21,11 +27,6 @@ export default function ViewAirlineInfo() {
     setSearchText(name);
   };
 
-  const filteredAirlines = useMemo(() => {
-    if (alliance === "All") return data;
-    return data.filter((a) => a.alliance === alliance);
-  }, [data, alliance]);
-
   return (
     <List
       isLoading={isLoading}
@@ -35,7 +36,7 @@ export default function ViewAirlineInfo() {
       searchText={searchText}
       onSearchTextChange={setSearchText}
       searchBarPlaceholder="Search airlines by name, IATA, or ICAO..."
-      searchBarAccessory={<SearchBar type="list" selected={alliance} onSelect={setAlliance} />}
+      searchBarAccessory={<SearchBar type="list" alliances={alliances} selected={alliance} onSelect={setAlliance} />}
     >
       {filteredAirlines.map((airline: Airline) => {
         const flags = airline.country
@@ -60,6 +61,10 @@ export default function ViewAirlineInfo() {
           { title: "Succeeded By", airlines: successor ? [successor] : [] },
           { title: "Preceded By", airlines: predecessors },
         ].filter((row) => row.airlines.length > 0);
+
+        const former = formerNames(airline);
+        // The alliance's mark beside its name, once the collection has one
+        const memberOf = airline.alliance ? byName.get(airline.alliance) : undefined;
 
         const markdown = logo ? `<img src="${logo}" alt="${airline.name}" width="200" height="200" />` : "";
 
@@ -98,7 +103,19 @@ export default function ViewAirlineInfo() {
                     )}
                     <List.Item.Detail.Metadata.Separator />
                     <List.Item.Detail.Metadata.Label title="Country" text={airline.country} />
-                    <List.Item.Detail.Metadata.Label title="Alliance" text={airline.alliance} />
+                    <List.Item.Detail.Metadata.Label
+                      title="Alliance"
+                      text={airline.alliance}
+                      icon={allianceMark(memberOf) ? allianceIcon(memberOf) : undefined}
+                    />
+                    {airline.alliance_history?.length ? (
+                      <List.Item.Detail.Metadata.Label
+                        title="Former Alliances"
+                        text={airline.alliance_history
+                          .map((m) => `${m.alliance} (${m.since ? `${m.since}–` : "until "}${m.until})`)
+                          .join(", ")}
+                      />
+                    ) : null}
                     {airline.hubs?.length ? (
                       <List.Item.Detail.Metadata.TagList title={airline.hubs.length > 1 ? "Hubs" : "Hub"}>
                         {airline.hubs.map((hub) => (
@@ -106,8 +123,8 @@ export default function ViewAirlineInfo() {
                         ))}
                       </List.Item.Detail.Metadata.TagList>
                     ) : null}
-                    {airline.previous_names?.length ? (
-                      <List.Item.Detail.Metadata.Label title="Formerly" text={airline.previous_names.join(", ")} />
+                    {former.length ? (
+                      <List.Item.Detail.Metadata.Label title="Formerly" text={former.join(", ")} />
                     ) : null}
                     {relatedRows.map((row) => (
                       <List.Item.Detail.Metadata.TagList key={row.title} title={row.title}>
