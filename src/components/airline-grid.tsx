@@ -58,7 +58,7 @@ export default function AirlineGrid({
               accessory={
                 airline.flag_carrier
                   ? {
-                      icon: getFlagEmoji(airline.country?.split(",")?.[0]),
+                      icon: getFlagEmoji(airline.country),
                       tooltip: "Flag Carrier",
                     }
                   : undefined

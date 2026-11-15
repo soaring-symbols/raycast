@@ -6,6 +6,7 @@
 - The alliance filter lists every alliance with its mark, disbanded ones included: Value Alliance finds Scoot.
 - Airline Information shows the alliance's mark and the alliances an airline has left.
 - Read the 0.4 data line, so new airlines and logos keep arriving after the Soaring Symbols 0.4 release.
+- A joint flag carrier shows the flag of each country it serves: Denmark, Norway and Sweden for Scandinavian Airlines, now listed under Sweden.
 
 ## [Boarding Pass] - 2026-11-12
 

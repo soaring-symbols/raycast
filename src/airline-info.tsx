@@ -2,7 +2,14 @@ import { Action, ActionPanel, Color, Icon, List } from "@raycast/api";
 import { useMemo, useState } from "react";
 import { ceasedLabel, getFlagEmoji, operatingYears } from "./utils";
 import type { Airline } from "soaring-symbols";
-import { allianceMark, formerNames, groupAirlines, previewUrl, searchKeywords } from "./utils/airlines";
+import {
+  allianceMark,
+  flagCarrierCountries,
+  formerNames,
+  groupAirlines,
+  previewUrl,
+  searchKeywords,
+} from "./utils/airlines";
 import { allianceIcon, useAllianceFilter } from "./components/alliances";
 import SearchBar from "./components/searchbar";
 
@@ -39,8 +46,7 @@ export default function ViewAirlineInfo() {
       searchBarAccessory={<SearchBar type="list" alliances={alliances} selected={alliance} onSelect={setAlliance} />}
     >
       {filteredAirlines.map((airline: Airline) => {
-        const flags = airline.country
-          ?.split(",")
+        const flags = flagCarrierCountries(airline)
           .map((c) => getFlagEmoji(c))
           .join(" ");
 
