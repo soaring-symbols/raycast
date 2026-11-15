@@ -7,6 +7,7 @@
 - Airline Information shows the alliance's mark and the alliances an airline has left.
 - Read the 0.4 data line, so new airlines and logos keep arriving after the Soaring Symbols 0.4 release.
 - A joint flag carrier shows the flag of each country it serves: Denmark, Norway and Sweden for Scandinavian Airlines, now listed under Sweden.
+- Airline Information shows the country by its flag and name, such as 🇸🇪 Sweden, instead of its code.
 
 ## [Boarding Pass] - 2026-11-12
 
