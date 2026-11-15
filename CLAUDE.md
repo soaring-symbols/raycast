@@ -6,6 +6,6 @@ The shared agent instructions for this repository live in `AGENTS.md`; Claude Co
 
 ## Claude Code specifics
 
-- Publishing and pulling store changes: follow the maintainer's personal `raycast-store` skill, which has the step-by-step commands, on top of "Publishing" in `AGENTS.md`.
+- Publishing and pulling store changes: follow the maintainer's personal `raycast-publish` skill, which has the step-by-step commands, on top of "Publishing" in `AGENTS.md`.
 
 Put anything that applies to every agent in `AGENTS.md`, not here.
