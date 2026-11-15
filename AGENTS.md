@@ -51,19 +51,7 @@ Dependencies are tracked in `package-lock.json` only: install them with npm (`bu
 
 ## Publishing
 
-Only the maintainer publishes, and only the maintainer runs `npm run publish` or `npx ray pull-contributions`: never run either unasked.
-
-`npm run publish` pushes the extension folder to the `ext/soaring-symbols` branch of the maintainer's fork of [raycast/extensions](https://github.com/raycast/extensions). While a store pull request from that branch is open, a new publish adds a commit to it instead of opening another, so fixes made before it merges go into the same pull request.
-
-Some files this repository keeps differently from the store, and every publish brings them back into the pull request. After each publish, remove them from the pull request branch with one commit in the Ray CLI's own clone of the fork (`~/.config/raycast/public-extensions-fork`), so the next publish doesn't ask for a pull:
-
-- `AGENTS.md` and `CLAUDE.md`: delete them; the store has no agent instructions.
-- `.gitignore`: restore the store's copy (Raycast's default), keeping the gitignore.io one here.
-- `assets/extension-icon.png` and `metadata/*.png`: restore the store's copies, which Raycast optimized, unless the images themselves changed. This repository keeps the originals.
-
-### Pulling store changes
-
-`npm run publish` asks for `npx ray pull-contributions` when the pull request branch has commits the Ray CLI's clone lacks, or when the store's copy changed since the last pull (raycastbot dating the changelog and optimizing images on merge). The pull updates that clone, which is all publishing checks, then merges the store's copy into the current branch from the local tag `__raycast_latest_publish_ext/soaring-symbols__` (the last published commit). Never keep that merge: it forks the history and brings back the files above. Drop it (`git merge --abort`, or `git reset --hard ORIG_HEAD` when it went through), bring over only the real changes as a normal commit (`git checkout contributions/merge-<id> -- CHANGELOG.md`), delete the `contributions/merge-<id>` branch and, if the tag points off `main`, move it back to the published commit. Publish only from a commit already on `origin/main`.
+Only the maintainer publishes, and only the maintainer runs `npm run publish` or `npx ray pull-contributions`: never run either unasked. Both follow the maintainer's shared rules for every Raycast extension, with no exceptions here: the store pull request never carries the agent instructions, this repository's `.gitignore` or unchanged originals of images the store already has in optimized form, and the merge `ray pull-contributions` makes is never kept on `main` (bring over only the real changes as a normal commit, so the history stays linear).
 
 ## Naming
 
