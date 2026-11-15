@@ -3,7 +3,9 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import {
   airlinesUrl,
+  countryName,
   earlierMarks,
+  flagCarrierCountries,
   formerNames,
   getAssetTiles,
   groupAirlines,
@@ -164,5 +166,34 @@ describe("searchKeywords", () => {
     };
     assert.ok(searchKeywords(trinity as never).includes("T'way Air"));
     assert.deepEqual(formerNames(trinity as never), ["Hansung Airlines", "T'way Air"]);
+  });
+});
+
+describe("flagCarrierCountries", () => {
+  it("lists every country of a joint flag carrier", () => {
+    assert.deepEqual(
+      flagCarrierCountries({ country: "SE", flag_carrier: true, flag_carrier_countries: ["DK", "NO", "SE"] }),
+      ["DK", "NO", "SE"],
+    );
+  });
+
+  it("gives a flag carrier its own country", () => {
+    assert.deepEqual(flagCarrierCountries({ country: "VN", flag_carrier: true }), ["VN"]);
+  });
+
+  it("gives none to an airline that isn't a flag carrier", () => {
+    assert.deepEqual(flagCarrierCountries({ country: "VN" }), []);
+    assert.deepEqual(flagCarrierCountries({ country: "VN", flag_carrier: false }), []);
+  });
+});
+
+describe("countryName", () => {
+  it("names a country by its code", () => {
+    assert.equal(countryName("SE"), "Sweden");
+    assert.equal(countryName("VN"), "Vietnam");
+  });
+
+  it("keeps a code Intl can't name", () => {
+    assert.equal(countryName("GB-SCT"), "GB-SCT");
   });
 });

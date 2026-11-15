@@ -2,10 +2,11 @@
 
 ## [Codeshare] - {PR_MERGE_DATE}
 
-- New Browse Alliances command: oneworld, SkyTeam, Star Alliance and the alliances since disbanded, with their marks to copy or download and the airlines that fly, or flew, in each.
+- New Browse Alliances command: oneworld, SkyTeam, Star Alliance and disbanded alliances, with their marks to copy or download and the airlines that fly, or flew, in each.
 - The alliance filter lists every alliance with its mark, disbanded ones included: Value Alliance finds Scoot.
-- Airline Information shows the alliance's mark and the alliances an airline has left.
-- Read the 0.4 data line, so new airlines and logos keep arriving after the Soaring Symbols 0.4 release.
+- Airline Information shows the alliance's mark, the alliances an airline has left, and its country by flag and name (🇸🇪 Sweden).
+- Scandinavian Airlines is listed under Sweden and, as their joint flag carrier, shows the flags of Denmark, Norway and Sweden.
+- New airlines and logos keep arriving after the Soaring Symbols 0.4 release.
 
 ## [Boarding Pass] - 2026-11-12
 
