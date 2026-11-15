@@ -171,19 +171,15 @@ describe("searchKeywords", () => {
 
 describe("flagCarrierCountries", () => {
   it("lists every country of a joint flag carrier", () => {
-    assert.deepEqual(
-      flagCarrierCountries({ country: "SE", flag_carrier: true, flag_carrier_countries: ["DK", "NO", "SE"] }),
-      ["DK", "NO", "SE"],
-    );
+    assert.deepEqual(flagCarrierCountries({ country: "SE", flag_carrier_countries: ["DK", "NO", "SE"] }), [
+      "DK",
+      "NO",
+      "SE",
+    ]);
   });
 
-  it("gives a flag carrier its own country", () => {
-    assert.deepEqual(flagCarrierCountries({ country: "VN", flag_carrier: true }), ["VN"]);
-  });
-
-  it("gives none to an airline that isn't a flag carrier", () => {
-    assert.deepEqual(flagCarrierCountries({ country: "VN" }), []);
-    assert.deepEqual(flagCarrierCountries({ country: "VN", flag_carrier: false }), []);
+  it("gives any other flag carrier its own country", () => {
+    assert.deepEqual(flagCarrierCountries({ country: "VN" }), ["VN"]);
   });
 });
 

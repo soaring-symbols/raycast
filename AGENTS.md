@@ -30,7 +30,7 @@ At runtime the extension loads `airlines.json` and the SVGs from the published `
 When the library releases a new minor line, update the extension in one change:
 
 1. Set `DATA_LINE` to the new line.
-2. Move the `soaring-symbols` dependency to it (`npm install soaring-symbols@^0.5.0`, plus `bun install`).
+2. Move the `soaring-symbols` dependency to it (`npm install soaring-symbols@^0.5.0`).
 3. Adapt the code to the breaking change.
 4. Add a changelog entry and publish.
 
@@ -47,7 +47,7 @@ Prepare this before the library release when possible, so installed copies don't
 | `npm test`         | Run the `*.test.ts` files in `test/` with Node's test runner (Node 22.18+). |
 | `npm run publish`  | Open a pull request to the Raycast Store. Only the maintainer runs it.      |
 
-Dependencies are tracked in both `package-lock.json` and `bun.lock`; update both together.
+Dependencies are tracked in `package-lock.json` only: install them with npm (`bun.lock` is git-ignored).
 
 ## Naming
 

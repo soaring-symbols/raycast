@@ -191,11 +191,9 @@ export const allianceCount = (alliance: Alliance, airlines: Airline[]): string =
 
 // The countries a flag carrier flies the flag of: each one in
 // `flag_carrier_countries` for a joint flag carrier (Scandinavian Airlines),
-// else its own country; none for an airline that isn't a flag carrier.
-// (`flag_carrier_countries` comes in soaring-symbols 0.4.1.)
-export const flagCarrierCountries = (
-  airline: Pick<Airline, "country" | "flag_carrier"> & { flag_carrier_countries?: readonly string[] },
-): readonly string[] => (airline.flag_carrier ? (airline.flag_carrier_countries ?? [airline.country]) : []);
+// else its own country
+export const flagCarrierCountries = (airline: Pick<Airline, "country" | "flag_carrier_countries">): readonly string[] =>
+  airline.flag_carrier_countries ?? [airline.country];
 
 const regionNames = new Intl.DisplayNames(["en"], { type: "region" });
 
