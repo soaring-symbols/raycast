@@ -196,3 +196,15 @@ export const allianceCount = (alliance: Alliance, airlines: Airline[]): string =
 export const flagCarrierCountries = (
   airline: Pick<Airline, "country" | "flag_carrier"> & { flag_carrier_countries?: readonly string[] },
 ): readonly string[] => (airline.flag_carrier ? (airline.flag_carrier_countries ?? [airline.country]) : []);
+
+const regionNames = new Intl.DisplayNames(["en"], { type: "region" });
+
+// The English name of a country code ("SE" is Sweden), or the code itself
+// for one Intl doesn't know, such as a subdivision like "GB-SCT"
+export const countryName = (code: string): string => {
+  try {
+    return regionNames.of(code) ?? code;
+  } catch {
+    return code;
+  }
+};

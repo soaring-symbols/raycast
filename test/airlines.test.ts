@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import {
   airlinesUrl,
+  countryName,
   earlierMarks,
   flagCarrierCountries,
   formerNames,
@@ -183,5 +184,16 @@ describe("flagCarrierCountries", () => {
   it("gives none to an airline that isn't a flag carrier", () => {
     assert.deepEqual(flagCarrierCountries({ country: "VN" }), []);
     assert.deepEqual(flagCarrierCountries({ country: "VN", flag_carrier: false }), []);
+  });
+});
+
+describe("countryName", () => {
+  it("names a country by its code", () => {
+    assert.equal(countryName("SE"), "Sweden");
+    assert.equal(countryName("VN"), "Vietnam");
+  });
+
+  it("keeps a code Intl can't name", () => {
+    assert.equal(countryName("GB-SCT"), "GB-SCT");
   });
 });

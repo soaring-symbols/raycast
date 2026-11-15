@@ -4,6 +4,7 @@ import { ceasedLabel, getFlagEmoji, operatingYears } from "./utils";
 import type { Airline } from "soaring-symbols";
 import {
   allianceMark,
+  countryName,
   flagCarrierCountries,
   formerNames,
   groupAirlines,
@@ -108,7 +109,10 @@ export default function ViewAirlineInfo() {
                       <List.Item.Detail.Metadata.Label title={airline.ceased ? "Operated" : "Founded"} text={years} />
                     )}
                     <List.Item.Detail.Metadata.Separator />
-                    <List.Item.Detail.Metadata.Label title="Country" text={airline.country} />
+                    <List.Item.Detail.Metadata.Label
+                      title="Country"
+                      text={`${getFlagEmoji(airline.country)} ${countryName(airline.country)}`}
+                    />
                     <List.Item.Detail.Metadata.Label
                       title="Alliance"
                       text={airline.alliance}
