@@ -1,18 +1,19 @@
-import { Color, Icon, type Image } from "@raycast/api";
+import { Color, Icon, environment, type Image } from "@raycast/api";
 import { useCachedPromise } from "@raycast/utils";
 import { useMemo, useState } from "react";
 import type { Airline, Alliance } from "soaring-symbols";
 import { allianceMark, isMemberOf } from "../utils/airlines";
 import { fetchAirlines, fetchAlliances } from "../utils/fetch";
 
-// An alliance's mark as a Raycast image, monochrome ones tinted to the
-// theme; a neutral group icon while the collection has no mark for it
+// An alliance's mark as a Raycast image: in dark mode its -dark.svg when
+// the data has one, monochrome ones tinted to the theme; a neutral group
+// icon while the collection has no mark for it
 export const allianceIcon = (alliance?: Alliance): Image.ImageLike => {
   const mark = allianceMark(alliance);
+  if (!mark) return { source: Icon.TwoPeople, tintColor: Color.SecondaryText };
+  if (environment.appearance === "dark" && mark.dark) return { source: mark.dark.url };
 
-  return mark
-    ? { source: mark.url, tintColor: mark.mono ? Color.PrimaryText : undefined }
-    : { source: Icon.TwoPeople, tintColor: Color.SecondaryText };
+  return { source: mark.url, tintColor: mark.mono ? Color.PrimaryText : undefined };
 };
 
 // Both lists and the airlines the alliance filter lets through, for the

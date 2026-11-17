@@ -1,4 +1,4 @@
-import { Action, ActionPanel, Clipboard, Grid, Icon, Color, showToast, Toast } from "@raycast/api";
+import { Action, ActionPanel, Clipboard, Grid, Icon, Color, environment, showToast, Toast } from "@raycast/api";
 import fs from "fs";
 import path from "path";
 import type { Airline, Alliance } from "soaring-symbols";
@@ -22,16 +22,52 @@ const getDownloadsDir = (): string => {
   return path.join(home, "Downloads");
 };
 
+const copySvg = async (source: string) => {
+  try {
+    const svg = await getSVGContent(source);
+    await Clipboard.copy(svg);
+    await showToast({ style: Toast.Style.Success, title: "SVG copied to clipboard" });
+  } catch (err) {
+    await showToast({
+      style: Toast.Style.Failure,
+      title: "Failed to copy SVG",
+      message: (err as Error)?.message ?? "Unknown error",
+    });
+  }
+};
+
+const downloadSvg = async (source: string, fileName: string) => {
+  try {
+    const svg = await getSVGContent(source);
+    const filePath = path.join(getDownloadsDir(), fileName);
+
+    // Validate basic SVG structure before writing
+    if (!isProbablySvg(svg)) {
+      await showToast({ style: Toast.Style.Failure, title: "Invalid SVG content" });
+      return;
+    }
+
+    fs.writeFileSync(filePath, svg, { encoding: "utf-8" });
+    await showToast({ style: Toast.Style.Success, title: "SVG downloaded", message: filePath });
+  } catch (err) {
+    await showToast({
+      style: Toast.Style.Failure,
+      title: "Failed to save SVG",
+      message: (err as Error)?.message ?? "Unknown error",
+    });
+  }
+};
+
 // A grid of SVG tiles, each with copy and download actions: the current
 // marks, then any older ones in a section each
 function MarkGrid({
   navigationTitle,
-  sections,
+  sections: given,
 }: {
   navigationTitle: string;
   sections: { key: string; title: string; tiles: AssetTile[] }[];
 }) {
-  const renderTile = ({ variant, url: source, fileName, mono }: AssetTile) => {
+  const renderTile = ({ variant, url: source, fileName, mono, dark }: AssetTile) => {
     const tintColor = mono ? Color.PrimaryText : undefined;
 
     return (
@@ -42,59 +78,36 @@ function MarkGrid({
         actions={
           <ActionPanel>
             <ActionPanel.Section title="SVG Actions">
-              <Action
-                title="Copy SVG"
-                icon={Icon.CopyClipboard}
-                onAction={async () => {
-                  try {
-                    const svg = await getSVGContent(source);
-                    await Clipboard.copy(svg);
-                    await showToast({ style: Toast.Style.Success, title: "SVG copied to clipboard" });
-                  } catch (err) {
-                    await showToast({
-                      style: Toast.Style.Failure,
-                      title: "Failed to copy SVG",
-                      message: (err as Error)?.message ?? "Unknown error",
-                    });
-                  }
-                }}
-              />
-              <Action
-                title="Download SVG…"
-                icon={Icon.Download}
-                onAction={async () => {
-                  try {
-                    const svg = await getSVGContent(source);
-                    const downloadsDir = getDownloadsDir();
-                    const filePath = path.join(downloadsDir, fileName);
-
-                    // Validate basic SVG structure before writing
-                    if (!isProbablySvg(svg)) {
-                      await showToast({ style: Toast.Style.Failure, title: "Invalid SVG content" });
-                      return;
-                    }
-
-                    fs.writeFileSync(filePath, svg, { encoding: "utf-8" });
-                    await showToast({
-                      style: Toast.Style.Success,
-                      title: "SVG downloaded",
-                      message: filePath,
-                    });
-                  } catch (err) {
-                    await showToast({
-                      style: Toast.Style.Failure,
-                      title: "Failed to save SVG",
-                      message: (err as Error)?.message ?? "Unknown error",
-                    });
-                  }
-                }}
-              />
+              <Action title="Copy SVG" icon={Icon.CopyClipboard} onAction={() => copySvg(source)} />
+              <Action title="Download SVG…" icon={Icon.Download} onAction={() => downloadSvg(source, fileName)} />
             </ActionPanel.Section>
+            {dark && (
+              <ActionPanel.Section title="For Dark Backgrounds">
+                <Action title="Copy SVG for Dark Backgrounds" icon={Icon.Moon} onAction={() => copySvg(dark.url)} />
+                <Action
+                  title="Download SVG for Dark Backgrounds…"
+                  icon={Icon.Download}
+                  onAction={() => downloadSvg(dark.url, dark.fileName)}
+                />
+              </ActionPanel.Section>
+            )}
           </ActionPanel>
         }
       />
     );
   };
+
+  // In dark mode, each mark with a -dark.svg also gets a tile of it, after
+  // its color one: white or recolored marks show only on a dark ground
+  const withDark = (tiles: AssetTile[]): AssetTile[] =>
+    environment.appearance === "dark"
+      ? tiles.flatMap((tile) =>
+          tile.dark
+            ? [tile, { variant: `${tile.variant}-dark`, url: tile.dark.url, fileName: tile.dark.fileName, mono: false }]
+            : [tile],
+        )
+      : tiles;
+  const sections = given.map((section) => ({ ...section, tiles: withDark(section.tiles) }));
 
   // With older marks, the current ones get a section of their own above them;
   // without, the grid stays a plain list of tiles

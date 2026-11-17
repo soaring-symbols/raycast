@@ -1,10 +1,10 @@
 import type { Airline, Alliance, AllianceAssetType, AssetType, HistoricalMarks } from "soaring-symbols";
 
-// The npm release line the extension reads, served by jsDelivr. Every 0.4.x
+// The npm release line the extension reads, served by jsDelivr. Every 0.5.x
 // release (new airlines, fixed SVGs) arrives without a store update; a
-// breaking 0.5.0 never does. Move this, and the soaring-symbols dependency,
+// breaking 0.6.0 never does. Move this, and the soaring-symbols dependency,
 // to the next line in the same extension update.
-const DATA_LINE = "0.4";
+const DATA_LINE = "0.5";
 
 // Asks jsDelivr which release the line points at now, e.g. "0.2.4"
 export const RESOLVE_URL = `https://data.jsdelivr.com/v1/packages/npm/soaring-symbols/resolved?specifier=${DATA_LINE}`;
@@ -85,26 +85,33 @@ export interface AssetTile {
   fileName: string;
   /** A monochrome version, drawn in currentColor, which the extension tints. */
   mono: boolean;
+  /**
+   * On a color tile, the type's -dark.svg for dark backgrounds, when the
+   * data ships one (from 0.5.0): shown in dark mode, and offered to copy.
+   */
+  dark?: { url: string; fileName: string };
 }
 
-// A tile for each file of the given types: the color version and, when it
-// exists, the -mono one. `url` and `fileName` take the variant, e.g.
-// "logo-mono".
+// A tile for each file of the given types: the color version, with its
+// -dark one when it exists, and the -mono one. `url` and `fileName` take the
+// variant, e.g. "logo-mono".
 const tilesFor = (
   types: readonly string[],
-  assets: Partial<Record<string, { color?: boolean; mono?: boolean }>>,
+  assets: Partial<Record<string, { color?: boolean; mono?: boolean; dark?: boolean }>>,
   url: (variant: string) => string,
   fileName: (variant: string) => string,
 ): AssetTile[] =>
   types.flatMap((type) => {
     const info = assets[type];
     if (!info) return [];
+    const dark = info.dark ? { url: url(`${type}-dark`), fileName: fileName(`${type}-dark`) } : undefined;
 
     return [...(info.color ? [type] : []), ...(info.mono ? [`${type}-mono`] : [])].map((variant) => ({
       variant,
       url: url(variant),
       fileName: fileName(variant),
       mono: variant !== type,
+      ...(variant === type && dark ? { dark } : {}),
     }));
   });
 
@@ -133,10 +140,12 @@ export const markTitle = (airline: Airline, mark: HistoricalMarks): string => {
   return mark.name && mark.name !== airline.name ? `${mark.name} · ${years}` : years;
 };
 
-// The first file to show for a type: its color version, else its mono one
-export const previewUrl = (airline: Airline, type: AssetType): string | undefined => {
+// The first file to show for a type: its color version, else its mono one.
+// With `dark` (Raycast in dark mode), its -dark.svg when the data ships one.
+export const previewUrl = (airline: Airline, type: AssetType, { dark = false } = {}): string | undefined => {
   const info = airline.assets[type];
   if (!info) return undefined;
+  if (dark && info.dark) return assetUrl(airline, `${type}-dark`);
 
   return assetUrl(airline, info.color ? type : `${type}-mono`);
 };

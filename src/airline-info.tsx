@@ -1,4 +1,4 @@
-import { Action, ActionPanel, Color, Icon, List } from "@raycast/api";
+import { Action, ActionPanel, Color, Icon, List, environment } from "@raycast/api";
 import { useMemo, useState } from "react";
 import { ceasedLabel, getFlagEmoji, operatingYears } from "./utils";
 import type { Airline } from "soaring-symbols";
@@ -51,7 +51,9 @@ export default function ViewAirlineInfo() {
           .map((c) => getFlagEmoji(c))
           .join(" ");
 
-        const logo = previewUrl(airline, "logo");
+        // In dark mode, the marks made for dark backgrounds when the data has them
+        const dark = environment.appearance === "dark";
+        const logo = previewUrl(airline, "logo", { dark });
         const ceased = ceasedLabel(airline);
         const years = operatingYears(airline);
         const parent = groups.parents.get(airline.slug);
@@ -80,7 +82,7 @@ export default function ViewAirlineInfo() {
             key={airline.slug}
             title={airline.name}
             icon={{
-              source: previewUrl(airline, "icon") ?? "",
+              source: previewUrl(airline, "icon", { dark }) ?? "",
               fallback: Icon.CircleProgress,
             }}
             keywords={searchKeywords(airline)}

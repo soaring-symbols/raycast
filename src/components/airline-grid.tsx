@@ -1,4 +1,4 @@
-import { ActionPanel, Action, Grid, Icon } from "@raycast/api";
+import { ActionPanel, Action, Grid, Icon, environment } from "@raycast/api";
 import { ceasedLabel, getFlagEmoji } from "../utils";
 import { previewUrl, searchKeywords } from "../utils/airlines";
 import AirlineAssets from "./assets";
@@ -51,7 +51,10 @@ export default function AirlineGrid({
           {section.airlines.map((airline) => (
             <Grid.Item
               key={airline.slug}
-              content={{ source: previewUrl(airline, "logo") ?? "", fallback: Icon.AirplaneFilled }}
+              content={{
+                source: previewUrl(airline, "logo", { dark: environment.appearance === "dark" }) ?? "",
+                fallback: Icon.AirplaneFilled,
+              }}
               title={airline.name}
               subtitle={[airline.iata, ceasedLabel(airline)].filter(Boolean).join(" · ")}
               keywords={searchKeywords(airline)}

@@ -1,5 +1,11 @@
 # Soaring Symbols Changelog
 
+## [Red-Eye] - {PR_MERGE_DATE}
+
+- In dark mode, logos and icons show their version for dark backgrounds, so navy and black lettering no longer disappears: the airline's own where it has one (Air Canada, Vietnam Airlines), else the mark in white.
+- The assets grid shows each version for dark backgrounds in dark mode, and every mark that has one can be copied or downloaded from its color tile.
+- Reads the Soaring Symbols 0.5 release line.
+
 ## [Codeshare] - {PR_MERGE_DATE}
 
 - New Browse Alliances command: oneworld, SkyTeam, Star Alliance and disbanded alliances, with their marks to copy or download and the airlines that fly, or flew, in each.
