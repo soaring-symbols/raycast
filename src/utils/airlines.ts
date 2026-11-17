@@ -87,8 +87,7 @@ export interface AssetTile {
   mono: boolean;
   /**
    * On a color tile, the type's -dark.svg for dark backgrounds, when the
-   * data ships one (from 0.5.0): the tile shows it in dark mode, and offers
-   * it to copy.
+   * data ships one (from 0.5.0), offered to copy and download.
    */
   dark?: { url: string; fileName: string };
 }

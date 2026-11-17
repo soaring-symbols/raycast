@@ -2,7 +2,7 @@ import { Action, ActionPanel, Clipboard, Grid, Icon, Color, showToast, Toast } f
 import fs from "fs";
 import path from "path";
 import type { Airline, Alliance } from "soaring-symbols";
-import { allianceTiles, type AssetTile, earlierMarks, getAssetTiles, markTitle, themed } from "../utils/airlines";
+import { allianceTiles, type AssetTile, earlierMarks, getAssetTiles, markTitle } from "../utils/airlines";
 import { getSVGContent } from "../utils/fetch";
 
 const slugToName = (slug: string): string => {
@@ -73,8 +73,10 @@ function MarkGrid({
     return (
       <Grid.Item
         key={source}
-        // A mark with a -dark.svg shows it in dark mode
-        content={{ source: themed(source, dark?.url), tintColor }}
+        // Each tile shows its own file, whatever the theme: a -dark.svg in
+        // white would look like the mono tile beside it. The dark file is
+        // offered in the actions instead.
+        content={{ source, tintColor }}
         title={slugToName(variant)}
         actions={
           <ActionPanel>
