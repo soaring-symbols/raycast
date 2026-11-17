@@ -101,6 +101,19 @@ describe("getAssetTiles and earlierMarks", () => {
     );
   });
 
+  it("lists a stacked logo after the logo", () => {
+    const stacked = { ...korean, assets: { logo: info(true, false), "logo-stacked": info(true, true), icon: info(true, false) } };
+    assert.deepEqual(
+      getAssetTiles(stacked).map(({ variant, fileName, mono }) => [variant, fileName, mono]),
+      [
+        ["logo", "korean-air-logo.svg", false],
+        ["logo-stacked", "korean-air-logo-stacked.svg", false],
+        ["logo-stacked-mono", "korean-air-logo-stacked-mono.svg", true],
+        ["icon", "korean-air-icon.svg", false],
+      ],
+    );
+  });
+
   it("gives a color tile its -dark.svg when the data ships one", () => {
     const withDark = { ...korean, assets: { logo: { ...info(true, true), dark: true } } };
     const [color, mono] = getAssetTiles(withDark);

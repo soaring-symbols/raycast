@@ -5,6 +5,7 @@
 - In dark mode, logos and icons show their version for dark backgrounds, so navy and black lettering no longer disappears: the airline's own where it has one (Air Canada, Vietnam Airlines), else the mark in white.
 - Every mark with a version for dark backgrounds can copy or download it from its tile in the assets grid.
 - Search finds an airline by the other names it goes by, such as SWISS or THAI, and Airline Info shows them as "Also Known As".
+- The assets grid shows an airline's stacked logo, the name under the mark, next to its logo when it has one (Japan Airlines, Vietnam Airlines).
 - Reads the Soaring Symbols 0.5 release line.
 
 ## [Codeshare] - {PR_MERGE_DATE}

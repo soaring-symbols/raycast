@@ -35,7 +35,10 @@ export const alliancesUrl = (release?: string) => listUrl("alliances.json", rele
 // A file of the release the data came from, e.g. "alliances/skyteam/icon.svg"
 export const dataFileUrl = (file: string) => `${cdnBase(dataVersion)}/${file}`;
 
-const ASSET_TYPES: AssetType[] = ["logo", "icon", "tail"];
+// The mark types, in grid order. logo-stacked, an airline's vertical lockup
+// beside its horizontal logo, came in the 0.5 line; spelled out as strings
+// until the bundled dependency's AssetType has it.
+const ASSET_TYPES = ["logo", "logo-stacked", "icon", "tail"] as const;
 
 // The names a renamed airline flew under before, oldest first (T'way Air
 // for Trinity Airways); `former` also lists codes that changed on their own

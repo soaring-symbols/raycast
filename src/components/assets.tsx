@@ -5,8 +5,10 @@ import type { Airline, Alliance } from "soaring-symbols";
 import { allianceTiles, type AssetTile, earlierMarks, getAssetTiles, markTitle } from "../utils/airlines";
 import { getSVGContent } from "../utils/fetch";
 
+// "logo-mono" → "Logo Mono", and the vertical lockup as "Stacked Logo"
 const slugToName = (slug: string): string => {
   return slug
+    .replace(/^logo-stacked/, "stacked-logo")
     .split("-")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
