@@ -22,6 +22,42 @@ const getDownloadsDir = (): string => {
   return path.join(home, "Downloads");
 };
 
+const copySvg = async (source: string) => {
+  try {
+    const svg = await getSVGContent(source);
+    await Clipboard.copy(svg);
+    await showToast({ style: Toast.Style.Success, title: "SVG copied to clipboard" });
+  } catch (err) {
+    await showToast({
+      style: Toast.Style.Failure,
+      title: "Failed to copy SVG",
+      message: (err as Error)?.message ?? "Unknown error",
+    });
+  }
+};
+
+const downloadSvg = async (source: string, fileName: string) => {
+  try {
+    const svg = await getSVGContent(source);
+    const filePath = path.join(getDownloadsDir(), fileName);
+
+    // Validate basic SVG structure before writing
+    if (!isProbablySvg(svg)) {
+      await showToast({ style: Toast.Style.Failure, title: "Invalid SVG content" });
+      return;
+    }
+
+    fs.writeFileSync(filePath, svg, { encoding: "utf-8" });
+    await showToast({ style: Toast.Style.Success, title: "SVG downloaded", message: filePath });
+  } catch (err) {
+    await showToast({
+      style: Toast.Style.Failure,
+      title: "Failed to save SVG",
+      message: (err as Error)?.message ?? "Unknown error",
+    });
+  }
+};
+
 // A grid of SVG tiles, each with copy and download actions: the current
 // marks, then any older ones in a section each
 function MarkGrid({
@@ -31,65 +67,33 @@ function MarkGrid({
   navigationTitle: string;
   sections: { key: string; title: string; tiles: AssetTile[] }[];
 }) {
-  const renderTile = ({ variant, url: source, fileName, mono }: AssetTile) => {
+  const renderTile = ({ variant, url: source, fileName, mono, dark }: AssetTile) => {
     const tintColor = mono ? Color.PrimaryText : undefined;
 
     return (
       <Grid.Item
         key={source}
+        // Each tile shows its own file, whatever the theme: a -dark.svg in
+        // white would look like the mono tile beside it. The dark file is
+        // offered in the actions instead.
         content={{ source, tintColor }}
         title={slugToName(variant)}
         actions={
           <ActionPanel>
             <ActionPanel.Section title="SVG Actions">
-              <Action
-                title="Copy SVG"
-                icon={Icon.CopyClipboard}
-                onAction={async () => {
-                  try {
-                    const svg = await getSVGContent(source);
-                    await Clipboard.copy(svg);
-                    await showToast({ style: Toast.Style.Success, title: "SVG copied to clipboard" });
-                  } catch (err) {
-                    await showToast({
-                      style: Toast.Style.Failure,
-                      title: "Failed to copy SVG",
-                      message: (err as Error)?.message ?? "Unknown error",
-                    });
-                  }
-                }}
-              />
-              <Action
-                title="Download SVG…"
-                icon={Icon.Download}
-                onAction={async () => {
-                  try {
-                    const svg = await getSVGContent(source);
-                    const downloadsDir = getDownloadsDir();
-                    const filePath = path.join(downloadsDir, fileName);
-
-                    // Validate basic SVG structure before writing
-                    if (!isProbablySvg(svg)) {
-                      await showToast({ style: Toast.Style.Failure, title: "Invalid SVG content" });
-                      return;
-                    }
-
-                    fs.writeFileSync(filePath, svg, { encoding: "utf-8" });
-                    await showToast({
-                      style: Toast.Style.Success,
-                      title: "SVG downloaded",
-                      message: filePath,
-                    });
-                  } catch (err) {
-                    await showToast({
-                      style: Toast.Style.Failure,
-                      title: "Failed to save SVG",
-                      message: (err as Error)?.message ?? "Unknown error",
-                    });
-                  }
-                }}
-              />
+              <Action title="Copy SVG" icon={Icon.CopyClipboard} onAction={() => copySvg(source)} />
+              <Action title="Download SVG…" icon={Icon.Download} onAction={() => downloadSvg(source, fileName)} />
             </ActionPanel.Section>
+            {dark && (
+              <ActionPanel.Section title="For Dark Backgrounds">
+                <Action title="Copy SVG for Dark Backgrounds" icon={Icon.Moon} onAction={() => copySvg(dark.url)} />
+                <Action
+                  title="Download SVG for Dark Backgrounds…"
+                  icon={Icon.Download}
+                  onAction={() => downloadSvg(dark.url, dark.fileName)}
+                />
+              </ActionPanel.Section>
+            )}
           </ActionPanel>
         }
       />

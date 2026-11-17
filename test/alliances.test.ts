@@ -39,17 +39,17 @@ describe("isAllianceList", () => {
 
 describe("allianceTiles", () => {
   it("lists the color and mono files from the data release", () => {
-    setDataVersion("0.4.0");
+    setDataVersion("0.5.0");
     assert.deepEqual(allianceTiles(skyteam as never), [
       {
         variant: "icon",
-        url: `${cdn}@0.4.0/dist/alliances/skyteam/icon.svg`,
+        url: `${cdn}@0.5.0/dist/alliances/skyteam/icon.svg`,
         fileName: "skyteam-icon.svg",
         mono: false,
       },
       {
         variant: "icon-mono",
-        url: `${cdn}@0.4.0/dist/alliances/skyteam/icon-mono.svg`,
+        url: `${cdn}@0.5.0/dist/alliances/skyteam/icon-mono.svg`,
         fileName: "skyteam-icon-mono.svg",
         mono: true,
       },
