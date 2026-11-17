@@ -42,11 +42,24 @@ const ASSET_TYPES: AssetType[] = ["logo", "icon", "tail"];
 export const formerNames = (airline: Airline): string[] =>
   (airline.former ?? []).flatMap((item) => (item.name ? [item.name] : []));
 
-// What both commands search: name, codes, slug, callsign and former names
+// The other names an airline goes by beside its full one (SWISS for Swiss
+// International Air Lines). `aliases` came in the 0.5 line; the type is
+// spelled out until the bundled dependency moves there.
+type WithAliases = Airline & { aliases?: readonly { name: string }[] };
+export const aliasNames = (airline: WithAliases): string[] => (airline.aliases ?? []).map((alias) => alias.name);
+
+// What both commands search: name, codes, slug, callsign, aliases and former
+// names
 export const searchKeywords = (airline: Airline): string[] =>
-  [airline.name, airline.iata, airline.icao, airline.slug, airline.callsign, ...formerNames(airline)].filter(
-    (k): k is string => Boolean(k),
-  );
+  [
+    airline.name,
+    airline.iata,
+    airline.icao,
+    airline.slug,
+    airline.callsign,
+    ...aliasNames(airline),
+    ...formerNames(airline),
+  ].filter((k): k is string => Boolean(k));
 
 // The airline that owns each one, and the ones each owns, looked up by slug.
 // A parent missing from the list (an older data release) is left out.

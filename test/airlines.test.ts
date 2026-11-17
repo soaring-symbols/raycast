@@ -2,6 +2,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import {
+  aliasNames,
   airlinesUrl,
   countryName,
   earlierMarks,
@@ -194,6 +195,18 @@ describe("searchKeywords", () => {
     };
     assert.ok(searchKeywords(trinity as never).includes("T'way Air"));
     assert.deepEqual(formerNames(trinity as never), ["Hansung Airlines", "T'way Air"]);
+  });
+
+  it("finds an airline by its aliases", () => {
+    const swiss = {
+      ...airline,
+      name: "Swiss International Air Lines",
+      slug: "swiss-international-air-lines",
+      aliases: [{ name: "SWISS", slug: "swiss" }],
+    };
+    assert.ok(searchKeywords(swiss as never).includes("SWISS"));
+    assert.deepEqual(aliasNames(swiss as never), ["SWISS"]);
+    assert.deepEqual(aliasNames(airline as never), []);
   });
 });
 

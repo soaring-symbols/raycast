@@ -6,6 +6,7 @@ import {
   allianceMark,
   countryName,
   flagCarrierCountries,
+  aliasNames,
   formerNames,
   groupAirlines,
   previewSource,
@@ -72,6 +73,7 @@ export default function ViewAirlineInfo() {
           { title: "Preceded By", airlines: predecessors },
         ].filter((row) => row.airlines.length > 0);
 
+        const aliases = aliasNames(airline);
         const former = formerNames(airline);
         // The alliance's mark beside its name, once the collection has one
         const memberOf = airline.alliance ? byName.get(airline.alliance) : undefined;
@@ -92,6 +94,9 @@ export default function ViewAirlineInfo() {
                 markdown={markdown}
                 metadata={
                   <List.Item.Detail.Metadata>
+                    {aliases.length ? (
+                      <List.Item.Detail.Metadata.Label title="Also Known As" text={aliases.join(", ")} />
+                    ) : null}
                     {airline.branding?.tagline && (
                       <List.Item.Detail.Metadata.Label title="Tagline" text={airline.branding.tagline} />
                     )}
