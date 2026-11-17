@@ -1,8 +1,8 @@
-import { Action, ActionPanel, Clipboard, Grid, Icon, Color, environment, showToast, Toast } from "@raycast/api";
+import { Action, ActionPanel, Clipboard, Grid, Icon, Color, showToast, Toast } from "@raycast/api";
 import fs from "fs";
 import path from "path";
 import type { Airline, Alliance } from "soaring-symbols";
-import { allianceTiles, type AssetTile, earlierMarks, getAssetTiles, markTitle } from "../utils/airlines";
+import { allianceTiles, type AssetTile, earlierMarks, getAssetTiles, markTitle, themed } from "../utils/airlines";
 import { getSVGContent } from "../utils/fetch";
 
 const slugToName = (slug: string): string => {
@@ -62,7 +62,7 @@ const downloadSvg = async (source: string, fileName: string) => {
 // marks, then any older ones in a section each
 function MarkGrid({
   navigationTitle,
-  sections: given,
+  sections,
 }: {
   navigationTitle: string;
   sections: { key: string; title: string; tiles: AssetTile[] }[];
@@ -73,7 +73,8 @@ function MarkGrid({
     return (
       <Grid.Item
         key={source}
-        content={{ source, tintColor }}
+        // A mark with a -dark.svg shows it in dark mode
+        content={{ source: themed(source, dark?.url), tintColor }}
         title={slugToName(variant)}
         actions={
           <ActionPanel>
@@ -96,18 +97,6 @@ function MarkGrid({
       />
     );
   };
-
-  // In dark mode, each mark with a -dark.svg also gets a tile of it, after
-  // its color one: white or recolored marks show only on a dark ground
-  const withDark = (tiles: AssetTile[]): AssetTile[] =>
-    environment.appearance === "dark"
-      ? tiles.flatMap((tile) =>
-          tile.dark
-            ? [tile, { variant: `${tile.variant}-dark`, url: tile.dark.url, fileName: tile.dark.fileName, mono: false }]
-            : [tile],
-        )
-      : tiles;
-  const sections = given.map((section) => ({ ...section, tiles: withDark(section.tiles) }));
 
   // With older marks, the current ones get a section of their own above them;
   // without, the grid stays a plain list of tiles

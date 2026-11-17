@@ -8,6 +8,7 @@ import {
   flagCarrierCountries,
   formerNames,
   groupAirlines,
+  previewSource,
   previewUrl,
   searchKeywords,
 } from "./utils/airlines";
@@ -51,9 +52,9 @@ export default function ViewAirlineInfo() {
           .map((c) => getFlagEmoji(c))
           .join(" ");
 
-        // In dark mode, the marks made for dark backgrounds when the data has them
-        const dark = environment.appearance === "dark";
-        const logo = previewUrl(airline, "logo", { dark });
+        // A markdown image can't follow the theme by itself, so the detail's
+        // logo is picked for the current one: its -dark.svg in dark mode
+        const logo = previewUrl(airline, "logo", { dark: environment.appearance === "dark" });
         const ceased = ceasedLabel(airline);
         const years = operatingYears(airline);
         const parent = groups.parents.get(airline.slug);
@@ -82,7 +83,7 @@ export default function ViewAirlineInfo() {
             key={airline.slug}
             title={airline.name}
             icon={{
-              source: previewUrl(airline, "icon", { dark }) ?? "",
+              source: previewSource(airline, "icon") ?? "",
               fallback: Icon.CircleProgress,
             }}
             keywords={searchKeywords(airline)}

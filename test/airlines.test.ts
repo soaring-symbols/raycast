@@ -8,6 +8,7 @@ import {
   flagCarrierCountries,
   formerNames,
   getAssetTiles,
+  previewSource,
   previewUrl,
   groupAirlines,
   markTitle,
@@ -113,6 +114,16 @@ describe("getAssetTiles and earlierMarks", () => {
     assert.equal(previewUrl(withDark, "logo", { dark: true }), `${base}/logo-dark.svg`);
     assert.equal(previewUrl(withDark, "logo"), `${base}/logo.svg`);
     assert.equal(previewUrl(korean, "logo", { dark: true }), `${base}/logo.svg`);
+  });
+
+  it("gives a preview source that follows the theme when there is a -dark.svg", () => {
+    const withDark = { ...korean, assets: { logo: { ...info(true, true), dark: true } } };
+    assert.deepEqual(previewSource(withDark, "logo"), {
+      light: `${base}/logo.svg`,
+      dark: `${base}/logo-dark.svg`,
+    });
+    assert.equal(previewSource(korean, "logo"), `${base}/logo.svg`);
+    assert.equal(previewSource(korean, "tail"), undefined);
   });
 
   it("orders older marks newest first and handles data without history", () => {

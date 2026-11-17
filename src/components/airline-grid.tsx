@@ -1,6 +1,6 @@
-import { ActionPanel, Action, Grid, Icon, environment } from "@raycast/api";
+import { ActionPanel, Action, Grid, Icon } from "@raycast/api";
 import { ceasedLabel, getFlagEmoji } from "../utils";
-import { previewUrl, searchKeywords } from "../utils/airlines";
+import { previewSource, searchKeywords } from "../utils/airlines";
 import AirlineAssets from "./assets";
 import type { Airline, Alliance } from "soaring-symbols";
 import { useAllianceFilter } from "./alliances";
@@ -52,7 +52,7 @@ export default function AirlineGrid({
             <Grid.Item
               key={airline.slug}
               content={{
-                source: previewUrl(airline, "logo", { dark: environment.appearance === "dark" }) ?? "",
+                source: previewSource(airline, "logo") ?? "",
                 fallback: Icon.AirplaneFilled,
               }}
               title={airline.name}

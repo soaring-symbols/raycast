@@ -87,7 +87,8 @@ export interface AssetTile {
   mono: boolean;
   /**
    * On a color tile, the type's -dark.svg for dark backgrounds, when the
-   * data ships one (from 0.5.0): shown in dark mode, and offered to copy.
+   * data ships one (from 0.5.0): the tile shows it in dark mode, and offers
+   * it to copy.
    */
   dark?: { url: string; fileName: string };
 }
@@ -148,6 +149,20 @@ export const previewUrl = (airline: Airline, type: AssetType, { dark = false } =
   if (dark && info.dark) return assetUrl(airline, `${type}-dark`);
 
   return assetUrl(airline, info.color ? type : `${type}-mono`);
+};
+
+// A file that follows Raycast's theme: one URL, or a light and a dark one
+// that Raycast switches between by itself
+export type ThemedSource = string | { light: string; dark: string };
+
+export const themed = (light: string, dark?: string): ThemedSource => (dark ? { light, dark } : light);
+
+// The preview as an image source that follows the theme: the -dark.svg in
+// dark mode when the data ships one
+export const previewSource = (airline: Airline, type: AssetType): ThemedSource | undefined => {
+  const light = previewUrl(airline, type);
+
+  return light && themed(light, airline.assets[type]?.dark ? previewUrl(airline, type, { dark: true }) : undefined);
 };
 
 // --- Alliances ---
