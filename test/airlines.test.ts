@@ -17,7 +17,15 @@ import {
   isAirlineList,
   isLineRelease,
   setDataVersion,
+  DATA_LINE,
 } from "../src/utils/airlines.ts";
+
+// Releases of the line the extension reads, and of other lines, so moving
+// DATA_LINE to a new line needs no change here
+const [major, minor] = DATA_LINE.split(".").map(Number);
+const release = (patch: number) => `${DATA_LINE}.${patch}`;
+const nextLine = `${major}.${minor + 1}.0`;
+const earlierLine = `${major}.${Math.max(minor - 1, 0)}.9`;
 
 const airline = { name: "Vietnam Airlines", slug: "vietnam-airlines", assets: { logo: { color: true, mono: true } } };
 
@@ -76,7 +84,7 @@ describe("getAssetTiles and earlierMarks", () => {
       { since: 1984, assets: { logo: info(true, false), icon: info(true, true) } },
     ],
   };
-  const base = "https://cdn.jsdelivr.net/npm/soaring-symbols@0.5/dist/assets/korean-air";
+  const base = `https://cdn.jsdelivr.net/npm/soaring-symbols@${DATA_LINE}/dist/assets/korean-air`;
 
   it("lists the current files without a mark", () => {
     assert.deepEqual(
@@ -102,7 +110,10 @@ describe("getAssetTiles and earlierMarks", () => {
   });
 
   it("lists a stacked logo after the logo", () => {
-    const stacked = { ...korean, assets: { logo: info(true, false), "logo-stacked": info(true, true), icon: info(true, false) } };
+    const stacked = {
+      ...korean,
+      assets: { logo: info(true, false), "logo-stacked": info(true, true), icon: info(true, false) },
+    };
     assert.deepEqual(
       getAssetTiles(stacked).map(({ variant, fileName, mono }) => [variant, fileName, mono]),
       [
@@ -154,25 +165,25 @@ describe("exact release URLs", () => {
   const cdn = "https://cdn.jsdelivr.net/npm/soaring-symbols";
 
   it("accepts only exact releases of the line", () => {
-    assert.equal(isLineRelease("0.5.0"), true);
-    for (const version of ["0.5", "0.4.1", "0.6.0", "0.5.0-beta", "10.5.0", undefined, 24]) {
+    assert.equal(isLineRelease(release(0)), true);
+    for (const version of [DATA_LINE, earlierLine, nextLine, `${release(0)}-beta`, `1${release(0)}`, undefined, 24]) {
       assert.equal(isLineRelease(version), false, String(version));
     }
   });
 
   it("loads airlines.json from the release, or the line when it's unknown", () => {
-    assert.equal(airlinesUrl("0.5.0"), `${cdn}@0.5.0/dist/airlines.json`);
-    assert.equal(airlinesUrl(undefined), `${cdn}@0.5/dist/airlines.json`);
-    assert.equal(airlinesUrl("latest"), `${cdn}@0.5/dist/airlines.json`);
+    assert.equal(airlinesUrl(release(0)), `${cdn}@${release(0)}/dist/airlines.json`);
+    assert.equal(airlinesUrl(undefined), `${cdn}@${DATA_LINE}/dist/airlines.json`);
+    assert.equal(airlinesUrl("latest"), `${cdn}@${DATA_LINE}/dist/airlines.json`);
   });
 
   it("loads files from the release the list came from", () => {
-    setDataVersion("0.5.1");
-    assert.equal(getAssetTiles(korean)[0].url, `${cdn}@0.5.1/dist/assets/korean-air/logo.svg`);
-    setDataVersion("0.4.1");
-    assert.equal(getAssetTiles(korean)[0].url, `${cdn}@0.5/dist/assets/korean-air/logo.svg`);
+    setDataVersion(release(1));
+    assert.equal(getAssetTiles(korean)[0].url, `${cdn}@${release(1)}/dist/assets/korean-air/logo.svg`);
+    setDataVersion(earlierLine);
+    assert.equal(getAssetTiles(korean)[0].url, `${cdn}@${DATA_LINE}/dist/assets/korean-air/logo.svg`);
     setDataVersion();
-    assert.equal(getAssetTiles(korean)[0].url, `${cdn}@0.5/dist/assets/korean-air/logo.svg`);
+    assert.equal(getAssetTiles(korean)[0].url, `${cdn}@${DATA_LINE}/dist/assets/korean-air/logo.svg`);
   });
 });
 

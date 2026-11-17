@@ -4,7 +4,7 @@ import type { Airline, Alliance, AllianceAssetType, AssetType, HistoricalMarks }
 // release (new airlines, fixed SVGs) arrives without a store update; a
 // breaking 0.6.0 never does. Move this, and the soaring-symbols dependency,
 // to the next line in the same extension update.
-const DATA_LINE = "0.5";
+export const DATA_LINE = "0.5";
 
 // Asks jsDelivr which release the line points at now, e.g. "0.2.4"
 export const RESOLVE_URL = `https://data.jsdelivr.com/v1/packages/npm/soaring-symbols/resolved?specifier=${DATA_LINE}`;
