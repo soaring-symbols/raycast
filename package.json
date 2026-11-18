@@ -40,7 +40,7 @@
   "dependencies": {
     "@raycast/api": "^2.12.1",
     "@raycast/utils": "^2.3.3",
-    "soaring-symbols": "^0.4.1"
+    "soaring-symbols": "^0.5.0"
   },
   "devDependencies": {
     "@raycast/eslint-config": "^2.2.0",
