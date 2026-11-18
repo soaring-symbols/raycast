@@ -56,7 +56,7 @@ export default function AirlineGrid({
                 fallback: Icon.AirplaneFilled,
               }}
               title={airline.name}
-              subtitle={[airline.iata, ceasedLabel(airline)].filter(Boolean).join(" · ")}
+              subtitle={[airline.iata, airline.cargo && "Cargo", ceasedLabel(airline)].filter(Boolean).join(" · ")}
               keywords={searchKeywords(airline)}
               accessory={
                 airline.flag_carrier

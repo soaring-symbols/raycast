@@ -62,6 +62,8 @@ export const searchKeywords = (airline: Airline): string[] =>
     airline.callsign,
     ...aliasNames(airline),
     ...formerNames(airline),
+    // Typing "cargo" lists the cargo airlines and brands
+    airline.cargo ? "cargo" : undefined,
   ].filter((k): k is string => Boolean(k));
 
 // The airline that owns each one, and the ones each owns, looked up by slug.

@@ -109,6 +109,7 @@ export default function ViewAirlineInfo() {
                       {airline.flag_carrier && (
                         <List.Item.Detail.Metadata.TagList.Item text={`${flags} Flag Carrier`} color={Color.Blue} />
                       )}
+                      {airline.cargo && <List.Item.Detail.Metadata.TagList.Item text="Cargo" color={Color.Orange} />}
                     </List.Item.Detail.Metadata.TagList>
                     <List.Item.Detail.Metadata.Label title="IATA" text={airline.iata} />
                     <List.Item.Detail.Metadata.Label title="ICAO" text={airline.icao} />

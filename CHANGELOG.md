@@ -6,6 +6,7 @@
 - The assets grid has a section for each mark (logo, stacked logo, icon, tail) with its color, monochrome and, in dark mode, dark background files, as on the website; in light mode, copy the dark background file from the color tile's actions. Stacked logos, with the name under the mark, are new (Japan Airlines, Vietnam Airlines).
 - Earlier logos move to a dropdown in the assets grid's search bar.
 - Airlines go by their full names, such as Swiss International Air Lines, and search still finds them by shorter ones like SWISS or THAI, which Airline Information lists as "Also Known As".
+- Cargo airlines, starting with Cargolux, are marked "Cargo" in the grid and in Airline Information, and searching "cargo" lists them.
 - New airlines and logos keep arriving after the Soaring Symbols 0.5 release.
 
 ## [Codeshare] - {PR_MERGE_DATE}

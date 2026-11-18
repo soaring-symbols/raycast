@@ -253,6 +253,11 @@ describe("searchKeywords", () => {
     assert.deepEqual(formerNames(trinity as never), ["Hansung Airlines", "T'way Air"]);
   });
 
+  it("finds a cargo airline by the word cargo", () => {
+    assert.ok(searchKeywords({ ...airline, cargo: true } as never).includes("cargo"));
+    assert.ok(!searchKeywords(airline as never).includes("cargo"));
+  });
+
   it("finds an airline by its aliases", () => {
     const swiss = {
       ...airline,
