@@ -142,6 +142,48 @@ export const getAssetTiles = (airline: Airline, mark?: HistoricalMarks): AssetTi
     (variant) => [airline.slug, mark?.since, variant].filter(Boolean).join("-") + ".svg",
   );
 
+// A tile's mark type and kind, from its variant: "logo-stacked-mono" is the
+// Logo Stacked type's Monochrome file
+const KINDS = [
+  { suffix: "-mono", title: "Monochrome" },
+  { suffix: "-dark", title: "Dark Background" },
+] as const;
+
+const typeTitle = (type: string) =>
+  type
+    .split("-")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+
+export const tileKind = (variant: string): { type: string; title: string } => {
+  const kind = KINDS.find(({ suffix }) => variant.endsWith(suffix));
+
+  return kind ? { type: variant.slice(0, -kind.suffix.length), title: kind.title } : { type: variant, title: "Color" };
+};
+
+// One section per mark type, in the order the tiles come in (logo, stacked
+// logo, icon, tail), as the website's rows: the color file, the monochrome
+// one and, with `dark`, the -dark.svg, each tile named by its kind. A type
+// with no files has no section.
+export const typeSections = (
+  tiles: AssetTile[],
+  { dark = false } = {},
+): { key: string; title: string; tiles: AssetTile[] }[] => {
+  const withDark = tiles.flatMap((tile) =>
+    dark && tile.dark
+      ? [tile, { variant: `${tile.variant}-dark`, url: tile.dark.url, fileName: tile.dark.fileName, mono: false }]
+      : [tile],
+  );
+  const types = [...new Set(withDark.map((tile) => tileKind(tile.variant).type))];
+  const order = (tile: AssetTile) => ["Color", "Monochrome", "Dark Background"].indexOf(tileKind(tile.variant).title);
+
+  return types.map((type) => ({
+    key: type,
+    title: typeTitle(type),
+    tiles: withDark.filter((tile) => tileKind(tile.variant).type === type).sort((a, b) => order(a) - order(b)),
+  }));
+};
+
 // The marks the airline used before its current ones, newest first. Each
 // was used from its `since` until the next one's, the newest until today's.
 // Data from before 0.2.4 has no history.

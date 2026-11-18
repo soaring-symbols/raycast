@@ -1,19 +1,20 @@
-import { Action, ActionPanel, Clipboard, Grid, Icon, Color, showToast, Toast } from "@raycast/api";
+import { Action, ActionPanel, Clipboard, Grid, Icon, Color, environment, showToast, Toast } from "@raycast/api";
 import fs from "fs";
 import path from "path";
 import type { Airline, Alliance } from "soaring-symbols";
-import { allianceTiles, type AssetTile, earlierMarks, getAssetTiles, markTitle } from "../utils/airlines";
+import {
+  allianceTiles,
+  type AssetTile,
+  earlierMarks,
+  getAssetTiles,
+  markTitle,
+  tileKind,
+  typeSections,
+} from "../utils/airlines";
+import { useState } from "react";
 import { getSVGContent } from "../utils/fetch";
 
 // "logo-mono" → "Logo Mono", and the vertical lockup as "Stacked Logo"
-const slugToName = (slug: string): string => {
-  return slug
-    .replace(/^logo-stacked/, "stacked-logo")
-    .split("-")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
-};
-
 const isProbablySvg = (text: string): boolean => {
   const t = text.trim();
   return t.startsWith("<svg") && t.endsWith("</svg>");
@@ -62,63 +63,80 @@ const downloadSvg = async (source: string, fileName: string) => {
 
 // A grid of SVG tiles, each with copy and download actions: the current
 // marks, then any older ones in a section each
-function MarkGrid({
-  navigationTitle,
-  sections,
-}: {
-  navigationTitle: string;
-  sections: { key: string; title: string; tiles: AssetTile[] }[];
-}) {
-  const renderTile = ({ variant, url: source, fileName, mono, dark }: AssetTile) => {
-    const tintColor = mono ? Color.PrimaryText : undefined;
-
-    return (
-      <Grid.Item
-        key={source}
-        // Each tile shows its own file, whatever the theme: a -dark.svg in
-        // white would look like the mono tile beside it. The dark file is
-        // offered in the actions instead.
-        content={{ source, tintColor }}
-        title={slugToName(variant)}
-        actions={
-          <ActionPanel>
-            <ActionPanel.Section title="SVG Actions">
-              <Action title="Copy SVG" icon={Icon.CopyClipboard} onAction={() => copySvg(source)} />
-              <Action title="Download SVG…" icon={Icon.Download} onAction={() => downloadSvg(source, fileName)} />
-            </ActionPanel.Section>
-            {dark && (
-              <ActionPanel.Section title="For Dark Backgrounds">
-                <Action title="Copy SVG for Dark Backgrounds" icon={Icon.Moon} onAction={() => copySvg(dark.url)} />
-                <Action
-                  title="Download SVG for Dark Backgrounds…"
-                  icon={Icon.Download}
-                  onAction={() => downloadSvg(dark.url, dark.fileName)}
-                />
-              </ActionPanel.Section>
-            )}
-          </ActionPanel>
-        }
-      />
-    );
-  };
-
-  // With older marks, the current ones get a section of their own above them;
-  // without, the grid stays a plain list of tiles
-  const children =
-    sections.length > 1
-      ? sections.map((section) => (
-          <Grid.Section key={section.key} title={section.title}>
-            {section.tiles.map(renderTile)}
-          </Grid.Section>
-        ))
-      : (sections[0]?.tiles ?? []).map(renderTile);
-
-  return <Grid columns={4} inset={Grid.Inset.Small} throttle navigationTitle={navigationTitle} children={children} />;
+// One set of marks: the current ones, or an older set from the history
+interface MarkSet {
+  key: string;
+  title: string;
+  tiles: AssetTile[];
 }
 
+// In dark mode, the -dark.svg files show beside the color and monochrome
+// ones, on Raycast's dark background; a white mark would vanish on the light
+// one, so there it stays in the color tile's actions only
+const showDark = () => environment.appearance === "dark";
+
+// A grid of one set of marks, a section per type (Logo, Logo Stacked, Icon,
+// Tail) as on the website, each tile with copy and download actions. With
+// older marks, a dropdown in the search bar picks the set.
+function MarkGrid({ navigationTitle, sets }: { navigationTitle: string; sets: MarkSet[] }) {
+  const [selected, setSelected] = useState(sets[0]?.key);
+  const set = sets.find((s) => s.key === selected) ?? sets[0];
+
+  const renderTile = ({ variant, url: source, fileName, mono, dark }: AssetTile) => (
+    <Grid.Item
+      key={source}
+      // Each tile shows its own file, whatever the theme
+      content={{ source, tintColor: mono ? Color.PrimaryText : undefined }}
+      title={tileKind(variant).title}
+      actions={
+        <ActionPanel>
+          <ActionPanel.Section title="SVG Actions">
+            <Action title="Copy SVG" icon={Icon.CopyClipboard} onAction={() => copySvg(source)} />
+            <Action title="Download SVG…" icon={Icon.Download} onAction={() => downloadSvg(source, fileName)} />
+          </ActionPanel.Section>
+          {dark && (
+            <ActionPanel.Section title="For Dark Backgrounds">
+              <Action title="Copy SVG for Dark Backgrounds" icon={Icon.Moon} onAction={() => copySvg(dark.url)} />
+              <Action
+                title="Download SVG for Dark Backgrounds…"
+                icon={Icon.Download}
+                onAction={() => downloadSvg(dark.url, dark.fileName)}
+              />
+            </ActionPanel.Section>
+          )}
+        </ActionPanel>
+      }
+    />
+  );
+
+  return (
+    <Grid
+      columns={4}
+      inset={Grid.Inset.Small}
+      throttle
+      navigationTitle={navigationTitle}
+      searchBarAccessory={
+        sets.length > 1 ? (
+          <Grid.Dropdown tooltip="Marks" value={set?.key} onChange={setSelected}>
+            {sets.map((s) => (
+              <Grid.Dropdown.Item key={s.key} title={s.title} value={s.key} />
+            ))}
+          </Grid.Dropdown>
+        ) : undefined
+      }
+    >
+      {typeSections(set?.tiles ?? [], { dark: showDark() }).map((section) => (
+        <Grid.Section key={section.key} title={section.title}>
+          {section.tiles.map(renderTile)}
+        </Grid.Section>
+      ))}
+    </Grid>
+  );
+}
+
+// The current marks first, then the older ones newest first
 export default function AirlineAssets(airline: Airline) {
-  // Older marks newest first, below the current ones
-  const sections = [
+  const sets = [
     { key: "current", title: "Current", tiles: getAssetTiles(airline) },
     ...earlierMarks(airline).map((mark) => ({
       key: String(mark.since),
@@ -127,14 +145,14 @@ export default function AirlineAssets(airline: Airline) {
     })),
   ];
 
-  return <MarkGrid navigationTitle={`${airline.name} | Assets`} sections={sections} />;
+  return <MarkGrid navigationTitle={`${airline.name} | Assets`} sets={sets} />;
 }
 
 export function AllianceAssets(alliance: Alliance) {
   return (
     <MarkGrid
       navigationTitle={`${alliance.name} | Assets`}
-      sections={[{ key: "current", title: "Current", tiles: allianceTiles(alliance) }]}
+      sets={[{ key: "current", title: "Current", tiles: allianceTiles(alliance) }]}
     />
   );
 }

@@ -9,6 +9,8 @@ import {
   flagCarrierCountries,
   formerNames,
   getAssetTiles,
+  tileKind,
+  typeSections,
   previewSource,
   previewUrl,
   groupAirlines,
@@ -149,6 +151,36 @@ describe("getAssetTiles and earlierMarks", () => {
     });
     assert.equal(previewSource(korean, "logo"), `${base}/logo.svg`);
     assert.equal(previewSource(korean, "tail"), undefined);
+  });
+
+  it("groups the files by mark type, color then mono then dark", () => {
+    const withAll = {
+      ...korean,
+      assets: {
+        logo: { ...info(true, true), dark: true },
+        "logo-stacked": info(true, false),
+        icon: info(true, true),
+      },
+    };
+    const sections = (dark: boolean) =>
+      typeSections(getAssetTiles(withAll), { dark }).map(({ key, title, tiles }) => [
+        key,
+        title,
+        tiles.map((tile) => tileKind(tile.variant).title),
+      ]);
+    assert.deepEqual(sections(true), [
+      ["logo", "Logo", ["Color", "Monochrome", "Dark Background"]],
+      ["logo-stacked", "Logo Stacked", ["Color"]],
+      ["icon", "Icon", ["Color", "Monochrome"]],
+    ]);
+    // Without `dark` (light mode), no dark tiles
+    assert.deepEqual(sections(false)[0], ["logo", "Logo", ["Color", "Monochrome"]]);
+  });
+
+  it("reads a tile's type and kind from its variant", () => {
+    assert.deepEqual(tileKind("logo-stacked-mono"), { type: "logo-stacked", title: "Monochrome" });
+    assert.deepEqual(tileKind("icon-dark"), { type: "icon", title: "Dark Background" });
+    assert.deepEqual(tileKind("logo-stacked"), { type: "logo-stacked", title: "Color" });
   });
 
   it("orders older marks newest first and handles data without history", () => {
