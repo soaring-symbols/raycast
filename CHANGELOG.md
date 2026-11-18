@@ -2,12 +2,11 @@
 
 ## [Red-Eye] - {PR_MERGE_DATE}
 
-- In dark mode, logos and icons show their version for dark backgrounds, so navy and black lettering no longer disappears: the airline's own where it has one (Air Canada, Vietnam Airlines), else the mark in white.
-- The assets grid has a section for each mark, logo, stacked logo, icon and tail, with its color, monochrome and, in dark mode, dark background files side by side, as on the website; in light mode, a mark's version for dark backgrounds can be copied or downloaded from its color tile.
-- Earlier logos move to a dropdown in the assets grid's search bar, one set at a time.
-- Search finds an airline by the other names it goes by, such as SWISS or THAI, and Airline Info shows them as "Also Known As".
-- The assets grid shows an airline's stacked logo, the name under the mark, next to its logo when it has one (Japan Airlines, Vietnam Airlines).
-- Reads the Soaring Symbols 0.5 release line.
+- In dark mode, logos and icons switch to their version for dark backgrounds, so navy and black lettering stays readable: the airline's own where it has one (Air Canada, Vietnam Airlines), else the mark in white.
+- The assets grid has a section for each mark (logo, stacked logo, icon, tail) with its color, monochrome and, in dark mode, dark background files, as on the website; in light mode, copy the dark background file from the color tile's actions. Stacked logos, with the name under the mark, are new (Japan Airlines, Vietnam Airlines).
+- Earlier logos move to a dropdown in the assets grid's search bar.
+- Airlines go by their full names, such as Swiss International Air Lines, and search still finds them by shorter ones like SWISS or THAI, which Airline Information lists as "Also Known As".
+- New airlines and logos keep arriving after the Soaring Symbols 0.5 release.
 
 ## [Codeshare] - {PR_MERGE_DATE}
 
