@@ -26,7 +26,8 @@ export function useAllianceFilter(initial = "All", lists?: { airlines: Airline[]
   const alliances = lists?.alliances ?? fetchedAlliances.data ?? [];
   const [alliance, setAlliance] = useState(initial);
 
-  const byName = useMemo(() => new Map(alliances.map((a) => [a.name, a])), [alliances]);
+  // Keyed by plain strings: the filter's value is "All" or an alliance name
+  const byName = useMemo(() => new Map<string, Alliance>(alliances.map((a) => [a.name, a])), [alliances]);
   const filtered = useMemo(() => {
     const selected = byName.get(alliance);
     return selected ? airlines.filter((a) => isMemberOf(a, selected)) : airlines;
