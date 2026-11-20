@@ -9,7 +9,7 @@
 - Cargo airlines, starting with Cargolux, are marked "Cargo" in the grid and in Airline Information, and searching "cargo" lists them.
 - New airlines and logos keep arriving after the Soaring Symbols 0.5 release.
 
-## [Codeshare] - {PR_MERGE_DATE}
+## [Codeshare] - 2026-11-15
 
 - New Browse Alliances command: oneworld, SkyTeam, Star Alliance and disbanded alliances, with their marks to copy or download and the airlines that fly, or flew, in each.
 - The alliance filter lists every alliance with its mark, disbanded ones included: Value Alliance finds Scoot.
