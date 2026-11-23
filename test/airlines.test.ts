@@ -86,7 +86,7 @@ describe("getAssetTiles and earlierMarks", () => {
       { since: 1984, assets: { logo: info(true, false), icon: info(true, true) } },
     ],
   };
-  const base = `https://cdn.jsdelivr.net/npm/soaring-symbols@${DATA_LINE}/dist/assets/korean-air`;
+  const base = `https://cdn.jsdelivr.net/npm/soaring-symbols@${DATA_LINE}/dist/airlines/korean-air`;
 
   it("lists the current files without a mark", () => {
     assert.deepEqual(
@@ -211,11 +211,11 @@ describe("exact release URLs", () => {
 
   it("loads files from the release the list came from", () => {
     setDataVersion(release(1));
-    assert.equal(getAssetTiles(korean)[0].url, `${cdn}@${release(1)}/dist/assets/korean-air/logo.svg`);
+    assert.equal(getAssetTiles(korean)[0].url, `${cdn}@${release(1)}/dist/airlines/korean-air/logo.svg`);
     setDataVersion(earlierLine);
-    assert.equal(getAssetTiles(korean)[0].url, `${cdn}@${DATA_LINE}/dist/assets/korean-air/logo.svg`);
+    assert.equal(getAssetTiles(korean)[0].url, `${cdn}@${DATA_LINE}/dist/airlines/korean-air/logo.svg`);
     setDataVersion();
-    assert.equal(getAssetTiles(korean)[0].url, `${cdn}@${DATA_LINE}/dist/assets/korean-air/logo.svg`);
+    assert.equal(getAssetTiles(korean)[0].url, `${cdn}@${DATA_LINE}/dist/airlines/korean-air/logo.svg`);
   });
 });
 

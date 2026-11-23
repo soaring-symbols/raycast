@@ -1,10 +1,10 @@
 import type { Airline, Alliance, AllianceAssetType, AssetType, HistoricalMarks } from "soaring-symbols";
 
-// The npm release line the extension reads, served by jsDelivr. Every 0.5.x
+// The npm release line the extension reads, served by jsDelivr. Every 0.6.x
 // release (new airlines, fixed SVGs) arrives without a store update; a
-// breaking 0.6.0 never does. Move this, and the soaring-symbols dependency,
+// breaking 0.7.0 never does. Move this, and the soaring-symbols dependency,
 // to the next line in the same extension update.
-export const DATA_LINE = "0.5";
+export const DATA_LINE = "0.6";
 
 // Asks jsDelivr which release the line points at now, e.g. "0.2.4"
 export const RESOLVE_URL = `https://data.jsdelivr.com/v1/packages/npm/soaring-symbols/resolved?specifier=${DATA_LINE}`;
@@ -82,10 +82,10 @@ export const groupAirlines = (airlines: Airline[]) => {
   return { bySlug, parents, subsidiaries };
 };
 
-// The folder of the current marks, or with `mark` of the older ones
+// The folder of the current marks (airlines/ from 0.6, assets/ before), or with `mark` of the older ones
 // introduced in mark.since
 const assetUrl = (airline: Airline, file: string, mark?: HistoricalMarks) =>
-  dataFileUrl(`assets/${airline.slug}${mark ? `/history/${mark.since}` : ""}/${file}.svg`);
+  dataFileUrl(`airlines/${airline.slug}${mark ? `/history/${mark.since}` : ""}/${file}.svg`);
 
 // Whether fetched JSON is a usable airline list: a non-empty array of
 // airlines that each have a slug and assets. Anything else, including an
